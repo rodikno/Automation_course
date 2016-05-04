@@ -48,4 +48,24 @@ module OurModule
     @driver.find_element(:id, 'project_name').send_keys(project_name)
     @driver.find_element(:name, 'commit').click
   end
+
+  def create_issue(issue_type)
+
+    capitalized_issue_type = issue_type.to_s.capitalize!
+
+    create_project
+
+    issue_name = capitalized_issue_type + '_' + rand(99999).to_s
+
+    @driver.find_element(:class, 'new-issue').click
+
+    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']").click
+    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
+
+    sleep 2
+
+    @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
+    @driver.find_element(:name, 'commit').click
+    issue_name
+  end
 end

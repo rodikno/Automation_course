@@ -99,6 +99,33 @@ class TestFirst < Test::Unit::TestCase
     assert_equal(expected_message, actual_message)
   end
 
+  def test_create_issue_bug
+
+    issue_name = create_issue('bug')
+    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+    
+    assert(link_to_issue.text.include?('created'))
+
+  end
+
+
+  def test_create_issue_feature
+
+    issue_name = create_issue('feature')
+    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+
+    assert(link_to_issue.text.include?('created'))
+
+  end
+
+  def test_create_issue_support
+
+    issue_name = create_issue('support')
+    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+
+    assert(link_to_issue.text.include?('created'))
+  end
+
   def teardown
     @driver.quit
   end
