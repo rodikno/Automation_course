@@ -58,6 +58,27 @@ class TestFirst < Test::Unit::TestCase
     expected_message = "Password was successfully updated."
     actual_message = @driver.find_element(:id, 'flash_notice').text
 
+    assert_equal(expected_message, actual_message)
+  end
+
+  def test_create_project
+    register_user
+
+    random_number_string = rand(99999).to_s
+    project_name = 'RBProject' + random_number_string
+
+    @driver.navigate.to('http://demo.redmine.org/projects')
+    @driver.find_element(:css, 'a.icon-add').click
+
+    @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
+
+    @driver.find_element(:id, 'project_name').send_keys(project_name)
+    @driver.find_element(:name, 'commit').click
+
+    @wait.until{@driver.find_element(:id, 'flash_notice').displayed?}
+
+    expected_message = 'Successful creation.'
+    actual_message = @driver.find_element(:id, 'flash_notice').text
 
     assert_equal(expected_message, actual_message)
   end
