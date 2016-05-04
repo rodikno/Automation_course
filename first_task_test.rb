@@ -65,7 +65,7 @@ class TestFirst < Test::Unit::TestCase
     register_user
 
     random_number_string = rand(99999).to_s
-    project_name = 'RBProject' + random_number_string
+    project_name = 'rodioba_project_' + random_number_string
 
     @driver.navigate.to('http://demo.redmine.org/projects')
     @driver.find_element(:css, 'a.icon-add').click
@@ -76,6 +76,22 @@ class TestFirst < Test::Unit::TestCase
     @driver.find_element(:name, 'commit').click
 
     @wait.until{@driver.find_element(:id, 'flash_notice').displayed?}
+
+    expected_message = 'Successful creation.'
+    actual_message = @driver.find_element(:id, 'flash_notice').text
+
+    assert_equal(expected_message, actual_message)
+  end
+
+
+  def test_create_version
+    create_project
+
+    @driver.find_element(:id, 'tab-versions').click
+    @driver.find_element(:xpath, '//a[.=\'New version\']').click
+
+    @driver.find_element(:id, 'version_name').send_keys(rand(99999).to_s)
+    @driver.find_element(:name, 'commit').click
 
     expected_message = 'Successful creation.'
     actual_message = @driver.find_element(:id, 'flash_notice').text

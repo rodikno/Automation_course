@@ -33,4 +33,19 @@ module OurModule
     @driver.find_element(:name, 'password').send_keys(password)
     @driver.find_element(:name,'login').click
   end
+
+  def create_project
+    register_user
+
+    random_number_string = rand(99999).to_s
+    project_name = 'rodioba_project_' + random_number_string
+
+    @driver.navigate.to('http://demo.redmine.org/projects')
+    @driver.find_element(:css, 'a.icon-add').click
+
+    @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
+
+    @driver.find_element(:id, 'project_name').send_keys(project_name)
+    @driver.find_element(:name, 'commit').click
+  end
 end
