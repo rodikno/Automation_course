@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'selenium-webdriver'
 require_relative 'our_module'
+require 'uri'
 
 class TestFirst < Test::Unit::TestCase
 
@@ -102,28 +103,39 @@ class TestFirst < Test::Unit::TestCase
   def test_create_issue_bug
 
     issue_name = create_issue('bug')
-    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
-    
-    assert(link_to_issue.text.include?('created'))
+
+    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
+    current_url_slug = @driver.current_url.split('/').last
+
+    assert(success_message.text.include?('created'))
+    assert_equal(issue_url_slug, current_url_slug)
 
   end
-
 
   def test_create_issue_feature
 
     issue_name = create_issue('feature')
-    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
 
-    assert(link_to_issue.text.include?('created'))
+    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
+    current_url_slug = @driver.current_url.split('/').last
+
+    assert(success_message.text.include?('created'))
+    assert_equal(issue_url_slug, current_url_slug)
 
   end
 
   def test_create_issue_support
 
     issue_name = create_issue('support')
-    link_to_issue = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
 
-    assert(link_to_issue.text.include?('created'))
+    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
+    current_url_slug = @driver.current_url.split('/').last
+
+    assert(success_message.text.include?('created'))
+    assert_equal(issue_url_slug, current_url_slug)
   end
 
   def teardown
