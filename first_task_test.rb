@@ -28,6 +28,7 @@ class TestFirst < Test::Unit::TestCase
     @driver.find_element(:class, 'logout').click
 
     sleep 3
+    
     login_button = @driver.find_element(:class, 'login')
 
     assert(login_button.displayed?)
