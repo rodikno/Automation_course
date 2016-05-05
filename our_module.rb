@@ -59,6 +59,8 @@ module OurModule
 
     @driver.find_element(:class, 'new-issue').click
 
+    sleep 1
+
     @driver.find_element(:xpath, "//*[@id='issue_tracker_id']").click
     @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
 
