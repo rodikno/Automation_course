@@ -59,12 +59,13 @@ module OurModule
 
     @driver.find_element(:class, 'new-issue').click
 
-    sleep 1
+    @wait.until(@driver.find_element(:id, "issue_description").displayed?)
 
     @driver.find_element(:xpath, "//*[@id='issue_tracker_id']").click
     @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
 
-    sleep 2
+    sleep 1
+    ###@wait.until(@driver.find_element(:xpath, "//div[@id='ajax-indicator']")).displayed?
 
     @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
     @driver.find_element(:name, 'commit').click

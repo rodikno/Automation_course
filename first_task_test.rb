@@ -16,9 +16,8 @@ class TestFirst < Test::Unit::TestCase
 
     register_user
 
-    expected_text = "Your account has been activated. You can now log in."
-    actual_text = @driver.find_element(:id, 'flash_notice').text
-    assert_equal(expected_text, actual_text)
+    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
+    assert(@driver.find_element(:id, 'flash_notice'))
   end
 
   def test_log_out
@@ -57,10 +56,8 @@ class TestFirst < Test::Unit::TestCase
     @driver.find_element(:name, 'new_password_confirmation').send_keys('1234')
     @driver.find_element(:name, 'commit').click
 
-    expected_message = "Password was successfully updated."
-    actual_message = @driver.find_element(:id, 'flash_notice').text
-
-    assert_equal(expected_message, actual_message)
+    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
+    assert(@driver.find_element(:id, 'flash_notice'))
   end
 
   def test_create_project
@@ -109,8 +106,18 @@ class TestFirst < Test::Unit::TestCase
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
-    assert(success_message.text.include?('created'))
-    assert_equal(issue_url_slug, current_url_slug)
+    #==============================
+    #This doesn't work
+    ajax_indicator_hidden = @driver.find_element(:xpath, "//div[@id='ajax-indicator']").css_value("display").equal?('none')
+
+    assert(ajax_indicator_hidden)
+    #===============================
+
+
+    # @wait.until(ajax_indicator_displayed)
+    #
+    # assert(success_message.text.include?('created'))
+    # assert_equal(issue_url_slug, current_url_slug)
 
   end
 
@@ -122,8 +129,11 @@ class TestFirst < Test::Unit::TestCase
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
+
     assert(success_message.text.include?('created'))
     assert_equal(issue_url_slug, current_url_slug)
+
+
 
   end
 
