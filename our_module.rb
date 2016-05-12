@@ -35,8 +35,6 @@ module OurModule
   end
 
   def create_project
-    register_user
-
     random_number_string = rand(99999).to_s
     project_name = 'rodioba_project_' + random_number_string
 
@@ -47,25 +45,37 @@ module OurModule
 
     @driver.find_element(:id, 'project_name').send_keys(project_name)
     @driver.find_element(:name, 'commit').click
+    project_name
   end
 
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!
 
-    create_project
+    register_user
+    project_name = create_project
 
     issue_name = capitalized_issue_type + '_' + rand(99999).to_s
 
     @driver.find_element(:class, 'new-issue').click
 
-    @wait.until(@driver.find_element(:id, "issue_description").displayed?)
+    hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
 
-    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']").click
-    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
+    sleep 2
+    #@wait.until(@driver.find_element(:id, 'issue_tracker_id').displayed?)
 
-    sleep 1
-    ###@wait.until(@driver.find_element(:xpath, "//div[@id='ajax-indicator']")).displayed?
+    # issue_option_element = @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]")
+
+    # @driver.execute_script("arguments[0].setAttribute('selected', 'selected')",issue_option_element)
+
+    #@driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
+
+    option = Selenium::WebDriver::Support::Select.new(@driver.find_element(:xpath, "//select[@id='issue_tracker_id']"))
+    option.select_by(:text, "#{capitalized_issue_type}")
+
+
+    @wait.until {@driver.find_element(:css, "#issue_tracker_id [value='#{hash[capitalized_issue_type]}']").attribute('selected')== 'selected'}
+    # @wait.until {@driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").attribute('selected')}
 
     @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
     @driver.find_element(:name, 'commit').click
