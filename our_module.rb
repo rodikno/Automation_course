@@ -51,31 +51,21 @@ module OurModule
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!
+    issue_name = capitalized_issue_type + '_' + rand(99999).to_s
+    issue_type_hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
 
     register_user
-    project_name = create_project
-
-    issue_name = capitalized_issue_type + '_' + rand(99999).to_s
+    create_project
 
     @driver.find_element(:class, 'new-issue').click
 
-    hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
+    @wait.until{@driver.find_element(:id, 'issue_tracker_id').displayed?}
 
-    sleep 2
-    #@wait.until(@driver.find_element(:id, 'issue_tracker_id').displayed?)
+    my_select = Selenium::WebDriver::Support::Select.new(@driver.find_element(:xpath, "//select[@id='issue_tracker_id']"))
+    my_select.select_by(:text, capitalized_issue_type)
 
-    # issue_option_element = @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]")
-
-    # @driver.execute_script("arguments[0].setAttribute('selected', 'selected')",issue_option_element)
-
-    #@driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
-
-    option = Selenium::WebDriver::Support::Select.new(@driver.find_element(:xpath, "//select[@id='issue_tracker_id']"))
-    option.select_by(:text, "#{capitalized_issue_type}")
-
-
-    @wait.until {@driver.find_element(:css, "#issue_tracker_id [value='#{hash[capitalized_issue_type]}']").attribute('selected')== 'selected'}
-    # @wait.until {@driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").attribute('selected')}
+    #some magic from Dima here
+    @wait.until{@driver.find_element(:css, "#issue_tracker_id [value='#{issue_type_hash[capitalized_issue_type]}']").attribute('selected') == 'true'}
 
     @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
     @driver.find_element(:name, 'commit').click
