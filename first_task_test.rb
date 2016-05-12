@@ -63,39 +63,30 @@ class TestFirst < Test::Unit::TestCase
   def test_create_project
     register_user
 
-    random_number_string = rand(99999).to_s
-    project_name = 'rodioba_project_' + random_number_string
-
-    @driver.navigate.to('http://demo.redmine.org/projects')
-    @driver.find_element(:css, 'a.icon-add').click
-
-    @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
-
-    @driver.find_element(:id, 'project_name').send_keys(project_name)
-    @driver.find_element(:name, 'commit').click
+    project_name = create_project
 
     @wait.until{@driver.find_element(:id, 'flash_notice').displayed?}
 
-    expected_message = 'Successful creation.'
-    actual_message = @driver.find_element(:id, 'flash_notice').text
-
-    assert_equal(expected_message, actual_message)
+    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
   end
 
 
   def test_create_version
-    create_project
+
+    register_user
+    project_name = create_project
+
+    version_name = "version" + rand(99999).to_s
 
     @driver.find_element(:id, 'tab-versions').click
     @driver.find_element(:xpath, '//a[.=\'New version\']').click
 
-    @driver.find_element(:id, 'version_name').send_keys(rand(99999).to_s)
+    @driver.find_element(:id, 'version_name').send_keys(version_name)
     @driver.find_element(:name, 'commit').click
 
-    expected_message = 'Successful creation.'
-    actual_message = @driver.find_element(:id, 'flash_notice').text
+    ###MAYBE insert wait here
 
-    assert_equal(expected_message, actual_message)
+    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings/versions", @driver.current_url)
   end
 
   def test_create_issue_bug
@@ -106,18 +97,9 @@ class TestFirst < Test::Unit::TestCase
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
-    #==============================
-    #This doesn't work
-    ajax_indicator_hidden = @driver.find_element(:xpath, "//div[@id='ajax-indicator']").css_value("display").equal?('none')
 
-    assert(ajax_indicator_hidden)
-    #===============================
-
-
-    # @wait.until(ajax_indicator_displayed)
-    #
-    # assert(success_message.text.include?('created'))
-    # assert_equal(issue_url_slug, current_url_slug)
+    assert(success_message.text.include?('created'))
+    assert_equal(issue_url_slug, current_url_slug)
 
   end
 
