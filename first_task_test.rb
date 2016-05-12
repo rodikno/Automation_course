@@ -26,7 +26,7 @@ class TestFirst < Test::Unit::TestCase
 
     @driver.find_element(:class, 'logout').click
 
-    sleep 3
+    @wait.until{@driver.find_element(:class, 'login').displayed?}
     
     login_button = @driver.find_element(:class, 'login')
 
@@ -93,41 +93,33 @@ class TestFirst < Test::Unit::TestCase
 
     issue_name = create_issue('bug')
 
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
 
-    assert(success_message.text.include?('created'))
     assert_equal(issue_url_slug, current_url_slug)
-
   end
 
   def test_create_issue_feature
 
     issue_name = create_issue('feature')
 
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
 
-    assert(success_message.text.include?('created'))
+
     assert_equal(issue_url_slug, current_url_slug)
-
-
-
   end
 
   def test_create_issue_support
 
     issue_name = create_issue('support')
-
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
+    
     issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
     current_url_slug = @driver.current_url.split('/').last
 
-    assert(success_message.text.include?('created'))
+
     assert_equal(issue_url_slug, current_url_slug)
   end
 
