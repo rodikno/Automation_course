@@ -35,8 +35,6 @@ module OurModule
   end
 
   def create_project
-    register_user
-
     random_number_string = rand(99999).to_s
     project_name = 'rodioba_project_' + random_number_string
 
@@ -47,24 +45,27 @@ module OurModule
 
     @driver.find_element(:id, 'project_name').send_keys(project_name)
     @driver.find_element(:name, 'commit').click
+    project_name
   end
 
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!
-
-    create_project
-
     issue_name = capitalized_issue_type + '_' + rand(99999).to_s
+    issue_type_hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
+
+    register_user
+    create_project
 
     @driver.find_element(:class, 'new-issue').click
 
-    sleep 1
+    @wait.until{@driver.find_element(:id, 'issue_tracker_id').displayed?}
 
-    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']").click
-    @driver.find_element(:xpath, "//*[@id='issue_tracker_id']/*[contains(text(),'#{capitalized_issue_type}')]").click
+    my_select = Selenium::WebDriver::Support::Select.new(@driver.find_element(:xpath, "//select[@id='issue_tracker_id']"))
+    my_select.select_by(:text, capitalized_issue_type)
 
-    sleep 2
+    #some magic from Dima here
+    @wait.until{@driver.find_element(:css, "#issue_tracker_id [value='#{issue_type_hash[capitalized_issue_type]}']").attribute('selected') == 'true'}
 
     @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
     @driver.find_element(:name, 'commit').click
