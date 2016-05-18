@@ -26,9 +26,9 @@ class TestFirst < Test::Unit::TestCase
 
     @driver.find_element(:class, 'logout').click
 
-    @wait.until{@driver.find_element(:class, 'login').displayed?}
-    
     login_button = @driver.find_element(:class, 'login')
+
+    @wait.until{login_button.displayed?}
 
     assert(login_button.displayed?)
     assert_equal('http://demo.redmine.org/' ,@driver.current_url)
@@ -78,13 +78,14 @@ class TestFirst < Test::Unit::TestCase
 
     version_name = "version_" + rand(99999).to_s
 
-    @driver.find_element(:id, 'tab-versions').click
-    @driver.find_element(:xpath, '//a[.=\'New version\']').click
+    @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
 
-    @driver.find_element(:id, 'version_name').send_keys(version_name)
+    version_name_input = @driver.find_element(:id, 'version_name')
+
+    @wait.until{version_name_input.displayed?}
+
+    version_name_input.send_keys(version_name)
     @driver.find_element(:name, 'commit').click
-
-    ###MAYBE insert wait here
 
     assert_equal("http://demo.redmine.org/projects/#{project_name}/settings/versions", @driver.current_url)
   end
