@@ -12,11 +12,19 @@ module OurModule
     @driver.find_element(:class, classname)
   end
 
+  def find_element_by_css(css_string)
+    @driver.find_element(:css, css_string)
+  end
+
+  def find_element_by_xpath(xpath_string)
+    @driver.find_element(:xpath, xpath_string)
+  end
+
   def register_user
     @driver.navigate.to 'http://demo.redmine.org'
     find_element_by_class('register').click
 
-    @wait.until {@driver.find_element(:id, 'user_login').displayed?}
+    @wait.until {find_element_by_id('user_login').displayed?}
 
     user_login = ('login' + rand(99999).to_s)
     password = 's0meP@ssw0rd'
