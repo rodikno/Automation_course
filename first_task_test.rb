@@ -92,38 +92,23 @@ class TestFirst < Test::Unit::TestCase
 
   def test_create_issue_bug
 
-    issue_name = create_issue('bug')
+    issue_options = create_issue('bug')
 
-    @wait.until{@driver.find_element(:xpath, "//a[@title='#{issue_name}']").displayed?}
-
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert_equal(issue_url_slug, current_url_slug)
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_feature
 
-    issue_name = create_issue('feature')
+    issue_options = create_issue('feature')
 
-    @wait.until{@driver.find_element(:xpath, "//a[@title='#{issue_name}']").displayed?}
-
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert_equal(issue_url_slug, current_url_slug)
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_support
 
-    issue_name = create_issue('support')
+    issue_options = create_issue('support')
 
-    @wait.until{@driver.find_element(:xpath, "//a[@title='#{issue_name}']").displayed?}
-
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert_equal(issue_url_slug, current_url_slug)
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def teardown

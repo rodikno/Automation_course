@@ -69,6 +69,13 @@ module OurModule
 
     @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
     @driver.find_element(:name, 'commit').click
-    issue_name
+
+    @wait.until{@driver.find_element(:xpath, "//a[@title='#{issue_name}']").displayed?}
+
+    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
+    created_issue_url_slug = @driver.current_url.split('/').last
+
+    #return hash with all issue data required
+    {:issue_name => issue_name, :issue_url_slug => issue_url_slug, :created_issue_url_slug => created_issue_url_slug}
   end
 end
