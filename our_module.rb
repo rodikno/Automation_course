@@ -45,7 +45,7 @@ module OurModule
   end
 
   def log_out
-    @driver.find_element(:class, 'logout').click
+    find_element_by_class('logout').click
   end
 
   def log_in(login, password)
@@ -60,12 +60,13 @@ module OurModule
     project_name = 'rodioba_project_' + random_number_string
 
     @driver.navigate.to('http://demo.redmine.org/projects')
-    @driver.find_element(:css, 'a.icon-add').click
+    find_element_by_css('a.icon-add').click
 
     @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
 
-    @driver.find_element(:id, 'project_name').send_keys(project_name)
-    @driver.find_element(:name, 'commit').click
+    find_element_by_id('project_name').send_keys(project_name)
+    find_element_by_name('commit').click
+
     project_name
   end
 
@@ -80,20 +81,20 @@ module OurModule
 
     @driver.find_element(:class, 'new-issue').click
 
-    @wait.until{@driver.find_element(:id, 'issue_tracker_id').displayed?}
+    @wait.until{find_element_by_id('issue_tracker_id').displayed?}
 
-    my_select = Selenium::WebDriver::Support::Select.new(@driver.find_element(:xpath, "//select[@id='issue_tracker_id']"))
+    my_select = Selenium::WebDriver::Support::Select.new(find_element_by_xpath("//select[@id='issue_tracker_id']"))
     my_select.select_by(:text, capitalized_issue_type)
 
     #some magic from Dima here
-    @wait.until{@driver.find_element(:css, "#issue_tracker_id [value='#{issue_type_hash[capitalized_issue_type]}']").attribute('selected') == 'true'}
+    @wait.until{find_element_by_css("#issue_tracker_id [value='#{issue_type_hash[capitalized_issue_type]}']").attribute('selected') == 'true'}
 
-    @driver.find_element(:id, 'issue_subject').send_keys(issue_name)
-    @driver.find_element(:name, 'commit').click
+    find_element_by_id('issue_subject').send_keys(issue_name)
+    find_element_by_name('commit').click
 
-    @wait.until{@driver.find_element(:xpath, "//a[@title='#{issue_name}']").displayed?}
+    @wait.until{find_element_by_xpath("//a[@title='#{issue_name}']").displayed?}
 
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
+    issue_url_slug = find_element_by_xpath("//a[@title='#{issue_name}']").attribute("href").split('/').last
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
