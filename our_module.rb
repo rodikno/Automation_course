@@ -24,16 +24,16 @@ module OurModule
     lastname = 'Aobumeyang'
     user_email = user_login + 'myuser@xxx.com'
 
-    @driver.find_element(:id, 'user_login').send_keys user_login
-    @driver.find_element(:id, 'user_password').send_keys password
-    @driver.find_element(:id, 'user_password_confirmation').send_keys password
-    @driver.find_element(:id, 'user_firstname').send_keys firstname
-    @driver.find_element(:id, 'user_lastname').send_keys lastname
-    @driver.find_element(:id, 'user_mail').send_keys user_email
+    find_element_by_id('user_login').send_keys user_login
+    find_element_by_id('user_password').send_keys password
+    find_element_by_id('user_password_confirmation').send_keys password
+    find_element_by_id('user_firstname').send_keys firstname
+    find_element_by_id('user_lastname').send_keys lastname
+    find_element_by_id('user_mail').send_keys user_email
 
-    @driver.find_element(:name, 'commit').click
+    find_element_by_name('commit').click
 
-    {:logim => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
+    {:login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
   end
 
   def log_out
@@ -41,10 +41,10 @@ module OurModule
   end
 
   def log_in(login, password)
-    @driver.find_element(:class, 'login').click
-    @driver.find_element(:name, 'username').send_keys(login)
-    @driver.find_element(:name, 'password').send_keys(password)
-    @driver.find_element(:name,'login').click
+    find_element_by_class('login').click
+    find_element_by_name('username').send_keys(login)
+    find_element_by_name('password').send_keys(password)
+    find_element_by_name('login').click
   end
 
   def create_project
