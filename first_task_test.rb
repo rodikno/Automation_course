@@ -16,126 +16,102 @@ class TestFirst < Test::Unit::TestCase
 
     register_user
 
-    expected_text = "Your account has been activated. You can now log in."
-    actual_text = @driver.find_element(:id, 'flash_notice').text
-    assert_equal(expected_text, actual_text)
+    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
+    assert(find_element_by_id('flash_notice'))
   end
 
   def test_log_out
 
     register_user
 
-    @driver.find_element(:class, 'logout').click
+    find_element_by_class('logout').click
 
-    sleep 3
-    login_button = @driver.find_element(:class, 'login')
+    login_button = find_element_by_class('login')
+
+    @wait.until{login_button.displayed?}
 
     assert(login_button.displayed?)
     assert_equal('http://demo.redmine.org/' ,@driver.current_url)
   end
 
   def test_log_in
-    register_user
-
-    current_username = @driver.find_element(:class, 'user').text
+    user = register_user
 
     log_out
+    log_in(user[:login], user[:password])
 
-    log_in(current_username, 's0meP@ssw0rd')
-    assert_equal(current_username, @driver.find_element(:class, 'user').text)
+    assert_equal(user[:login], find_element_by_class('user').text)
   end
 
   def test_change_password
-    register_user
+    user = register_user
 
-    @driver.find_element(:class, 'icon-passwd').click
+    old_password = user[:password]
+    new_password = 'pass_' + rand(9999).to_s
+
+
+    find_element_by_class('icon-passwd').click
+
     @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
 
-    @driver.find_element(:name, 'password').send_keys('s0meP@ssw0rd')
-    @driver.find_element(:name, 'new_password').send_keys('1234')
-    @driver.find_element(:name, 'new_password_confirmation').send_keys('1234')
-    @driver.find_element(:name, 'commit').click
+    find_element_by_name('password').send_keys(old_password)
+    find_element_by_name('new_password').send_keys(new_password)
+    find_element_by_name('new_password_confirmation').send_keys(new_password)
+    find_element_by_name('commit').click
 
-    expected_message = "Password was successfully updated."
-    actual_message = @driver.find_element(:id, 'flash_notice').text
-
-    assert_equal(expected_message, actual_message)
+    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
+    assert (find_element_by_id('flash_notice'))
   end
 
   def test_create_project
     register_user
 
-    random_number_string = rand(99999).to_s
-    project_name = 'rodioba_project_' + random_number_string
+    project_name = create_project
 
-    @driver.navigate.to('http://demo.redmine.org/projects')
-    @driver.find_element(:css, 'a.icon-add').click
+    @wait.until{find_element_by_id('flash_notice').displayed?}
 
-    @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
-
-    @driver.find_element(:id, 'project_name').send_keys(project_name)
-    @driver.find_element(:name, 'commit').click
-
-    @wait.until{@driver.find_element(:id, 'flash_notice').displayed?}
-
-    expected_message = 'Successful creation.'
-    actual_message = @driver.find_element(:id, 'flash_notice').text
-
-    assert_equal(expected_message, actual_message)
+    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
   end
 
 
   def test_create_version
-    create_project
 
-    @driver.find_element(:id, 'tab-versions').click
-    @driver.find_element(:xpath, '//a[.=\'New version\']').click
+    register_user
+    project_name = create_project
 
-    @driver.find_element(:id, 'version_name').send_keys(rand(99999).to_s)
-    @driver.find_element(:name, 'commit').click
+    version_name = "version_" + rand(99999).to_s
 
-    expected_message = 'Successful creation.'
-    actual_message = @driver.find_element(:id, 'flash_notice').text
+    @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
 
-    assert_equal(expected_message, actual_message)
+    version_name_input = find_element_by_id('version_name')
+
+    @wait.until{version_name_input.displayed?}
+
+    version_name_input.send_keys(version_name)
+    find_element_by_name('commit').click
+
+    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings/versions", @driver.current_url)
   end
 
   def test_create_issue_bug
 
-    issue_name = create_issue('bug')
+    issue_options = create_issue('bug')
 
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert(success_message.text.include?('created'))
-    assert_equal(issue_url_slug, current_url_slug)
-
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_feature
 
-    issue_name = create_issue('feature')
+    issue_options = create_issue('feature')
 
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert(success_message.text.include?('created'))
-    assert_equal(issue_url_slug, current_url_slug)
-
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_support
 
-    issue_name = create_issue('support')
+    issue_options = create_issue('support')
 
-    success_message = @driver.find_element(:xpath, "//a[@title='#{issue_name}']/..")
-    issue_url_slug = @driver.find_element(:xpath, "//a[@title='#{issue_name}']").attribute("href").split('/').last
-    current_url_slug = @driver.current_url.split('/').last
-
-    assert(success_message.text.include?('created'))
-    assert_equal(issue_url_slug, current_url_slug)
+    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def teardown
