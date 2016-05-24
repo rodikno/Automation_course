@@ -21,6 +21,8 @@ module OurModule
     @driver.find_element(:id, 'user_mail').send_keys user_email
 
     @driver.find_element(:name, 'commit').click
+
+    {:logim => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
   end
 
   def log_out

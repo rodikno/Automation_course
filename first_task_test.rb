@@ -46,14 +46,19 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_change_password
-    register_user
+    user = register_user
+
+    old_password = user[:password]
+    new_password = 'pass_' + rand(9999).to_s
+
 
     @driver.find_element(:class, 'icon-passwd').click
+
     @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
 
-    @driver.find_element(:name, 'password').send_keys('s0meP@ssw0rd')
-    @driver.find_element(:name, 'new_password').send_keys('1234')
-    @driver.find_element(:name, 'new_password_confirmation').send_keys('1234')
+    @driver.find_element(:name, 'password').send_keys(old_password)
+    @driver.find_element(:name, 'new_password').send_keys(new_password)
+    @driver.find_element(:name, 'new_password_confirmation').send_keys(new_password)
     @driver.find_element(:name, 'commit').click
 
     assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
