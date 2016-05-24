@@ -1,9 +1,20 @@
 module OurModule
 
+  def find_element_by_name(name)
+    @driver.find_element(:name, name)
+  end
+
+  def find_element_by_id(id)
+    @driver.find_element(:id, id)
+  end
+
+  def find_element_by_class(classname)
+    @driver.find_element(:class, classname)
+  end
+
   def register_user
     @driver.navigate.to 'http://demo.redmine.org'
-    @driver.find_element(:class, 'register').click
-
+    find_element_by_class('register').click
 
     @wait.until {@driver.find_element(:id, 'user_login').displayed?}
 
