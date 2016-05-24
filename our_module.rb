@@ -50,7 +50,12 @@ module OurModule
 
   def log_in(login, password)
     find_element_by_class('login').click
-    find_element_by_name('username').send_keys(login)
+
+    username_field = find_element_by_name('username')
+
+    @wait.until{username_field.displayed?}
+
+    username_field.send_keys(login)
     find_element_by_name('password').send_keys(password)
     find_element_by_name('login').click
   end
