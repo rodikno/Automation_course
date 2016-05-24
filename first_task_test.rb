@@ -35,14 +35,12 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_log_in
-    register_user
-
-    current_username = find_element_by_class('user').text
+    user = register_user
 
     log_out
+    log_in(user[:login], user[:password])
 
-    log_in(current_username, 's0meP@ssw0rd')
-    assert_equal(current_username, find_element_by_class('user').text)
+    assert_equal(user[:login], find_element_by_class('user').text)
   end
 
   def test_change_password
