@@ -88,6 +88,7 @@ module OurModule
 
     #some magic from Dima here
     @wait.until{find_element_by_css("#issue_tracker_id [value='#{issue_type_hash[capitalized_issue_type]}']").attribute('selected') == 'true'}
+    @wait.until{find_element_by_id('ajax-indicator').attribute('style') == 'display: none;'}
 
     find_element_by_id('issue_subject').send_keys(issue_name)
     find_element_by_name('commit').click
@@ -95,6 +96,7 @@ module OurModule
     @wait.until{find_element_by_xpath("//a[@title='#{issue_name}']").displayed?}
 
     issue_url_slug = find_element_by_xpath("//a[@title='#{issue_name}']").attribute("href").split('/').last
+
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
