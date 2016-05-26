@@ -60,7 +60,7 @@ class TestFirst < Test::Unit::TestCase
     find_element_by_name('commit').click
 
     assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
-    assert (find_element_by_id('flash_notice'))
+    assert (find_element_by_id('flash_notice').displayed?)
   end
 
   def test_create_project
