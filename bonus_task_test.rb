@@ -1,10 +1,12 @@
 require 'test/unit'
 require 'selenium-webdriver'
+require_relative 'bonus_task_helpers'
 require_relative 'our_module'
 require 'uri'
 
 class TestFirst < Test::Unit::TestCase
 
+  include BonusTaskHelpers
   include OurModule
 
   def setup
@@ -14,7 +16,8 @@ class TestFirst < Test::Unit::TestCase
 
   def test_hover_first
 
-    @driver.navigate.to 'https://the-internet.herokuapp.com/hovers'
+    navigate_to "https://the-internet.herokuapp.com/hovers"
+    #@driver.navigate.to 'https://the-internet.herokuapp.com/hovers'
 
     user_avatar = find_element_by_css('.figure')
     link_to_profile = find_element_by_css("a[href='/users/1']")
