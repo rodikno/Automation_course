@@ -14,41 +14,17 @@ class TestFirst < Test::Unit::TestCase
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
   end
 
-  def test_hover_first
+  def test_hover
 
-    navigate_to "https://the-internet.herokuapp.com/hovers"
-    #@driver.navigate.to 'https://the-internet.herokuapp.com/hovers'
-
-    user_avatar = find_element_by_css('.figure')
-    link_to_profile = find_element_by_css("a[href='/users/1']")
-
-    @driver.action.move_to(user_avatar).perform
-
+    link_to_profile = hover_on_avatar_of_user 1
     assert(link_to_profile.displayed?)
-  end
 
-  def test_hover_second
-
-    @driver.navigate.to 'https://the-internet.herokuapp.com/hovers'
-
-    user_avatar = find_element_by_css('.figure + .figure')
-    link_to_profile = find_element_by_css("a[href='/users/2']")
-
-    @driver.action.move_to(user_avatar).perform
-
+    link_to_profile = hover_on_avatar_of_user 2
     assert(link_to_profile.displayed?)
-  end
 
-  def test_hover_third
-
-    @driver.navigate.to 'https://the-internet.herokuapp.com/hovers'
-
-    user_avatar = find_element_by_css('.figure + .figure')
-    link_to_profile = find_element_by_css("a[href='/users/3']")
-
-    @driver.action.move_to(user_avatar).perform
-
+    link_to_profile = hover_on_avatar_of_user 3
     assert(link_to_profile.displayed?)
+
   end
 
   def teardown
