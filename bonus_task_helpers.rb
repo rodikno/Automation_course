@@ -41,4 +41,12 @@ module BonusTaskHelpers
     {:source_element => source_element, :target_element => target_element}
   end
 
+  def select_option_from_dropdown(string_dropdown_id, string_option_value)
+
+    my_select = Selenium::WebDriver::Support::Select.new(find_element_by_id(string_dropdown_id))
+    my_select.select_by(:value, string_option_value)
+
+    selected_option_value = my_select.selected_options[0].attribute('value')
+  end
+
 end

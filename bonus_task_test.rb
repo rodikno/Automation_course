@@ -40,6 +40,18 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_select_from_list
+
+    navigate_to 'https://the-internet.herokuapp.com/dropdown'
+    dropdown_id = 'dropdown'
+    available_options = ['1', '2']
+
+    available_options.each do |option|
+      assert_equal(option, select_option_from_dropdown(dropdown_id, option))
+    end
+
+  end
+
   def teardown
     @driver.quit
   end
