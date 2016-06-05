@@ -27,6 +27,19 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_drag_and_drop
+    navigate_to 'https://the-internet.herokuapp.com/drag_and_drop'
+
+    source_element_id = '#column-a'
+    target_element_id = '#column-b'
+
+    columns_hash = html5_drag_and_drop source_element_id, target_element_id
+
+    assert_equal('B', columns_hash[:source_element].text)
+    assert_equal('A', columns_hash[:target_element].text)
+
+  end
+
   def teardown
     @driver.quit
   end

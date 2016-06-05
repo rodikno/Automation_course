@@ -24,4 +24,21 @@ module BonusTaskHelpers
     link_to_profile
   end
 
+  def html5_drag_and_drop(source_element_id, target_element_id)
+    #Selenium cannot perform HTML5 D&D
+    #and it's an opened issue in Selenium bug tracker
+    #https://github.com/SeleniumHQ/selenium-google-code-issue-archive/issues/3604
+
+    source_element = find_element_by_css(source_element_id)
+    target_element = find_element_by_css(target_element_id)
+
+
+    #using jQuery HTML5 D&D simulator as a hack
+    drag_and_drop_js = File.read(Dir.pwd + '/drag_and_drop_helper.js')
+    @driver.execute_script(drag_and_drop_js + "$('#{source_element_id}').simulateDragDrop({ dropTarget: '#{target_element_id}'});")
+
+
+    {:source_element => source_element, :target_element => target_element}
+  end
+
 end
