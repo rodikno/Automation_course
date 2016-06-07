@@ -52,6 +52,20 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_keypress
+
+    navigate_to('https://the-internet.herokuapp.com/key_presses')
+
+    page = find_element_by_css('body')
+    @driver.action.send_keys(page, :enter).perform
+
+    keypress_indicator = find_element_by_id('result')
+    expected_text = 'ENTER'
+
+    assert(keypress_indicator.text.include?(expected_text))
+
+  end
+
   def teardown
     @driver.quit
   end
