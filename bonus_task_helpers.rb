@@ -49,4 +49,12 @@ module BonusTaskHelpers
     selected_option_value = my_select.selected_options[0].attribute('value')
   end
 
+  def mouse_move_to(element)
+    @driver.action.move_to(element).perform
+  end
+
+  def wait_until_displayed(element)
+    @wait.until{element.displayed?}
+  end
+
 end

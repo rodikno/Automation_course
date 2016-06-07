@@ -66,6 +66,25 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_jquery_ui_menu
+
+    navigate_to 'https://the-internet.herokuapp.com/jqueryui/menu'
+
+    jquery_menu_1st_level = find_element_by_id('ui-id-3')
+    jquery_menu_2nd_level = find_element_by_id('ui-id-4')
+    jquery_menu_3rd_level_pdf = find_element_by_id('ui-id-5')
+
+    multilevel_menu = [jquery_menu_1st_level, jquery_menu_2nd_level, jquery_menu_3rd_level_pdf]
+
+    multilevel_menu.each do |menu|
+      wait_until_displayed(menu)
+      mouse_move_to(menu)
+    end
+
+    assert(multilevel_menu.last.displayed?)
+
+  end
+
   def teardown
     @driver.quit
   end
