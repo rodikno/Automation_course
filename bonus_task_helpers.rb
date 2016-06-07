@@ -53,6 +53,10 @@ module BonusTaskHelpers
     @driver.action.move_to(element).perform
   end
 
+  def move_to_and_click(element)
+    @driver.action.move_to(element).click.perform
+  end
+
   def wait_until_displayed(element)
     @wait.until{element.displayed?}
   end

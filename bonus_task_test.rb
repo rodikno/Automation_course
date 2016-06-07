@@ -85,6 +85,34 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_iframe_functionality
+
+    navigate_to 'https://the-internet.herokuapp.com/iframe'
+
+    frame_body = find_element_by_id('mceu_13-body')
+    bold_button = find_element_by_id('mceu_3')
+    textbox_iframe_id = 'mce_0_ifr'
+
+
+    wait_until_displayed(frame_body)
+
+    #switch to textbox iframe and select all
+    @driver.switch_to.frame(textbox_iframe_id)
+    text_box = find_element_by_css('#tinymce>p')
+    move_to_and_click(text_box)
+    @driver.action.send_keys(text_box, [:control, 'a']).perform
+
+    #switch back to main window and make text bold
+    @driver.switch_to.default_content
+    move_to_and_click(bold_button)
+
+    #back to iframe and verify text made bold (strong)
+    @driver.switch_to.frame(textbox_iframe_id)
+    strong_tag_around_text = find_element_by_css('#tinymce>p>strong')
+
+    assert(strong_tag_around_text.displayed?)
+  end
+
   def teardown
     @driver.quit
   end
