@@ -129,6 +129,22 @@ class TestFirst < Test::Unit::TestCase
 
   end
 
+  def test_multiple_windows
+
+    navigate_to 'https://the-internet.herokuapp.com/windows'
+
+    link_to_new_window = find_element_by_css('.example>a')
+    all_windows = @driver.window_handles
+    new_window_text = find_element_by_css('.example>h3')
+
+    move_to_and_click(link_to_new_window)
+
+    @driver.switch_to.window(all_windows.last)
+
+    assert(new_window_text.displayed?)
+
+  end
+
   def teardown
     @driver.quit
   end
