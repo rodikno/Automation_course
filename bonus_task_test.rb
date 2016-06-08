@@ -113,6 +113,22 @@ class TestFirst < Test::Unit::TestCase
     assert(strong_tag_around_text.displayed?)
   end
 
+  def test_javascript_alert
+
+    navigate_to 'https://the-internet.herokuapp.com/javascript_alerts'
+
+    js_alert_button = find_element_by_css("button[onclick='jsAlert()']")
+    result_after_click = find_element_by_id('result')
+
+    wait_until_displayed(js_alert_button)
+    move_to_and_click(js_alert_button)
+
+    @driver.switch_to.alert.accept
+
+    assert(result_after_click.displayed?)
+
+  end
+
   def teardown
     @driver.quit
   end
