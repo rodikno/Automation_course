@@ -3,3 +3,9 @@ def is_natural_number(number)
     true
   end
 end
+
+def is_digit(object)
+  if object =~ /[0-9]/
+    true
+  end
+end
