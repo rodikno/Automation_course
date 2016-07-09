@@ -26,3 +26,13 @@ def max_number_from_string(string)
   new = array.map { |elem| elem.to_i}
   new.max
 end
+
+def number_of_first_matching_chars(string)
+  matching_array = Array.new
+  string.each_char do |char|
+    until matching_array.include?(char)
+      matching_array.push char
+    end
+  end
+  matching_array.length
+end
