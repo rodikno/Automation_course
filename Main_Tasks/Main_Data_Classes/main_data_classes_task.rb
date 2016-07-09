@@ -36,3 +36,17 @@ def number_of_first_matching_chars(string)
   end
   matching_array.length
 end
+
+def even_odd_by_index(array)
+  even, odd = [], []
+  i = 0
+  array.length.times do
+    if i.even?
+      even.push array[i]
+    else
+      odd.push array[i]
+    end
+    i += 1
+  end
+  print "Even: #{even}\nOdd: #{odd}"
+end
