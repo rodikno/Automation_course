@@ -1,6 +1,8 @@
 require_relative "helper_methods"
 
-#method takes natural number and returns sum of its digits
+
+
+#takes natural number and returns sum of its digits
 def sum_of_digits(number)
   a, b = [], []
   sum = 0
@@ -14,12 +16,13 @@ def sum_of_digits(number)
   end
 end
 
-
+#takes a string and returns value of max number of digits placed in a row
 def max_num_of_digits_in_a_row(string)
   array = string.scan(/[0-9]*/)
   array.max_by(&:length)
 end
 
+#takes a string and returns maximum number which could be found there
 def max_number_from_string(string)
   array = string.scan(/[0-9]*/)
   array.delete('')
@@ -56,4 +59,14 @@ def print_elements_in_range(array)
   array.each do |elem|
     print elem if range.include?(elem)
   end
+end
+
+def add_first_elem_to_each_even(array)
+  range = (1...array.length-1)
+  array.each_with_index do |elem, index|
+    if range.include?(index) && elem.even?
+      array[index] += array[0]
+    end
+  end
+  array
 end
