@@ -1,7 +1,6 @@
 require_relative "helper_methods"
 
 
-
 #takes natural number and returns sum of its digits
 def sum_of_digits(number)
   a, b = [], []
@@ -30,16 +29,20 @@ def max_number_from_string(string)
   new.max
 end
 
-def number_of_first_matching_chars(string)
-  matching_array = Array.new
-  string.each_char do |char|
-    until matching_array.include?(char)
-      matching_array.push char
+#counts chars matching in two strings starting from the left, stops on the first not matching char
+def number_of_first_matching_chars(base_string, compare_string)
+  base_array, compare_array = base_string.scan(/./), compare_string.scan(/./)
+  counter = 0
+  base_array.each_with_index do |elem, i|
+    if base_array[i] == compare_array[i]
+      counter += 1
+    else break
     end
   end
-  matching_array.length
+  counter
 end
 
+#puts elements with even indexes, then with odd indexes
 def even_odd_by_index(array)
   even, odd = [], []
   i = 0
@@ -54,13 +57,18 @@ def even_odd_by_index(array)
   print "Even: #{even}\nOdd: #{odd}"
 end
 
-def print_elements_in_range(array)
-  range = (array.first..array.last)
-  array.each do |elem|
-    print elem if range.include?(elem)
+#returns index of last elem which follows the condition a[0] < elem < a[-1]
+def last_element_in_range_index(array)
+  range = (array.first+1...array.last)
+  indexes_of_elements_in_range = []
+
+  array.each_with_index do |elem, i|
+    indexes_of_elements_in_range.push(i) if range.include?(elem)
   end
+  indexes_of_elements_in_range.last
 end
 
+#modifies given array by adding first element to each even number
 def add_first_elem_to_each_even(array)
   range = (1...array.length-1)
   array.each_with_index do |elem, index|
