@@ -50,3 +50,10 @@ def even_odd_by_index(array)
   end
   print "Even: #{even}\nOdd: #{odd}"
 end
+
+def print_elements_in_range(array)
+  range = (array.first..array.last)
+  array.each do |elem|
+    print elem if range.include?(elem)
+  end
+end
