@@ -95,24 +95,38 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_bug
-
+    register_user
+    create_project
     issue_options = create_issue('bug')
 
     assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_feature
-
+    register_user
+    create_project
     issue_options = create_issue('feature')
 
     assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
   end
 
   def test_create_issue_support
-
+    register_user
+    create_project
     issue_options = create_issue('support')
 
     assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+  end
+
+  def test_conditional_create_issue
+    register_user
+    project_name = create_project
+    random_boolean = [true, false].sample
+
+    if true
+      issue_options = create_issue('bug')
+    end
+    assert true
   end
 
   def teardown

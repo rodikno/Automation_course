@@ -81,9 +81,6 @@ module OurModule
     issue_name = capitalized_issue_type + '_' + rand(99999).to_s
     issue_type_hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
 
-    register_user
-    create_project
-
     @driver.find_element(:class, 'new-issue').click
 
     @wait.until{find_element_by_id('issue_tracker_id').displayed?}
