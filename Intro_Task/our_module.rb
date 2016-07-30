@@ -40,7 +40,6 @@ module OurModule
     find_element_by_id('user_mail').send_keys user_email
 
     find_element_by_name('commit').click
-
     {:login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
   end
 
@@ -102,6 +101,12 @@ module OurModule
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
-    {:issue_name => issue_name, :issue_url_slug => issue_url_slug, :created_issue_url_slug => created_issue_url_slug}
+    {:issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
+  end
+
+  def is_issue_watched?
+    if find_element_by_css("a.icon-fav").displayed?
+      true
+    end
   end
 end

@@ -99,7 +99,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('bug')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
   def test_create_issue_feature
@@ -107,7 +107,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('feature')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
   def test_create_issue_support
@@ -115,7 +115,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('support')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
   def test_conditional_create_issue
