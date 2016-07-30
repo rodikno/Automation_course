@@ -119,7 +119,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_conditional_create_issue
-    register_user
+    user = register_user
     project_name = create_project
     random_boolean = [true, false].sample
 
@@ -146,13 +146,15 @@ class TestFirst < Test::Unit::TestCase
 
     if issue_id_found.empty?
       new_bug = create_issue('bug')
-      bug_id = new_bug[:created_issue_id]
-      watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
+      watch_icon = find_element_by_css("a.issue-#{new_bug[:created_issue_id]}-watcher")
       watch_icon.click
     end
-
+    
     @wait.until{is_issue_watched?}
     assert(is_issue_watched?)
+    @driver.navigate.refresh
+    @wait.until{find_element_by_id("watchers").displayed?}
+    assert(find_element_by_css("li.user-#{user[:user_id]}").displayed?)
   end
 
   def teardown
