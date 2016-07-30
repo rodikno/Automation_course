@@ -52,7 +52,9 @@ module OurModule
     find_element_by_id('user_mail').send_keys user_email
 
     find_element_by_name('commit').click
-    {:login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
+    user_id = find_element_by_css('div#loggedas>a').attribute('href').split('/').last
+
+    {:user_id => user_id, :login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
   end
 
   def log_out
