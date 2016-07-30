@@ -149,7 +149,7 @@ class TestFirst < Test::Unit::TestCase
       watch_icon = find_element_by_css("a.issue-#{new_bug[:created_issue_id]}-watcher")
       watch_icon.click
     end
-    
+
     @wait.until{is_issue_watched?}
     assert(is_issue_watched?)
     @driver.navigate.refresh
