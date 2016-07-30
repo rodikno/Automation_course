@@ -123,10 +123,36 @@ class TestFirst < Test::Unit::TestCase
     project_name = create_project
     random_boolean = [true, false].sample
 
-    if true
-      issue_options = create_issue('bug')
+    if random_boolean
+      create_issue('bug')
     end
-    assert true
+
+    navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
+
+    issue_types_list = find_elements_by_class("tracker")
+    issue_ids_list = find_elements_by_css("td.id > *:first-child")
+    issue_id_found = String.new
+
+    issue_types_list.each_with_index do |elem, index|
+      if elem.text == "Bug"
+        issue_id_found = issue_ids_list[index].text
+        navigate_to "http://demo.redmine.org/issues/#{issue_id_found}"
+        watch_icon = find_element_by_css("a.issue-#{issue_id_found}-watcher")
+        @wait.until{watch_icon.displayed?}
+        watch_icon.click
+        break
+      end
+    end
+
+    if issue_id_found.empty?
+      new_bug = create_issue('bug')
+      bug_id = new_bug[:created_issue_id]
+      watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
+      watch_icon.click
+    end
+
+    @wait.until{is_issue_watched?}
+    assert(is_issue_watched?)
   end
 
   def teardown

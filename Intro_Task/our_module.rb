@@ -12,12 +12,24 @@ module OurModule
     @driver.find_element(:class, classname)
   end
 
+  def find_elements_by_class(classname)
+    @driver.find_elements(:class, classname)
+  end
+
   def find_element_by_css(css_string)
     @driver.find_element(:css, css_string)
   end
 
+  def find_elements_by_css(css_string)
+    @driver.find_elements(:css, css_string)
+  end
+
   def find_element_by_xpath(xpath_string)
     @driver.find_element(:xpath, xpath_string)
+  end
+
+  def navigate_to(url)
+    @driver.navigate.to(url)
   end
 
   def register_user
