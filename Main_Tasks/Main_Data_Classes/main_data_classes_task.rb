@@ -54,15 +54,14 @@ def even_odd_by_index(array)
   print "Even: #{even}\nOdd: #{odd}"
 end
 
-#returns index of last elem which follows the condition a[0] < elem < a[-1]
-def last_element_in_range_index(array)
-  range = (array.first+1...array.last)
-  indexes_of_elements_in_range = []
+#returns index of last elem of a given array which follows the condition a[0] < elem < a[-1]
+def last_element_conditional_index(array)
+  indexes_of__fitting_elements = Array.new
 
   array.each_with_index do |elem, i|
-    indexes_of_elements_in_range.push(i) if range.include?(elem)
+    indexes_of__fitting_elements.push(i) if (elem > array.first) && (elem < array.last)
   end
-  indexes_of_elements_in_range.last
+  indexes_of__fitting_elements.last
 end
 
 #modifies given array by adding first element to each even number
