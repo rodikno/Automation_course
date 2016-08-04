@@ -1,18 +1,15 @@
 require_relative "helper_methods"
 
-
 #takes natural number and returns sum of its digits
 def sum_of_digits(number)
-  a, b = [], []
   sum = 0
   if is_natural_number(number)
-    0.upto(number.size) {
-      a = number.divmod(10)
-      sum += a[1]
-      number = a[0]
-    }
-    sum
+    string_number = number.to_s
+    string_number.each_char { |digit| sum += digit.to_i }
+  else
+    raise "Argument is not a natural number"
   end
+  print sum
 end
 
 #takes a string and returns value of max number of digits placed in a row
