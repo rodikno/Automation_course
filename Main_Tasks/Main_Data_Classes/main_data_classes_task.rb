@@ -3,7 +3,7 @@ require_relative "helper_methods"
 #takes natural number and returns sum of its digits
 def sum_of_digits(number)
   sum = 0
-  if is_natural_number(number)
+  if is_a_natural_number?(number)
     string_number = number.to_s
     string_number.each_char { |digit| sum += digit.to_i }
   else
