@@ -74,3 +74,13 @@ def add_first_elem_to_each_even(array)
   end
   array
 end
+
+#replaces a keys of a given hash with symbols and values with integers,
+#otherwise puts nil as a value
+def hash_to_sym_and_int(hash)
+  hash.each_pair do |key, value|
+    key = key.to_sym
+    is_an_integer?(value) ? hash[key] = value.to_i : hash[key] = nil
+  end
+  hash
+end

@@ -9,3 +9,7 @@ def is_digit(object)
     true
   end
 end
+
+def is_an_integer?(string)
+  true if string.to_i.to_s == string
+end
