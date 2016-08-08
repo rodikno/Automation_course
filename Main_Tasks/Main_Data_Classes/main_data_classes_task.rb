@@ -84,3 +84,13 @@ def hash_to_sym_and_int(hash)
   end
   hash
 end
+
+#removes all pairs from hash where first char of a key in string representation is "s"
+def hash_remove_when_starts_with_s(hash)
+  hash.delete_if { |key, value| key.to_s[0] == 's' }
+end
+
+#keeps in a given hash only pairs where value is a natural number and value > 0
+def hash_keep_natural_only(hash)
+  hash.keep_if { |key, value| is_a_natural_number?(value) }
+end
