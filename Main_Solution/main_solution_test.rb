@@ -118,33 +118,29 @@ class TestFirst < Test::Unit::TestCase
     assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
-  def test_conditional_create_issue
+  def test_conditional_watch_issue
     user = register_user
     project_name = create_project
     random_boolean = [true, false].sample
 
     if random_boolean
       create_issue('bug')
+    else
+      create_issue('support')
     end
 
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
 
-    issue_types_list = find_elements_by_class("tracker")
-    issue_ids_list = find_elements_by_css("td.id > *:first-child")
-    issue_id_found = String.new
+    issues_list = find_elements_by_class("issue")
+    bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
 
-    issue_types_list.each_with_index do |elem, index|
-      if elem.text == "Bug"
-        issue_id_found = issue_ids_list[index].text
-        navigate_to "http://demo.redmine.org/issues/#{issue_id_found}"
-        watch_icon = find_element_by_css("a.issue-#{issue_id_found}-watcher")
-        @wait.until{watch_icon.displayed?}
-        watch_icon.click
-        break
-      end
-    end
-
-    if issue_id_found.empty?
+    if bug_elem #checking if at least one bug was found in the list
+      bug_id = bug_elem.find_element(:css, ".id>a").text
+      navigate_to "http://demo.redmine.org/issues/#{bug_id}"
+      watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
+      @wait.until{watch_icon.displayed?}
+      watch_icon.click
+    else #if bug wasn't found, we'll create a new one now
       new_bug = create_issue('bug')
       watch_icon = find_element_by_css("a.issue-#{new_bug[:created_issue_id]}-watcher")
       watch_icon.click
