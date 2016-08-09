@@ -123,11 +123,7 @@ class TestFirst < Test::Unit::TestCase
     project_name = create_project
     random_boolean = [true, false].sample
 
-    if random_boolean
-      create_issue('bug')
-    else
-      create_issue('support')
-    end
+    random_boolean ? create_issue('bug') : create_issue('support')
 
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
 
