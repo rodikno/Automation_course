@@ -8,7 +8,8 @@ class TestFirst < Test::Unit::TestCase
   include OurModule
 
   def setup
-    @driver = Selenium::WebDriver.for :firefox
+    @driver = Selenium::WebDriver.for :chrome, :switches => %w[--ignore-certificate-errors --disable-popup-blocking --disable-translate]
+    #@driver = Selenium::WebDriver.for :firefox
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
   end
 
@@ -94,24 +95,58 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_bug
-
+    register_user
+    create_project
     issue_options = create_issue('bug')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
   def test_create_issue_feature
-
+    register_user
+    create_project
     issue_options = create_issue('feature')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
   end
 
   def test_create_issue_support
-
+    register_user
+    create_project
     issue_options = create_issue('support')
 
-    assert_equal(issue_options[:issue_url_slug], issue_options[:created_issue_url_slug])
+    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
+  end
+
+  def test_conditional_watch_issue
+    user = register_user
+    project_name = create_project
+    random_boolean = [true, false].sample
+
+    random_boolean ? create_issue('bug') : create_issue('support')
+
+    navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
+
+    issues_list = find_elements_by_class("issue")
+    bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
+
+    if bug_elem #checking if at least one bug was found in the list
+      bug_id = bug_elem.find_element(:css, ".id>a").text
+      navigate_to "http://demo.redmine.org/issues/#{bug_id}"
+      watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
+      @wait.until{watch_icon.displayed?}
+      watch_icon.click
+    else #if bug wasn't found, we'll create a new one now
+      new_bug = create_issue('bug')
+      watch_icon = find_element_by_css("a.issue-#{new_bug[:created_issue_id]}-watcher")
+      watch_icon.click
+    end
+
+    @wait.until{is_issue_watched?}
+    assert(is_issue_watched?)
+    @driver.navigate.refresh
+    @wait.until{find_element_by_id("watchers").displayed?}
+    assert(find_element_by_css("li.user-#{user[:user_id]}").displayed?)
   end
 
   def teardown

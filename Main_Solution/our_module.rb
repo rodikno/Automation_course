@@ -12,12 +12,24 @@ module OurModule
     @driver.find_element(:class, classname)
   end
 
+  def find_elements_by_class(classname)
+    @driver.find_elements(:class, classname)
+  end
+
   def find_element_by_css(css_string)
     @driver.find_element(:css, css_string)
   end
 
+  def find_elements_by_css(css_string)
+    @driver.find_elements(:css, css_string)
+  end
+
   def find_element_by_xpath(xpath_string)
     @driver.find_element(:xpath, xpath_string)
+  end
+
+  def navigate_to(url)
+    @driver.navigate.to(url)
   end
 
   def register_user
@@ -40,8 +52,9 @@ module OurModule
     find_element_by_id('user_mail').send_keys user_email
 
     find_element_by_name('commit').click
+    user_id = find_element_by_css('div#loggedas>a').attribute('href').split('/').last
 
-    {:login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
+    {:user_id => user_id, :login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
   end
 
   def log_out
@@ -81,9 +94,6 @@ module OurModule
     issue_name = capitalized_issue_type + '_' + rand(99999).to_s
     issue_type_hash = {'Bug' => 1, 'Feature' => 2, 'Support' => 3}
 
-    register_user
-    create_project
-
     @driver.find_element(:class, 'new-issue').click
 
     @wait.until{find_element_by_id('issue_tracker_id').displayed?}
@@ -105,6 +115,12 @@ module OurModule
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
-    {:issue_name => issue_name, :issue_url_slug => issue_url_slug, :created_issue_url_slug => created_issue_url_slug}
+    {:issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
+  end
+
+  def is_issue_watched?
+    if find_element_by_css("a.icon-fav").displayed?
+      true
+    end
   end
 end
