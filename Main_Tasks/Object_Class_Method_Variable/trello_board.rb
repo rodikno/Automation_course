@@ -2,7 +2,7 @@
 class TrelloBoard
 
   attr_accessor :name, :background_color
-  attr_reader :lists
+  attr_reader :lists, :members
 
   def initialize(board_name)
     @name = board_name
