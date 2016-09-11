@@ -13,14 +13,14 @@ class User
     @boards = Array.new
   end
 
-  def add_board(board)
+  def join_board(board)
     @boards << board
-    print @boards.flatten.to_s
+    board.add_member(username)
   end
 
   def create_board(board_name)
     board = TrelloBoard.new(board_name)
     boards << board  
   end
-    
+
 end
