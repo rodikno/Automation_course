@@ -21,4 +21,8 @@ class TrelloBoard
     end
   end
 
+  def add_member(member_username)
+    @members << member_username unless @members.include?(member_username)
+  end
+
 end
