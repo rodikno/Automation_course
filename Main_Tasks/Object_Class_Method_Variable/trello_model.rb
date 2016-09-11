@@ -9,16 +9,15 @@ username = 'megapixel'
 first_user = User.new(username)
 
 #create a board for this user
-main_board = TrelloBoard.new(first_user)
-first_user.add_board(main_board)
+main_board = TrelloBoard.new("Main Board", username)
+first_user.join_board(main_board)
 
 #add a list to the board
-list = TrelloList.new('Rodions List')
+list = TrelloList.new("Rodion's super List")
 main_board.add_list(list)
 
 #add a card to specific list on a board
-card = TrelloCard.new
-card.title = "Rodion's first card"
+card = TrelloCard.new("Rodion's nice card")
 card.description = "We need to finish this stuff"
 
 list.add_card(card)
@@ -28,3 +27,6 @@ comment = TrelloComment.new
 comment.text = "This is my first comment"
 
 card.add_comment(comment)
+
+print "OK"
+
