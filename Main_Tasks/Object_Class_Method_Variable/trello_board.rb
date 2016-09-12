@@ -4,9 +4,9 @@ class TrelloBoard
   attr_accessor :name, :background_color
   attr_reader :lists, :members
 
-  def initialize(board_name, creator_name)
+  def initialize(board_name, user_creator)
     @name = board_name
-    @members = Array.new << creator_name
+    @members = Array.new << user_creator.username
     @lists = Array.new
     @background_color = "Black"
   end
