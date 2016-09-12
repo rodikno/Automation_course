@@ -9,7 +9,7 @@ username = 'megapixel'
 first_user = User.new(username)
 
 #create a board for this user
-main_board = TrelloBoard.new("Main Board", username)
+main_board = TrelloBoard.new("Main Board", first_user)
 first_user.join_board(main_board)
 
 #add a list to the board
