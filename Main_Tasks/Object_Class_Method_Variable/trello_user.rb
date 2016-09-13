@@ -15,7 +15,7 @@ class TrelloUser
 
   def join_board(board)
     @boards << board
-    board.add_member(username)
+    board.add_member(self)
   end
 
   def create_board(board_name)

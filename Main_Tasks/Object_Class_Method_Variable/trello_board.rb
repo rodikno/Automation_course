@@ -6,7 +6,7 @@ class TrelloBoard
 
   def initialize(board_name, user_creator)
     @name = board_name
-    @members = Array.new << user_creator.username
+    @members = Array.new << user_creator
     @lists = Array.new
     @background_color = "Black"
   end
@@ -21,8 +21,8 @@ class TrelloBoard
     end
   end
 
-  def add_member(member_username)
-    @members << member_username unless @members.include?(member_username)
+  def add_member(member)
+    @members << member unless @members.include?(member)
   end
 
 end
