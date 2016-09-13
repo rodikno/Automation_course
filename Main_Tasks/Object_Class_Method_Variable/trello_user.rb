@@ -18,8 +18,8 @@ class TrelloUser
   end
   
   def add_board_to_user_boards(board)
-    board_id_symbol = board.board_id.to_s.to_sym
-    @boards_owned[board_id_symbol] = board
+    board_id = board.board_id
+    @boards_owned[board_id] = board
   end
 
   def create_board(board_name)
