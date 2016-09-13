@@ -1,10 +1,14 @@
+require_relative 'trello_list'
 
 class TrelloBoard
 
+  @@board_id_count = 0 #I know that's a bad style but have no idea how to get unique id without external DB
+
   attr_accessor :name, :background_color
-  attr_reader :lists, :members
+  attr_reader :lists, :members, :board_id
 
   def initialize(board_name, user_creator)
+    @board_id = @@board_id_count + 1
     @name = board_name
     @creator = user_creator
     @members = Array.new << user_creator
