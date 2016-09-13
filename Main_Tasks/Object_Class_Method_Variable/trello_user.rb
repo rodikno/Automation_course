@@ -33,8 +33,12 @@ class TrelloUser
     board.add_member(self)
   end
 
-  def get_all_board_ids
-
+  def get_all_board_ids_and_names
+    ids_names_hash = Hash.new
+    @boards_owned.each_pair do |id, board|
+      ids_names_hash[id] = board.name
+    end
+    ids_names_hash
   end
 
   # Need to rework this to support woking with hash @boards_owned
