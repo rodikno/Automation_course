@@ -8,7 +8,8 @@ class TrelloBoard
   attr_reader :lists, :members, :board_id
 
   def initialize(board_name, user_creator)
-    @board_id = @@board_id_count + 1
+    @@board_id_count += 1
+    @board_id = @@board_id_count
     @name = board_name
     @creator = user_creator
     @members = Array.new << user_creator
