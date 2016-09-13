@@ -1,7 +1,7 @@
 require 'faker'
 require_relative 'trello_board'
 
-class User
+class TrelloUser
 
   attr_accessor :username, :first_name, :last_name, :email
 

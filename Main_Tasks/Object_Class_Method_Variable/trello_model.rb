@@ -1,4 +1,4 @@
-require_relative 'user'
+require_relative 'trello_user'
 require_relative 'trello_board'
 require_relative 'trello_list'
 require_relative 'trello_card'
@@ -6,7 +6,7 @@ require_relative 'trello_comment'
 
 #create a user
 username = 'megapixel'
-first_user = User.new(username)
+first_user = TrelloUser.new(username)
 
 #create a board for this user
 main_board = TrelloBoard.new("Main Board", first_user)
