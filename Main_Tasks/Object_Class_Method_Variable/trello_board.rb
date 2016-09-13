@@ -17,8 +17,9 @@ class TrelloBoard
     @background_color = Faker::Color.color_name
   end
 
-  def add_list(list)
-    lists << list
+  def create_list(list_name)
+    list = TrelloList.new(list_name, self)
+    @lists << list
   end
 
   def add_member(member)

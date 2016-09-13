@@ -1,12 +1,12 @@
 
 class TrelloList
 
-  attr_reader :cards, :sequence_num
-  attr_accessor :list_title, :board_name
+  attr_reader :cards, :sequence_num, :parent_board
+  attr_accessor :list_title
 
-  def initialize(list_title = "List")
+  def initialize(list_title, parent_board)
     @list_title = list_title
-    @board_name = "Default Board"
+    @parent_board = parent_board
     @cards = Array.new
     @sequence_num = 0
   end
@@ -15,12 +15,12 @@ class TrelloList
     @cards << card
   end
 
-  def sequence_num(number)
-    @sequence_num = number
-  end
-
   def move_list(new_sequence_num)
-    @sequence_num = new_sequence_num
+    if new_sequence_num >= 0
+      @sequence_num = new_sequence_num
+    else
+      raise StandardError "Sequence number can't be less than 0"
+    end
   end
 
 end
