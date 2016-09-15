@@ -16,21 +16,36 @@ class TrelloUser
     @biography = Faker::Hipster.sentence(5)
     @boards_owned = Hash.new
   end
-  
-  def add_board_to_user_boards(board)
-    board_id = board.board_id
-    @boards_owned[board_id] = board
-  end
 
   def create_board(board_name)
     board = TrelloBoard.new(board_name, self)
     add_board_to_user_boards(board)
+    print "Board [" + board_name + "] is created\n"
     board
   end
 
   def join_board(board)
     add_board_to_user_boards(board)
     board.add_member(self)
+    print "User [" + self.username + "] joined the board [" + board.name + "]\n"
+  end
+  
+  def leave_board(board)
+    if board.is_user_a_creator?(self)
+      raise StandardError, "You can't leave board which is your creation\n"
+    else
+      remove_board_from_user_boards(board)
+      board.remove_member(self)
+      print "User [" + self.username + "] has left board [" + board.name + "]\n"
+    end
+  end
+
+  def create_list(list_name, board_id_where)
+    board_index = @boards.index(board_where)
+    if board_index
+      required_board = @boards.fetch(board_index)
+      required_board.create_list(list_name)
+    end
   end
 
   def get_all_board_ids_and_names
@@ -41,18 +56,15 @@ class TrelloUser
     ids_names_hash
   end
 
-  # Need to rework this to support woking with hash @boards_owned
-  # def leave_board(board_id)
-  #   @boards_owned.delete(board)
-  #   board.remove_member(self)
-  # end
+  private
+  def add_board_to_user_boards(board)
+    board_id = board.board_id
+    @boards_owned[board_id] = board
+  end
 
-  def create_list(list_name, board_id_where)
-    board_index = @boards.index(board_where)
-    if board_index
-      required_board = @boards.fetch(board_index)
-      required_board.create_list(list_name)
-    end
+  def remove_board_from_user_boards(board)
+    board_id = board.board_id
+    @boards_owned.delete(board_id)
   end
 
 end
