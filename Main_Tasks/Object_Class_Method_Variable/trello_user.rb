@@ -46,20 +46,12 @@ class TrelloUser
   # @param [Fixnum] target_board_id
   # @param [String] list_name
   def create_list(list_name, target_board_id)
-    begin
-      board = @boards_joined.fetch(target_board_id)
+      board = get_board_by_id(target_board_id)
       if board
         board.create_list(list_name)
       else
-        raise StandardError
+        print "There's no board with id [" + target_board_id.to_s + "]\n"
       end
-    rescue KeyError
-      print "Error! Board with ID [" + target_board_id.to_s + "] doesn't exist\n"
-    rescue StandardError
-      print "Unable to add a list to the board which you're not a member of\n"
-    rescue Exception => e
-      print e.message
-    end
   end
 
   def get_all_created_boards
@@ -78,6 +70,10 @@ class TrelloUser
     print "Boards, where [" + self.username + "] is a member: " + ids_names_hash.to_s + "\n"
   end
 
+  def get_all_lists(board_id)
+    
+  end
+  
   private
   def add_board_to_user_boards(board)
     board_id = board.board_id
@@ -92,6 +88,15 @@ class TrelloUser
   def remove_board_from_joined(board)
     board_id = board.board_id
     @boards_joined.delete(board_id)
+  end
+  
+  def get_board_by_id(board_id)
+    begin
+      board = @boards_joined.fetch(board_id)
+    rescue KeyError
+      return nil
+    end
+    board
   end
 
 end

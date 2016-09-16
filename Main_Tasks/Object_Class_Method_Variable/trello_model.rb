@@ -19,7 +19,8 @@ first_user.join_board(third_board)
 first_user.get_all_created_boards
 first_user.get_all_joined_boards
 
-first_user.create_list("TODO", 10)
+first_user.create_list("TODO", 1)
+
 
 print "OK"
 
@@ -41,6 +42,4 @@ print "OK"
 #comment.text = "This is my first comment"
 
 #card.add_comment(comment)
-
-print "\nOK"
 

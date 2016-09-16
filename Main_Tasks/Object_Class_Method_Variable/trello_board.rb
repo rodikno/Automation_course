@@ -20,6 +20,13 @@ class TrelloBoard
   def create_list(list_name)
     list = TrelloList.new(list_name, self)
     @lists << list
+    print "List [#{list_name}] is created on board [#{self.name}]\n"
+  end
+
+  def get_all_lists
+    @lists.each do |list|
+      print "List [" + list.title + "] with id [" + list.id + "]\n"
+    end
   end
 
   def add_member(member)
