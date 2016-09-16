@@ -43,6 +43,8 @@ class TrelloUser
     end
   end
 
+  # @param [Fixnum] target_board_id
+  # @param [String] list_name
   def create_list(list_name, target_board_id)
     begin
       board = @boards_joined.fetch(target_board_id)
