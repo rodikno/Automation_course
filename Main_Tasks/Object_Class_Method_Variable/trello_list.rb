@@ -1,11 +1,15 @@
 
 class TrelloList
 
-  attr_reader :cards, :sequence_num, :parent_board
-  attr_accessor :list_title
+  @@list_id_count = 0
+
+  attr_reader :cards, :sequence_num, :parent_board, :id
+  attr_accessor :title
 
   def initialize(list_title, parent_board)
-    @list_title = list_title
+    @@list_id_count += 1
+    @id = @@list_id_count
+    @title = list_title
     @parent_board = parent_board
     @cards = Array.new
     @sequence_num = 0
