@@ -24,8 +24,9 @@ class TrelloBoard
   end
 
   def get_all_lists
+    print "Board [#{self.name}] contains lists:\n"
     @lists.each do |list|
-      print "List [" + list.title + "] with id [" + list.id + "]\n"
+      print "List [" + list.title + "] with id [" + list.id.to_s + "]\n"
     end
   end
 

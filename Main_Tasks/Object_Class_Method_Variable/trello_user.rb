@@ -54,6 +54,11 @@ class TrelloUser
       end
   end
 
+  def get_all_lists(board_id)
+    board = get_board_by_id(board_id)
+    board.get_all_lists
+  end
+
   def get_all_created_boards
     ids_names_hash = Hash.new
     @boards_owned.each_pair do |id, board|
@@ -70,9 +75,7 @@ class TrelloUser
     print "Boards, where [" + self.username + "] is a member: " + ids_names_hash.to_s + "\n"
   end
 
-  def get_all_lists(board_id)
-    
-  end
+
   
   private
   def add_board_to_user_boards(board)

@@ -20,6 +20,9 @@ first_user.get_all_created_boards
 first_user.get_all_joined_boards
 
 first_user.create_list("TODO", 1)
+first_user.create_list("IN PROGRESS", 1)
+first_user.create_list("DONE", 1)
+first_user.get_all_lists(1)
 
 
 print "OK"
