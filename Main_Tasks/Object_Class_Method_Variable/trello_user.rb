@@ -54,6 +54,22 @@ class TrelloUser
       end
   end
 
+  def delete_list(list_id, board_id)
+    if is_board_in_users_boards?(board_id)
+      board = get_board_by_id(board_id)
+      lists_ids = board.get_all_lists_ids
+      if lists_ids.include?(list_id)
+        board.delete_list(list_id)
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+
+
+  end
+
   def get_all_lists(board_id)
     board = get_board_by_id(board_id)
     board.get_all_lists
@@ -78,6 +94,15 @@ class TrelloUser
 
   
   private
+  def is_board_in_users_boards?(board_id)
+    board = get_board_by_id(board_id)
+    if (@boards_joined.has_value?(board) or @boards_owned.has_value?(board))
+      true
+    else
+      false
+    end
+  end
+
   def add_board_to_user_boards(board)
     board_id = board.board_id
     @boards_owned[board_id] = board

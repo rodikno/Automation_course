@@ -23,7 +23,8 @@ first_user.create_list("TODO", 1)
 first_user.create_list("IN PROGRESS", 1)
 first_user.create_list("DONE", 1)
 first_user.get_all_lists(1)
-
+first_user.delete_list(56, 1)
+first_user.get_all_lists(1)
 
 print "OK"
 

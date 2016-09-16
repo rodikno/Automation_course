@@ -23,11 +23,23 @@ class TrelloBoard
     print "List [#{list_name}] is created on board [#{self.name}]\n"
   end
 
+  def delete_list(list_id)
+    @lists.delete_if {|list| list.id == list_id}
+  end
+
   def get_all_lists
     print "Board [#{self.name}] contains lists:\n"
     @lists.each do |list|
       print "List [" + list.title + "] with id [" + list.id.to_s + "]\n"
     end
+  end
+
+  def get_all_lists_ids
+    list_ids = Array.new
+    @lists.each do |list|
+      list_ids << list.id
+    end
+    list_ids
   end
 
   def add_member(member)
@@ -47,6 +59,7 @@ class TrelloBoard
     end
   end
 
+  private
   def is_user_a_creator?(user)
     user.equal?(@creator) ? true : false
   end
