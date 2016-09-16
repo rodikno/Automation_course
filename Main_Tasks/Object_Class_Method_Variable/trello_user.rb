@@ -7,6 +7,7 @@ require_relative 'trello_comment'
 class TrelloUser
 
   attr_accessor :username, :first_name, :last_name, :email, :biography
+  attr_reader :boards_owned, :boards_joined
 
   def initialize(username = "User" + rand(999))
     @username = username
@@ -42,11 +43,20 @@ class TrelloUser
     end
   end
 
-  def create_list(list_name, board_id_where)
-    board_index = @boards.index(board_where)
-    if board_index
-      required_board = @boards.fetch(board_index)
-      required_board.create_list(list_name)
+  def create_list(list_name, target_board_id)
+    begin
+      board = @boards_joined.fetch(target_board_id)
+      if board
+        board.create_list(list_name)
+      else
+        raise StandardError
+      end
+    rescue KeyError
+      print "Error! Board with ID [" + target_board_id.to_s + "] doesn't exist\n"
+    rescue StandardError
+      print "Unable to add a list to the board which you're not a member of\n"
+    rescue Exception => e
+      print e.message
     end
   end
 
