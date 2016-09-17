@@ -1,13 +1,20 @@
 
 class TrelloCard
 
-  attr_accessor :title, :description
+  @@card_id_count = 0
 
-  def initialize(card_title)
+  attr_accessor :title, :description
+  attr_reader :parent_list
+
+  def initialize(card_title, parent_list)
+    @@card_id_count += 1
+    @card_id = @@card_id_count
     @title = card_title
+    @parent_list = parent_list
     @description = String.new
     @assignee = String.new
     @comments = Array.new
+    print "Card [#{card_title} is created in list [#{parent_list.title}]\n"
   end
 
   def add_comment(comment)

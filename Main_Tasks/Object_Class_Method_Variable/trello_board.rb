@@ -31,6 +31,12 @@ class TrelloBoard
     @lists.each {|list| list.move_list(new_position) if list.id == list_id}
   end
 
+  def get_list_by_id(list_id)
+    list = nil
+    @lists.each {|li| list = li if li.id == list_id}
+    list
+  end
+
   def get_all_lists
     print "Board [#{self.name}] contains lists:\n"
     @lists.each do |list|

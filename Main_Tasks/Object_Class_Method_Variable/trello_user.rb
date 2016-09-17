@@ -47,6 +47,24 @@ class TrelloUser
     end
   end
 
+  # @return Pretty prints all created boards
+  def get_all_created_boards
+    ids_names_hash = Hash.new
+    @boards_owned.each_pair do |id, board|
+      ids_names_hash[id] = board.name
+    end
+    print "Boards, created by user [" + self.username + "]: " + ids_names_hash.to_s + "\n"
+  end
+
+  # @return Pretty prints all joined boards
+  def get_all_joined_boards
+    ids_names_hash = Hash.new
+    @boards_joined.each_pair do |id, board|
+      ids_names_hash[id] = board.name
+    end
+    print "Boards, where [" + self.username + "] is a member: " + ids_names_hash.to_s + "\n"
+  end
+
   # @param [Fixnum] target_board_id
   # @param [String] list_name
   def create_list(list_name, target_board_id)
@@ -99,24 +117,22 @@ class TrelloUser
     board.get_all_lists
   end
 
-  # @return Pretty prints all created boards
-  def get_all_created_boards
-    ids_names_hash = Hash.new
-    @boards_owned.each_pair do |id, board|
-      ids_names_hash[id] = board.name
+  # @param [String] card_name
+  # @param [Fixnum] board_id
+  # @param [Fixnum] list_id
+  def create_card(card_name, board_id, list_id)
+    board = get_board_by_id(board_id)
+    if board
+      list = board.get_list_by_id(list_id)
+      if list
+        list.create_card(card_name)
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
     end
-    print "Boards, created by user [" + self.username + "]: " + ids_names_hash.to_s + "\n"
   end
-
-  # @return Pretty prints all joined boards
-  def get_all_joined_boards
-    ids_names_hash = Hash.new
-    @boards_joined.each_pair do |id, board|
-      ids_names_hash[id] = board.name
-    end
-    print "Boards, where [" + self.username + "] is a member: " + ids_names_hash.to_s + "\n"
-  end
-
 
   
   private

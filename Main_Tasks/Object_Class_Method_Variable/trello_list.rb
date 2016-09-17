@@ -1,3 +1,4 @@
+require_relative 'trello_card'
 
 class TrelloList
 
@@ -15,7 +16,8 @@ class TrelloList
     @position = 0
   end
 
-  def add_card(card)
+  def create_card(card_name)
+    card = TrelloCard.new(card_name, self)
     @cards << card
   end
 
