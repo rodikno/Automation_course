@@ -27,6 +27,10 @@ class TrelloBoard
     @lists.delete_if {|list| list.id == list_id}
   end
 
+  def move_list(list_id, new_position)
+    @lists.each {|list| list.move_list(new_position) if list.id == list_id}
+  end
+
   def get_all_lists
     print "Board [#{self.name}] contains lists:\n"
     @lists.each do |list|

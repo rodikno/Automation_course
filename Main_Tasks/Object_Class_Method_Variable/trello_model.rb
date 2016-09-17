@@ -25,6 +25,7 @@ first_user.create_list("DONE", 1)
 first_user.get_all_lists(1)
 first_user.delete_list(56, 1)
 first_user.get_all_lists(1)
+first_user.move_list(1,1, 56)
 
 print "OK"
 

@@ -70,6 +70,20 @@ class TrelloUser
 
   end
 
+  def move_list(list_id, board_id, new_position)
+    if is_board_in_users_boards?(board_id)
+      board = get_board_by_id(board_id)
+      lists_ids = board.get_all_lists_ids
+      if lists_ids.include?(list_id)
+        board.move_list(list_id, new_position)
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+  end
+
   def get_all_lists(board_id)
     board = get_board_by_id(board_id)
     board.get_all_lists
