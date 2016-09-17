@@ -38,6 +38,7 @@ class TrelloBoard
     end
   end
 
+  # @return [Array]
   def get_all_lists_ids
     list_ids = Array.new
     @lists.each do |list|

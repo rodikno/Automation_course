@@ -9,6 +9,7 @@ class TrelloUser
   attr_accessor :username, :first_name, :last_name, :email, :biography
   attr_reader :boards_owned, :boards_joined
 
+  # @param [String] username
   def initialize(username = "User" + rand(999))
     @username = username
     @first_name = Faker::Name.first_name
@@ -19,6 +20,7 @@ class TrelloUser
     @boards_joined = Hash.new
   end
 
+  # @param [String] board_name
   def create_board(board_name)
     board = TrelloBoard.new(board_name, self)
     add_board_to_user_boards(board)
@@ -27,12 +29,14 @@ class TrelloUser
     board
   end
 
+  # @param [TrelloBoard] board
   def join_board(board)
     add_board_to_joined_boards(board)
     board.add_member(self)
     print "User [" + self.username + "] joined the board [" + board.name + "]\n"
   end
 
+  # @param [TrelloBoard] board
   def leave_board(board)
     if board.is_user_a_creator?(self)
       raise StandardError, "You can't leave board which is your creation\n"
@@ -54,6 +58,8 @@ class TrelloUser
       end
   end
 
+  # @param [Fixnum] list_id
+  # @param [Fixnum] board_id
   def delete_list(list_id, board_id)
     if is_board_in_users_boards?(board_id)
       board = get_board_by_id(board_id)
@@ -70,6 +76,9 @@ class TrelloUser
 
   end
 
+  # @param [Fixnum] list_id
+  # @param [Fixnum] board_id
+  # @param [Fixnum] new_position
   def move_list(list_id, board_id, new_position)
     if is_board_in_users_boards?(board_id)
       board = get_board_by_id(board_id)
@@ -84,11 +93,13 @@ class TrelloUser
     end
   end
 
+  # @param [Fixnum] board_id
   def get_all_lists(board_id)
     board = get_board_by_id(board_id)
     board.get_all_lists
   end
 
+  # @return Pretty prints all created boards
   def get_all_created_boards
     ids_names_hash = Hash.new
     @boards_owned.each_pair do |id, board|
@@ -97,6 +108,7 @@ class TrelloUser
     print "Boards, created by user [" + self.username + "]: " + ids_names_hash.to_s + "\n"
   end
 
+  # @return Pretty prints all joined boards
   def get_all_joined_boards
     ids_names_hash = Hash.new
     @boards_joined.each_pair do |id, board|
