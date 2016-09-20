@@ -27,25 +27,6 @@ first_user.delete_list(56, 1)
 first_user.get_all_lists(1)
 first_user.create_card("My first card", 1, 1)
 first_user.move_card(1, 1, 1, 2)
+first_user.add_comment("My First Comment", 1, 2, 1)
 
 print "OK"
-
-#print first_user.boards_joined[1].to_s
-#main_board.remove_member(first_user) #will raise an Error because can't remove creator from board
-#first_user.create_list(list_name, board)
-#create list on the board
-# first_user.create_list("MyList", board_id)
-# first_user
-
-#add a card to specific list on a board
-#card = TrelloCard.new("Rodion's nice card")
-#card.description = "We need to finish this stuff"
-
-#list.add_card(card)
-
-#add a comment for a card
-#comment = TrelloComment.new
-#comment.text = "This is my first comment"
-
-#card.add_comment(comment)
-

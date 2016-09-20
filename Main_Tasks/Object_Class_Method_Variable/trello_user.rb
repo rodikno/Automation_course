@@ -151,6 +151,10 @@ class TrelloUser
     end
   end
 
+  # @param [Fixnum] card_id
+  # @param [Fixnum] board_id
+  # @param [Fixnum] source_list_id
+  # @param [Fixnum] target_list_id
   def move_card(card_id, board_id, source_list_id, target_list_id)
     board = get_board_by_id(board_id)
     if board
@@ -160,7 +164,32 @@ class TrelloUser
     end
   end
 
-  
+  # @param [String] comment_text
+  # @param [Fixnum] board_id
+  # @param [Fixnum] list_id
+  # @param [Fixnum] card_id
+  def add_comment(comment_text, board_id, list_id, card_id)
+    board = get_board_by_id(board_id)
+    if board
+      list = board.get_list_by_id(list_id)
+      if list
+        card = list.get_card_by_id(card_id)
+        if card
+          author_name = self.username
+          card.add_comment(comment_text, author_name)
+        else
+          print "Card with id [#{card_id}] doesn't exist in list [#{list.title}]\n"
+        end
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+  end
+
+
+
   private
   def is_board_in_users_boards?(board_id)
     board = get_board_by_id(board_id)

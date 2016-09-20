@@ -1,3 +1,4 @@
+require_relative 'trello_comment'
 
 class TrelloCard
 
@@ -17,8 +18,10 @@ class TrelloCard
     print "Card [#{card_title}] is created in list [#{parent_list.title}]\n"
   end
 
-  def add_comment(comment)
+  def add_comment(comment_text, author_name)
+    comment = TrelloComment.new(comment_text, author_name, self)
     @comments << comment
+    print "Comment with text [#{comment_text}] is added to card [#{self.title}(id=[#{self.id}])]\n"
   end
 
   def add_assignee(username)
