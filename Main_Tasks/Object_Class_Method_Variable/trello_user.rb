@@ -151,6 +151,15 @@ class TrelloUser
     end
   end
 
+  def move_card(card_id, board_id, source_list_id, target_list_id)
+    board = get_board_by_id(board_id)
+    if board
+      board.move_card(card_id, source_list_id, target_list_id)
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+  end
+
   
   private
   def is_board_in_users_boards?(board_id)

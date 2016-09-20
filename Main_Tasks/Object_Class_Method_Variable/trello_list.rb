@@ -16,6 +16,11 @@ class TrelloList
     @position = 0
   end
 
+  def add_card(card)
+    @cards << card
+    print "Card [#{card.id}] is added to list [#{self.title} successfully]\n"
+  end
+
   def create_card(card_name)
     card = TrelloCard.new(card_name, self)
     @cards << card
@@ -40,11 +45,9 @@ class TrelloList
     end
   end
 
-  private
   def get_card_by_id(card_id)
     required_card = nil
     @cards.each {|card| required_card = card if card.id == card_id}
     required_card
   end
-
 end

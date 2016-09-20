@@ -31,10 +31,14 @@ class TrelloBoard
     @lists.each {|list| list.move_list(new_position) if list.id == list_id}
   end
 
-  def get_list_by_id(list_id)
+  def get_list_by_id(list_id, &block)
     list = nil
     @lists.each {|li| list = li if li.id == list_id}
-    list
+    if list
+      list
+    else
+      yield
+    end
   end
 
   def get_all_lists
@@ -67,6 +71,18 @@ class TrelloBoard
       end
     else
       print "You can't remove this user because he's not a member of this board\n"
+    end
+  end
+
+  def move_card(card_id, source_list_id, target_list_id)
+    source_list = get_list_by_id(source_list_id) {print "List with id [#{source_list_id}] doesn't exist"}
+    target_list = get_list_by_id(target_list_id) {print "List with id [#{target_list_id}] doesn't exist"}
+    if source_list and target_list
+      card = source_list.get_card_by_id(card_id)
+      card.parent_list = target_list
+      target_list.add_card(card)
+      source_list.delete_card(card_id)
+      print "Card [#{card_id}] moved from [#{source_list.title}] to [#{target_list.title}]\n"
     end
   end
 
