@@ -134,6 +134,23 @@ class TrelloUser
     end
   end
 
+  # @param [Fixnum] card_id
+  # @param [Fixnum] board_id
+  # @param [Fixnum] list_id
+  def delete_card(card_id, board_id, list_id)
+    board = get_board_by_id(board_id)
+    if board
+      list = board.get_list_by_id(list_id)
+      if list
+        list.delete_card(card_id)
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+  end
+
   
   private
   def is_board_in_users_boards?(board_id)

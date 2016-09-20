@@ -21,6 +21,16 @@ class TrelloList
     @cards << card
   end
 
+  def delete_card(card_id)
+    card = get_card_by_id(card_id)
+    if card
+      @cards.delete(card)
+      print "Card with id [#{card_id}] removed successfully from list [#{self.title}]\n"
+    else
+      print "Card with id [#{card_id}] doesn't exist in list [#{self.title}]\n"
+    end
+  end
+
   def move_list(new_position)
     if new_position >= 0
       @position = new_position
@@ -28,6 +38,13 @@ class TrelloList
     else
       print "Position number couldn't be set to value less than 0\n"
     end
+  end
+
+  private
+  def get_card_by_id(card_id)
+    required_card = nil
+    @cards.each {|card| required_card = card if card.id == card_id}
+    required_card
   end
 
 end
