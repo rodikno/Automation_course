@@ -188,7 +188,24 @@ class TrelloUser
     end
   end
 
-
+  def delete_comment(comment_id, board_id, list_id, card_id)
+    board = get_board_by_id(board_id)
+    if board
+      list = board.get_list_by_id(list_id)
+      if list
+        card = list.get_card_by_id(card_id)
+        if card
+          card.delete_comment(comment_id)
+        else
+          print "Card with id [#{card_id}] doesn't exist in list [#{list.title}]\n"
+        end
+      else
+        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+      end
+    else
+      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+    end
+  end
 
   private
   def is_board_in_users_boards?(board_id)

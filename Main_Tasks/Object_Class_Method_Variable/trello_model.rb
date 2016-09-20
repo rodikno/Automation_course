@@ -28,5 +28,6 @@ first_user.get_all_lists(1)
 first_user.create_card("My first card", 1, 1)
 first_user.move_card(1, 1, 1, 2)
 first_user.add_comment("My First Comment", 1, 2, 1)
+first_user.delete_comment(1, 1, 2, 1)
 
 print "OK"

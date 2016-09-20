@@ -24,8 +24,24 @@ class TrelloCard
     print "Comment with text [#{comment_text}] is added to card [#{self.title}(id=[#{self.id}])]\n"
   end
 
+  def delete_comment(comment_id)
+    comment = get_comment_by_id(comment_id)
+    if comment
+      @comments.delete(comment)
+      print "Comment with id [#{comment_id}] removed successfully from card [#{self.title}]\n"
+    else
+      print "Comment with id [#{comment_id}] doesn't exist in card [#{self.title}]\n"
+    end
+  end
+
   def add_assignee(username)
     @assignee = username
   end
 
+  private
+  def get_comment_by_id(comment_id)
+    required_comment = nil
+    @comments.each {|comment| required_comment = comment if comment.id == comment_id}
+    required_comment
+  end
 end
