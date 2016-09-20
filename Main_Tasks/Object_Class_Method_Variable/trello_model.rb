@@ -1,3 +1,4 @@
+require 'test/unit'
 require_relative 'trello_user'
 require_relative 'trello_board'
 require_relative 'trello_list'

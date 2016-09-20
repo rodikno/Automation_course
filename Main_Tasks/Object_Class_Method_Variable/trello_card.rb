@@ -5,7 +5,7 @@ class TrelloCard
   @@card_id_count = 0
 
   attr_accessor :title, :description, :parent_list
-  attr_reader :id
+  attr_reader :id, :assignee
 
   def initialize(card_title, parent_list)
     @@card_id_count += 1
