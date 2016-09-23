@@ -5,11 +5,11 @@ class TrelloBoard
   @@board_id_count = 0 #I know that's a bad style but have no idea how to get unique id without external DB
 
   attr_accessor :name, :background_color
-  attr_reader :lists, :members, :board_id
+  attr_reader :lists, :members, :id
 
   def initialize(board_name, user_creator)
     @@board_id_count += 1
-    @board_id = @@board_id_count
+    @id = @@board_id_count
     @name = board_name
     @creator = user_creator
     @members = Array.new << user_creator
@@ -21,6 +21,7 @@ class TrelloBoard
     list = TrelloList.new(list_name, self)
     @lists << list
     print "List [#{list_name}] is created on board [#{self.name}]\n"
+    list
   end
 
   def delete_list(list_id)
@@ -86,7 +87,6 @@ class TrelloBoard
     end
   end
 
-  private
   def is_user_a_creator?(user)
     user.equal?(@creator) ? true : false
   end

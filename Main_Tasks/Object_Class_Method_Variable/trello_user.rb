@@ -33,7 +33,6 @@ class TrelloUser
   def join_board(board)
     add_board_to_joined_boards(board)
     board.add_member(self)
-    print "User [" + self.username + "] joined the board [" + board.name + "]\n"
   end
 
   # @param [TrelloBoard] board
@@ -218,17 +217,17 @@ class TrelloUser
   end
 
   def add_board_to_user_boards(board)
-    board_id = board.board_id
+    board_id = board.id
     @boards_owned[board_id] = board
   end
 
   def add_board_to_joined_boards(board)
-    board_id = board.board_id
+    board_id = board.id
     @boards_joined[board_id] = board
   end
 
   def remove_board_from_joined(board)
-    board_id = board.board_id
+    board_id = board.id
     @boards_joined.delete(board_id)
   end
   
