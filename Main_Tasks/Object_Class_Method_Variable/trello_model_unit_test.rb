@@ -62,31 +62,60 @@ class TestTrelloModel < Test::Unit::TestCase
     user.delete_list(list.id, board.id)
     assert_false(board.lists.include?(list))
   end
-  #
-  # def test_move_list
-  #
-  # end
-  #
-  # def test_get_all_lists
-  #
-  # def test_create_card
-  #
-  # end
-  #
-  # def test_delete_card
-  #
-  # end
-  #
-  # def test_move_card
-  #
-  # end
-  #
-  # def test_add_comment
-  #
-  # end
-  #
-  # def test_delete_comment
-  #
-  # end
+
+  def test_move_list
+    desired_position = 3
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    user.move_list(list.id, board.id, desired_position)
+    assert_equal(list.position, desired_position)
+  end
+
+  def test_get_all_lists
+
+  end
+
+  def test_create_card
+    card_name = "My Card"
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    card = user.create_card(card_name, board.id, list.id)
+    assert(card.kind_of?(TrelloCard))
+    assert_equal(card_name, card.title)
+  end
+
+  def test_delete_card
+    card_name = "My Card"
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    card = user.create_card(card_name, board.id, list.id)
+    user.delete_card(card.id, board.id, list.id)
+    assert_false(list.cards.include?(card))
+  end
+
+  def test_move_card
+    card_name = "My Card"
+    other_list_name = "Other List"
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    other_list = user.create_list(other_list_name, board.id)
+    card = user.create_card(card_name, board.id, list.id)
+    user.move_card(card.id, board.id, list.id, other_list.id)
+    assert_false(list.cards.include?(card))
+    assert(other_list.cards.include?(card))
+    assert_equal(other_list, card.parent_list)
+  end
+
+  def test_add_comment
+    
+  end
+
+  def test_delete_comment
+
+  end
 
 end

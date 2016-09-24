@@ -24,6 +24,7 @@ class TrelloList
   def create_card(card_name)
     card = TrelloCard.new(card_name, self)
     @cards << card
+    card
   end
 
   def delete_card(card_id)
