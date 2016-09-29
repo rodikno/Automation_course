@@ -5,7 +5,7 @@ class TrelloCard
   @@card_id_count = 0
 
   attr_accessor :title, :description, :parent_list
-  attr_reader :id, :assignee
+  attr_reader :id, :assignee, :comments
 
   def initialize(card_title, parent_list)
     @@card_id_count += 1
@@ -22,6 +22,7 @@ class TrelloCard
     comment = TrelloComment.new(comment_text, author_name, self)
     @comments << comment
     print "Comment with text [#{comment_text}] is added to card [#{self.title}(id=[#{self.id}])]\n"
+    comment
   end
 
   def delete_comment(comment_id)

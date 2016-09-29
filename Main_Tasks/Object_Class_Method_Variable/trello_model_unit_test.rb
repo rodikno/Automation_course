@@ -111,11 +111,27 @@ class TestTrelloModel < Test::Unit::TestCase
   end
 
   def test_add_comment
-    
+    card_name = "My Card"
+    comment_text = "This is the comment"
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    card = user.create_card(card_name, board.id, list.id)
+    comment = user.add_comment(comment_text, board.id, list.id, card.id)
+    assert(comment.kind_of?(TrelloComment))
+    assert_equal(comment_text, comment.comment_text)
   end
 
   def test_delete_comment
-
+    card_name = "My Card"
+    comment_text = "This is the comment"
+    user = TrelloUser.new(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board.id)
+    card = user.create_card(card_name, board.id, list.id)
+    comment = user.add_comment(comment_text, board.id, list.id, card.id)
+    user.delete_comment(comment.id, board.id,list.id, card.id)
+    assert_false(card.comments.include?(comment))
   end
 
 end
