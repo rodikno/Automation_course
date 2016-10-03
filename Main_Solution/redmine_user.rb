@@ -8,8 +8,9 @@ class RedmineUser
 
   attr_reader :user_id, :user_login, :password, :first_name, :last_name, :user_email
 
-  def initialize
-    @driver = Selenium::WebDriver.for :chrome, :switches => %w[--ignore-certificate-errors --disable-popup-blocking --disable-translate]
+  # @param [Selenium::WebDriver::Driver] driver
+  def initialize(driver)
+    @driver = driver
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
 
     @first_name = Faker::Name.first_name

@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'selenium-webdriver'
 require_relative 'our_module'
+require_relative 'redmine_user'
 require 'uri'
 
 class TestFirst < Test::Unit::TestCase
@@ -14,9 +15,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_registration
-
-    register_user
-
+    RedmineUser.new(@driver)
     assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
     assert(find_element_by_id('flash_notice'))
   end
