@@ -21,39 +21,28 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_log_out
-
-    register_user
-
+    RedmineUser.new(@driver)
     find_element_by_class('logout').click
-
     login_button = find_element_by_class('login')
-
     @wait.until{login_button.displayed?}
-
     assert(login_button.displayed?)
     assert_equal('http://demo.redmine.org/' ,@driver.current_url)
   end
 
   def test_log_in
-    user = register_user
-
+    user = RedmineUser.new(@driver)
     log_out
-    log_in(user[:login], user[:password])
-
-    assert_equal(user[:login], find_element_by_class('user').text)
+    log_in(user.user_login, user.password)
+    assert_equal(user.user_login, find_element_by_class('user').text)
   end
 
   def test_change_password
-    user = register_user
-
-    old_password = user[:password]
-    new_password = 'pass_' + rand(9999).to_s
-
+    user = RedmineUser.new(@driver)
+    old_password = user.password
+    new_password = Faker::Internet.password
 
     find_element_by_class('icon-passwd').click
-
     @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
-
     find_element_by_name('password').send_keys(old_password)
     find_element_by_name('new_password').send_keys(new_password)
     find_element_by_name('new_password_confirmation').send_keys(new_password)
@@ -64,27 +53,22 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_project
-    register_user
-
+    RedmineUser.new(@driver)
     project_name = create_project
 
     @wait.until{find_element_by_id('flash_notice').displayed?}
-
     assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
   end
 
 
   def test_create_version
 
-    register_user
+    RedmineUser.new(@driver)
     project_name = create_project
-
     version_name = "version_" + rand(99999).to_s
 
     @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
-
     version_name_input = find_element_by_id('version_name')
-
     @wait.until{version_name_input.displayed?}
 
     version_name_input.send_keys(version_name)
@@ -94,7 +78,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_bug
-    register_user
+    RedmineUser.new(@driver)
     create_project
     issue_options = create_issue('bug')
 
@@ -102,7 +86,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_feature
-    register_user
+    RedmineUser.new(@driver)
     create_project
     issue_options = create_issue('feature')
 
@@ -110,7 +94,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_support
-    register_user
+    RedmineUser.new(@driver)
     create_project
     issue_options = create_issue('support')
 
@@ -118,7 +102,7 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_conditional_watch_issue
-    user = register_user
+    user = RedmineUser.new(@driver)
     project_name = create_project
     random_boolean = [true, false].sample
 
@@ -130,7 +114,7 @@ class TestFirst < Test::Unit::TestCase
     bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
 
     if bug_elem #checking if at least one bug was found in the list
-      bug_id = bug_elem.find_element(:css, ".id>a").text
+      bug_id = bug_elem.find_element(:css, ".id > a").text
       navigate_to "http://demo.redmine.org/issues/#{bug_id}"
       watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
       @wait.until{watch_icon.displayed?}
@@ -145,7 +129,7 @@ class TestFirst < Test::Unit::TestCase
     assert(is_issue_watched?)
     @driver.navigate.refresh
     @wait.until{find_element_by_id("watchers").displayed?}
-    assert(find_element_by_css("li.user-#{user[:user_id]}").displayed?)
+    assert(find_element_by_css("li.user-#{user.user_id}").displayed?)
   end
 
   def teardown
