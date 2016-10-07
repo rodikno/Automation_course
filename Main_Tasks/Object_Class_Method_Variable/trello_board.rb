@@ -60,12 +60,11 @@ class TrelloBoard
 
   def remove_member(user)
     if is_user_a_member?(user)
-      begin
-        unless is_user_a_creator?(user)
+        if is_user_a_creator?(user)
+          raise StandardError, "You can't remove creator from his own board"
+        else
           @members.delete(user)
         end
-      raise StandardError, "You can't remove creator from his own board" if is_user_a_creator?(user)
-      end
     else
       print "You can't remove this user because he's not a member of this board\n"
     end
