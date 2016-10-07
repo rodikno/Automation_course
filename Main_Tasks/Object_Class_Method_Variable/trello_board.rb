@@ -29,17 +29,13 @@ class TrelloBoard
   end
 
   def move_list(list_id, new_position)
-    @lists.each {|list| list.move_list(new_position) if list.id == list_id}
+    list = @lists.find {|list| list.id == list_id}
+    list.move_list(new_position)
   end
 
   def get_list_by_id(list_id, &block)
-    list = nil
-    @lists.each {|li| list = li if li.id == list_id}
-    if list
-      list
-    else
-      yield
-    end
+    list = @lists.find { |li| li.id == list_id}
+    list ? list : yield
   end
 
   def get_all_lists

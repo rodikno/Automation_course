@@ -41,8 +41,7 @@ class TrelloCard
 
   private
   def get_comment_by_id(comment_id)
-    required_comment = nil
-    @comments.each {|comment| required_comment = comment if comment.id == comment_id}
-    required_comment
+    required_comment = @comments.find {|comment| comment.id == comment_id}
+    required_comment ? required_comment : nil
   end
 end
