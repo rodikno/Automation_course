@@ -12,7 +12,7 @@ class TrelloList
     @id = @@list_id_count
     @title = list_title
     @parent_board = parent_board
-    @cards = Array.new
+    @cards = []
     @position = 0
   end
 

@@ -14,7 +14,7 @@ class TrelloCard
     @parent_list = parent_list
     @description = String.new
     @assignee = String.new
-    @comments = Array.new
+    @comments = []
     print "Card [#{card_title}] is created in list [#{parent_list.title}]\n"
   end
 

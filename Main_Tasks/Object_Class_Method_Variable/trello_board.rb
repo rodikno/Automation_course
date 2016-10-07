@@ -12,8 +12,8 @@ class TrelloBoard
     @id = @@board_id_count
     @name = board_name
     @creator = user_creator
-    @members = Array.new << user_creator
-    @lists = Array.new
+    @members = [] << user_creator
+    @lists = []
     @background_color = Faker::Color.color_name
   end
 
@@ -51,7 +51,7 @@ class TrelloBoard
 
   # @return [Array]
   def get_all_lists_ids
-    list_ids = Array.new
+    list_ids = []
     @lists.each do |list|
       list_ids << list.id
     end
