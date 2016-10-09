@@ -49,7 +49,7 @@ class TestTrelloModel < Test::Unit::TestCase
   def test_create_list
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     assert(list.kind_of?(TrelloList))
     assert_equal(@listname, list.title)
     assert(board.lists.include?(list))
@@ -58,7 +58,7 @@ class TestTrelloModel < Test::Unit::TestCase
   def test_delete_list
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     user.delete_list(list.id, board.id)
     assert_false(board.lists.include?(list))
   end
@@ -67,7 +67,7 @@ class TestTrelloModel < Test::Unit::TestCase
     desired_position = 3
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     user.move_list(list.id, board.id, desired_position)
     assert_equal(list.position, desired_position)
   end
@@ -80,7 +80,7 @@ class TestTrelloModel < Test::Unit::TestCase
     card_name = "My Card"
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     card = user.create_card(card_name, board.id, list.id)
     assert(card.kind_of?(TrelloCard))
     assert_equal(card_name, card.title)
@@ -90,7 +90,7 @@ class TestTrelloModel < Test::Unit::TestCase
     card_name = "My Card"
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     card = user.create_card(card_name, board.id, list.id)
     user.delete_card(card, board, list)
     assert_false(list.cards.include?(card))
@@ -101,8 +101,8 @@ class TestTrelloModel < Test::Unit::TestCase
     other_list_name = "Other List"
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
-    other_list = user.create_list(other_list_name, board.id)
+    list = user.create_list(@listname, board)
+    other_list = user.create_list(other_list_name, board)
     card = user.create_card(card_name, board.id, list.id)
     user.move_card(card, board, other_list)
     assert_false(list.cards.include?(card))
@@ -115,7 +115,7 @@ class TestTrelloModel < Test::Unit::TestCase
     comment_text = "This is the comment"
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     card = user.create_card(card_name, board.id, list.id)
     comment = user.add_comment(comment_text, board, list, card)
     assert(comment.kind_of?(TrelloComment))
@@ -127,7 +127,7 @@ class TestTrelloModel < Test::Unit::TestCase
     comment_text = "This is the comment"
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
-    list = user.create_list(@listname, board.id)
+    list = user.create_list(@listname, board)
     card = user.create_card(card_name, board.id, list.id)
     comment = user.add_comment(comment_text, board, list, card)
     user.delete_comment(comment, board, list, card)

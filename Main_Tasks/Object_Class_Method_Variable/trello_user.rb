@@ -64,14 +64,13 @@ class TrelloUser
     print "Boards, where [" + self.username + "] is a member: " + ids_names_hash.to_s + "\n"
   end
 
-  # @param [Fixnum] target_board_id
+  # @param [TrelloBoard] target_board
   # @param [String] list_name
-  def create_list(list_name, target_board_id)
-      board = get_board_by_id(target_board_id)
-      if board
-        board.create_list(list_name)
+  def create_list(list_name, target_board)
+      if target_board
+        target_board.create_list(list_name)
       else
-        print "There's no board with id [" + target_board_id.to_s + "]\n"
+        print "There's no board with id [" + target_board.id.to_s + "]\n"
       end
   end
 
