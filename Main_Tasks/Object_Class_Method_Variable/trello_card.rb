@@ -25,13 +25,12 @@ class TrelloCard
     comment
   end
 
-  def delete_comment(comment_id)
-    comment = get_comment_by_id(comment_id)
+  def delete_comment(comment)
     if comment
       @comments.delete(comment)
-      print "Comment with id [#{comment_id}] removed successfully from card [#{self.title}]\n"
+      print "Comment with id [#{comment.id}] removed successfully from card [#{self.title}]\n"
     else
-      print "Comment with id [#{comment_id}] doesn't exist in card [#{self.title}]\n"
+      print "Comment with id [#{comment.id}] doesn't exist in card [#{self.title}]\n"
     end
   end
 

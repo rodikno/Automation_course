@@ -44,9 +44,4 @@ class TrelloList
       print "Position number couldn't be set to value less than 0\n"
     end
   end
-
-  def get_card_by_id(card_id)
-    required_card = @cards.find {|card| card.id == card_id}
-    required_card ? required_card : nil
-  end
 end

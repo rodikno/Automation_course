@@ -117,7 +117,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board.id)
     card = user.create_card(card_name, board.id, list.id)
-    comment = user.add_comment(comment_text, board.id, list.id, card.id)
+    comment = user.add_comment(comment_text, board, list, card)
     assert(comment.kind_of?(TrelloComment))
     assert_equal(comment_text, comment.comment_text)
   end
@@ -129,8 +129,8 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board.id)
     card = user.create_card(card_name, board.id, list.id)
-    comment = user.add_comment(comment_text, board.id, list.id, card.id)
-    user.delete_comment(comment.id, board.id,list.id, card.id)
+    comment = user.add_comment(comment_text, board, list, card)
+    user.delete_comment(comment, board, list, card)
     assert_false(card.comments.include?(comment))
   end
 
