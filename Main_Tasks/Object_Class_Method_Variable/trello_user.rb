@@ -76,36 +76,32 @@ class TrelloUser
 
   # @param [Fixnum] list_id
   # @param [Fixnum] board_id
-  def delete_list(list_id, board_id)
-    if is_board_in_users_boards?(board_id)
-      board = get_board_by_id(board_id)
-      lists_ids = board.get_all_lists_ids
-      if lists_ids.include?(list_id)
-        board.delete_list(list_id)
+  def delete_list(list, board)
+    if is_board_in_users_boards?(board)
+      if board.lists.include?(list)
+        board.delete_list(list)
       else
-        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
       end
     else
-      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
 
 
   end
 
-  # @param [Fixnum] list_id
-  # @param [Fixnum] board_id
+  # @param [TrelloList] list
+  # @param [TrelloBoard] board
   # @param [Fixnum] new_position
-  def move_list(list_id, board_id, new_position)
-    if is_board_in_users_boards?(board_id)
-      board = get_board_by_id(board_id)
-      lists_ids = board.get_all_lists_ids
-      if lists_ids.include?(list_id)
-        board.move_list(list_id, new_position)
+  def move_list(list, board, new_position)
+    if is_board_in_users_boards?(board)
+      if board.lists.include?(list)
+        board.move_list(list, new_position)
       else
-        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
       end
     else
-      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
   end
 
@@ -194,8 +190,7 @@ class TrelloUser
   end
 
   private
-  def is_board_in_users_boards?(board_id)
-    board = get_board_by_id(board_id)
+  def is_board_in_users_boards?(board)
     if (@boards_joined.has_value?(board) or @boards_owned.has_value?(board))
       true
     else

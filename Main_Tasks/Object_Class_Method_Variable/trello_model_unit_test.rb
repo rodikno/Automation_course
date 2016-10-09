@@ -59,7 +59,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    user.delete_list(list.id, board.id)
+    user.delete_list(list, board)
     assert_false(board.lists.include?(list))
   end
 
@@ -68,7 +68,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = TrelloUser.new(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    user.move_list(list.id, board.id, desired_position)
+    user.move_list(list, board, desired_position)
     assert_equal(list.position, desired_position)
   end
 

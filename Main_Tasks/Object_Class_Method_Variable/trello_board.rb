@@ -24,12 +24,12 @@ class TrelloBoard
     list
   end
 
-  def delete_list(list_id)
-    @lists.delete_if {|list| list.id == list_id}
+  def delete_list(list)
+    @lists.delete_if {|li| li == list}
   end
 
-  def move_list(list_id, new_position)
-    list = @lists.find {|list| list.id == list_id}
+  def move_list(list, new_position)
+    list = @lists.find {|li| li == list}
     list.move_list(new_position)
   end
 
