@@ -74,8 +74,8 @@ class TrelloUser
       end
   end
 
-  # @param [Fixnum] list_id
-  # @param [Fixnum] board_id
+  # @param [TrelloList] list
+  # @param [TrelloBoard] board
   def delete_list(list, board)
     if is_board_in_users_boards?(board)
       if board.lists.include?(list)
@@ -105,15 +105,14 @@ class TrelloUser
     end
   end
 
-  # @param [Fixnum] board_id
-  def get_all_lists(board_id)
-    board = get_board_by_id(board_id)
+  # @param [TrelloBoard] board
+  def get_all_lists(board)
     board.get_all_lists
   end
 
   # @param [String] card_name
-  # @param [Fixnum] board_id
-  # @param [Fixnum] list_id
+  # @param [TrelloBoard] board
+  # @param [TrelloList] list
   def create_card(card_name, board, list)
     if board
       if list
@@ -173,6 +172,10 @@ class TrelloUser
     end
   end
 
+  # @param [TrelloComment] comment
+  # @param [TrelloBoard] board
+  # @param [TrelloList] list
+  # @param [TrelloCard] card
   def delete_comment(comment, board, list, card)
     if board
       if list
@@ -212,14 +215,4 @@ class TrelloUser
     board_id = board.id
     @boards_joined.delete(board_id)
   end
-  
-  def get_board_by_id(board_id)
-    begin
-      board = @boards_joined.fetch(board_id)
-    rescue KeyError
-      return nil
-    end
-    board
-  end
-
 end
