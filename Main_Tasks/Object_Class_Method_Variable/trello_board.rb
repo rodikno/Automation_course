@@ -33,11 +33,6 @@ class TrelloBoard
     list.move_list(new_position)
   end
 
-  def get_list_by_id(list_id, &block)
-    list = @lists.find { |li| li.id == list_id}
-    list ? list : yield
-  end
-
   def get_all_lists
     print "Board [#{self.name}] contains lists:\n"
     @lists.each do |list|
