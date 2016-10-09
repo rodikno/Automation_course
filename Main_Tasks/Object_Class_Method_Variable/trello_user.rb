@@ -75,8 +75,8 @@ class TrelloUser
   end
 
   # @param [TrelloList] list
-  # @param [TrelloBoard] board
-  def delete_list(list, board)
+  def delete_list(list)
+    board = list.parent_board
     if is_board_in_users_boards?(board)
       if board.lists.include?(list)
         board.delete_list(list)
@@ -91,9 +91,9 @@ class TrelloUser
   end
 
   # @param [TrelloList] list
-  # @param [TrelloBoard] board
   # @param [Fixnum] new_position
-  def move_list(list, board, new_position)
+  def move_list(list, new_position)
+    board = list.parent_board
     if is_board_in_users_boards?(board)
       if board.lists.include?(list)
         board.move_list(list, new_position)
@@ -114,7 +114,7 @@ class TrelloUser
   # @param [TrelloBoard] board
   # @param [TrelloList] list
   def create_card(card_name, board, list)
-    if board
+    if is_board_in_users_boards?(board)
       if list
         list.create_card(card_name)
       else
@@ -126,10 +126,10 @@ class TrelloUser
   end
 
   # @param [TrelloCard] card
-  # @param [TrelloBoard] board
-  # @param [TrelloList] list
-  def delete_card(card, board, list)
-    if board
+  def delete_card(card)
+    list = card.parent_list
+    board = list.parent_board
+    if is_board_in_users_boards?(board)
       if list
         list.delete_card(card)
       else
@@ -141,10 +141,10 @@ class TrelloUser
   end
 
   # @param [TrelloCard] card
-  # @param [TrelloBoard] board
   # @param [TrelloList] target_list
-  def move_card(card, board, target_list)
-    if board
+  def move_card(card, target_list)
+    board = card.parent_list.parent_board
+    if is_board_in_users_boards?(board)
       board.move_card(card, target_list)
     else
       print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
@@ -154,29 +154,25 @@ class TrelloUser
   # @param [String] comment_text
   # @param [TrelloCard] card
   def add_comment(comment_text, card)
-    if card
-      author_name = self.username
-      card.add_comment(comment_text, author_name)
+    board = card.parent_list.parent_board
+    if is_board_in_users_boards?(board)
+      if card
+        author_name = self.username
+        card.add_comment(comment_text, author_name)
+      else
+        print "Card with id [#{card.id}] doesn't exist\n"
+      end
     else
-      print "Card with id [#{card.id}] doesn't exist\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
   end
 
   # @param [TrelloComment] comment
-  # @param [TrelloBoard] board
-  # @param [TrelloList] list
-  # @param [TrelloCard] card
-  def delete_comment(comment, board, list, card)
-    if board
-      if list
-        if card
-          card.delete_comment(comment)
-        else
-          print "Card with id [#{card.id}] doesn't exist in list [#{list.title}]\n"
-        end
-      else
-        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
-      end
+  def delete_comment(comment)
+    card = comment.parent_card
+    board = card.parent_list.parent_board
+    if is_board_in_users_boards?(board)
+        card.delete_comment(comment)
     else
       print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
