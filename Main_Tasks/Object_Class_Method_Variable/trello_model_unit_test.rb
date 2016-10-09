@@ -93,7 +93,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(@cardname, board, list)
+    card = user.create_card(@cardname, list)
 
     assert(card.kind_of?(TrelloCard))
     assert(list.cards.include?(card))
@@ -105,7 +105,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(@cardname, board, list)
+    card = user.create_card(@cardname, list)
     user.delete_card(card)
 
     assert_false(list.cards.include?(card))
@@ -117,7 +117,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     target_list = user.create_list(other_list_name, board)
-    card = user.create_card(@cardname, board, list)
+    card = user.create_card(@cardname, list)
     user.move_card(card, target_list)
 
     assert_false(list.cards.include?(card))
@@ -129,7 +129,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(@cardname, board, list)
+    card = user.create_card(@cardname, list)
     comment = user.add_comment(@comment_text, card)
 
     assert(comment.kind_of?(TrelloComment))
@@ -141,7 +141,7 @@ class TestTrelloModel < Test::Unit::TestCase
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(@cardname, board, list)
+    card = user.create_card(@cardname, list)
     comment = user.add_comment(@comment_text, card)
     user.delete_comment(comment)
 

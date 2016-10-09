@@ -111,15 +111,11 @@ class TrelloUser
   end
 
   # @param [String] card_name
-  # @param [TrelloBoard] board
   # @param [TrelloList] list
-  def create_card(card_name, board, list)
+  def create_card(card_name, list)
+    board = list.parent_board
     if is_board_in_users_boards?(board)
-      if list
-        list.create_card(card_name)
-      else
-        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
-      end
+      list.create_card(card_name)
     else
       print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
@@ -130,11 +126,7 @@ class TrelloUser
     list = card.parent_list
     board = list.parent_board
     if is_board_in_users_boards?(board)
-      if list
-        list.delete_card(card)
-      else
-        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
-      end
+      list.delete_card(card)
     else
       print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
@@ -156,12 +148,8 @@ class TrelloUser
   def add_comment(comment_text, card)
     board = card.parent_list.parent_board
     if is_board_in_users_boards?(board)
-      if card
-        author_name = self.username
-        card.add_comment(comment_text, author_name)
-      else
-        print "Card with id [#{card.id}] doesn't exist\n"
-      end
+      author_name = self.username
+      card.add_comment(comment_text, author_name)
     else
       print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
