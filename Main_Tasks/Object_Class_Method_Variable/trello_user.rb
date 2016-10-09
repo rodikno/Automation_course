@@ -152,23 +152,13 @@ class TrelloUser
   end
 
   # @param [String] comment_text
-  # @param [TrelloBoard] board
-  # @param [TrelloList] list
   # @param [TrelloCard] card
-  def add_comment(comment_text, board, list, card)
-    if board
-      if list
-        if card
-          author_name = self.username
-          card.add_comment(comment_text, author_name)
-        else
-          print "Card with id [#{card.id}] doesn't exist in list [#{list.title}]\n"
-        end
-      else
-        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
-      end
+  def add_comment(comment_text, card)
+    if card
+      author_name = self.username
+      card.add_comment(comment_text, author_name)
     else
-      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
+      print "Card with id [#{card.id}] doesn't exist\n"
     end
   end
 

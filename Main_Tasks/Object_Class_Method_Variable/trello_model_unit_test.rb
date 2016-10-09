@@ -36,7 +36,7 @@ class TestTrelloModel < Test::Unit::TestCase
   end
 
   def test_join_board
-    board_creator = create_user("Creator")
+    board_creator = create_user(@username + "Creator")
     some_user = create_user(@username)
     board = board_creator.create_board(@boardname)
     some_user.join_board(board)
@@ -130,7 +130,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     card = user.create_card(@cardname, board, list)
-    comment = user.add_comment(@comment_text, board, list, card)
+    comment = user.add_comment(@comment_text, card)
 
     assert(comment.kind_of?(TrelloComment))
     assert_equal(card, comment.parent_card)
@@ -142,7 +142,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     card = user.create_card(@cardname, board, list)
-    comment = user.add_comment(@comment_text, board, list, card)
+    comment = user.add_comment(@comment_text, card)
     user.delete_comment(comment, board, list, card)
 
     assert_false(card.comments.include?(comment))
