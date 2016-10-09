@@ -5,7 +5,7 @@ class TrelloComment
   @@comment_id_count = 0
 
   attr_accessor :comment_text
-  attr_reader :author, :created_date, :id
+  attr_reader :author, :created_date, :id, :parent_card
 
   def initialize(comment_text = "", author_name, parent_card)
     @@comment_id_count += 1

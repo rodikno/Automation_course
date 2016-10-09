@@ -16,6 +16,7 @@ class TestTrelloModel < Test::Unit::TestCase
     @boardname = Faker::Hacker.noun
     @listname = Faker::Hacker.noun.capitalize
     @cardname = Faker::Hacker.noun
+    @comment_text = Faker::Hipster.sentence
   end
 
   def test_create_user
@@ -70,6 +71,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     user.delete_list(list, board)
+
     assert_false(board.lists.include?(list))
   end
 
@@ -79,6 +81,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     user.move_list(list, board, target_position)
+
     assert_equal(list.position, target_position)
   end
 
@@ -91,6 +94,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
     card = user.create_card(@cardname, board, list)
+
     assert(card.kind_of?(TrelloCard))
     assert(list.cards.include?(card))
     assert_equal(list, card.parent_list)
@@ -103,43 +107,44 @@ class TestTrelloModel < Test::Unit::TestCase
     list = user.create_list(@listname, board)
     card = user.create_card(@cardname, board, list)
     user.delete_card(card, board, list)
+
     assert_false(list.cards.include?(card))
   end
 
   def test_move_card
-    other_list_name = "Other List"
+    other_list_name = @listname + "2"
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    other_list = user.create_list(other_list_name, board)
+    target_list = user.create_list(other_list_name, board)
     card = user.create_card(@cardname, board, list)
-    user.move_card(card, board, other_list)
+    user.move_card(card, board, target_list)
+
     assert_false(list.cards.include?(card))
-    assert(other_list.cards.include?(card))
-    assert_equal(other_list, card.parent_list)
+    assert(target_list.cards.include?(card))
+    assert_equal(target_list, card.parent_list)
   end
 
   def test_add_comment
-    card_name = "My Card"
-    comment_text = "This is the comment"
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(card_name, board, list)
-    comment = user.add_comment(comment_text, board, list, card)
+    card = user.create_card(@cardname, board, list)
+    comment = user.add_comment(@comment_text, board, list, card)
+
     assert(comment.kind_of?(TrelloComment))
-    assert_equal(comment_text, comment.comment_text)
+    assert_equal(card, comment.parent_card)
+    assert_equal(@comment_text, comment.comment_text)
   end
 
   def test_delete_comment
-    card_name = "My Card"
-    comment_text = "This is the comment"
     user = create_user(@username)
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board)
-    card = user.create_card(card_name, board, list)
-    comment = user.add_comment(comment_text, board, list, card)
+    card = user.create_card(@cardname, board, list)
+    comment = user.add_comment(@comment_text, board, list, card)
     user.delete_comment(comment, board, list, card)
+
     assert_false(card.comments.include?(comment))
   end
 
