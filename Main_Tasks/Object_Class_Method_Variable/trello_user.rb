@@ -118,17 +118,15 @@ class TrelloUser
   # @param [String] card_name
   # @param [Fixnum] board_id
   # @param [Fixnum] list_id
-  def create_card(card_name, board_id, list_id)
-    board = get_board_by_id(board_id)
+  def create_card(card_name, board, list)
     if board
-      list = board.get_list_by_id(list_id)
       if list
         list.create_card(card_name)
       else
-        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
       end
     else
-      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
   end
 
