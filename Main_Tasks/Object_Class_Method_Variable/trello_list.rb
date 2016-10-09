@@ -18,7 +18,7 @@ class TrelloList
 
   def add_card(card)
     @cards << card
-    print "Card [#{card.title}] is added to list [#{self.title}] successfully\n"
+    print "Card [#{card.name}] is added to list [#{self.title}] successfully\n"
   end
 
   def create_card(card_name)

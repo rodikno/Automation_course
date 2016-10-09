@@ -5,7 +5,7 @@ class TrelloBoard
   @@board_id_count = 0 #I know that's a bad style but have no idea how to get unique id without external DB
 
   attr_accessor :name, :background_color
-  attr_reader :lists, :members, :id
+  attr_reader :lists, :members, :id, :creator
 
   def initialize(board_name, user_creator)
     @@board_id_count += 1
