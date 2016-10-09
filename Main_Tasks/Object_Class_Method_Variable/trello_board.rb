@@ -70,15 +70,13 @@ class TrelloBoard
     end
   end
 
-  def move_card(card_id, source_list_id, target_list_id)
-    source_list = get_list_by_id(source_list_id) {print "List with id [#{source_list_id}] doesn't exist"}
-    target_list = get_list_by_id(target_list_id) {print "List with id [#{target_list_id}] doesn't exist"}
+  def move_card(card, target_list)
+    source_list = card.parent_list
     if source_list and target_list
-      card = source_list.get_card_by_id(card_id)
       card.parent_list = target_list
       target_list.add_card(card)
-      source_list.delete_card(card_id)
-      print "Card [#{card_id}] moved from [#{source_list.title}] to [#{target_list.title}]\n"
+      source_list.delete_card(card)
+      print "Card [#{card.id}] moved from [#{source_list.title}] to [#{target_list.title}]\n"
     end
   end
 

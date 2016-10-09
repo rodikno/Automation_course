@@ -92,7 +92,7 @@ class TestTrelloModel < Test::Unit::TestCase
     board = user.create_board(@boardname)
     list = user.create_list(@listname, board.id)
     card = user.create_card(card_name, board.id, list.id)
-    user.delete_card(card.id, board.id, list.id)
+    user.delete_card(card, board, list)
     assert_false(list.cards.include?(card))
   end
 
@@ -104,7 +104,7 @@ class TestTrelloModel < Test::Unit::TestCase
     list = user.create_list(@listname, board.id)
     other_list = user.create_list(other_list_name, board.id)
     card = user.create_card(card_name, board.id, list.id)
-    user.move_card(card.id, board.id, list.id, other_list.id)
+    user.move_card(card, board, other_list)
     assert_false(list.cards.include?(card))
     assert(other_list.cards.include?(card))
     assert_equal(other_list, card.parent_list)

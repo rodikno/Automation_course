@@ -133,33 +133,29 @@ class TrelloUser
     end
   end
 
-  # @param [Fixnum] card_id
-  # @param [Fixnum] board_id
-  # @param [Fixnum] list_id
-  def delete_card(card_id, board_id, list_id)
-    board = get_board_by_id(board_id)
+  # @param [TrelloCard] card
+  # @param [TrelloBoard] board
+  # @param [TrelloList] list
+  def delete_card(card, board, list)
     if board
-      list = board.get_list_by_id(list_id)
       if list
-        list.delete_card(card_id)
+        list.delete_card(card)
       else
-        print "List with id [#{list_id}] is not found on board [#{board.name}]\n"
+        print "List with id [#{list.id}] is not found on board [#{board.name}]\n"
       end
     else
-      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
   end
 
-  # @param [Fixnum] card_id
-  # @param [Fixnum] board_id
-  # @param [Fixnum] source_list_id
-  # @param [Fixnum] target_list_id
-  def move_card(card_id, board_id, source_list_id, target_list_id)
-    board = get_board_by_id(board_id)
+  # @param [TrelloCard] card
+  # @param [TrelloBoard] board
+  # @param [TrelloList] target_list
+  def move_card(card, board, target_list)
     if board
-      board.move_card(card_id, source_list_id, target_list_id)
+      board.move_card(card, target_list)
     else
-      print "User [#{self.username}] is not a member of board with id [#{board_id}]\n"
+      print "User [#{self.username}] is not a member of board with id [#{board.id}]\n"
     end
   end
 

@@ -27,13 +27,12 @@ class TrelloList
     card
   end
 
-  def delete_card(card_id)
-    card = get_card_by_id(card_id)
+  def delete_card(card)
     if card
       @cards.delete(card)
-      print "Card with id [#{card_id}] removed successfully from list [#{self.title}]\n"
+      print "Card with id [#{card.id}] removed successfully from list [#{self.title}]\n"
     else
-      print "Card with id [#{card_id}] doesn't exist in list [#{self.title}]\n"
+      print "Card with id [#{card.id}] doesn't exist in list [#{self.title}]\n"
     end
   end
 
