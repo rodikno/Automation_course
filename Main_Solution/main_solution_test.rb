@@ -15,13 +15,15 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_registration
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
     assert(find_element_by_id('flash_notice'))
   end
 
   def test_log_out
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     find_element_by_class('logout').click
     login_button = find_element_by_class('login')
     @wait.until{login_button.displayed?}
@@ -30,14 +32,16 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_log_in
-    user = RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     log_out
-    log_in(user.user_login, user.password)
-    assert_equal(user.user_login, find_element_by_class('user').text)
+    log_in(user.login, user.password)
+    assert_equal(user.login, find_element_by_class('user').text)
   end
 
   def test_change_password
-    user = RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     old_password = user.password
     new_password = Faker::Internet.password
 
@@ -53,17 +57,18 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_project
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     project_name = create_project
-
     @wait.until{find_element_by_id('flash_notice').displayed?}
+
     assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
   end
 
 
   def test_create_version
-
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     project_name = create_project
     version_name = "version_" + rand(99999).to_s
 
@@ -78,7 +83,8 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_bug
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     create_project
     issue_options = create_issue('bug')
 
@@ -86,7 +92,8 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_feature
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     create_project
     issue_options = create_issue('feature')
 
@@ -94,7 +101,8 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_create_issue_support
-    RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     create_project
     issue_options = create_issue('support')
 
@@ -102,7 +110,8 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_conditional_watch_issue
-    user = RedmineUser.new(@driver)
+    user = RedmineUser.new
+    register_user(user)
     project_name = create_project
     random_boolean = [true, false].sample
 
@@ -129,7 +138,7 @@ class TestFirst < Test::Unit::TestCase
     assert(is_issue_watched?)
     @driver.navigate.refresh
     @wait.until{find_element_by_id("watchers").displayed?}
-    assert(find_element_by_css("li.user-#{user.user_id}").displayed?)
+    assert(find_element_by_css("li.user-#{user.id}").displayed?)
   end
 
   def teardown
