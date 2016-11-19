@@ -1,12 +1,8 @@
-class Vehicle
+class Transport
 
-  attr_reader :wheels, :engine_type, :gear, :seats, :fuel, :fuel_consumption, :mileage
+  attr_reader :fuel_type, :fuel, :fuel_consumption, :mileage
 
   def initialize
-    @wheels = 4
-    @engine_type = :combustion
-    @gear = :manual
-    @seats = 4
     @fuel_type = :gasoline
     @fuel = 250
     @fuel_consumption = 10.0
@@ -41,9 +37,4 @@ class Vehicle
   def count_fuel_consumed(distance)
     fuel_consumed = (@fuel_consumption/100)*distance
   end
-
 end
-
-mycar = Vehicle.new
-mycar.drive(100)
-mycar.refuel(10, :gasoline)
