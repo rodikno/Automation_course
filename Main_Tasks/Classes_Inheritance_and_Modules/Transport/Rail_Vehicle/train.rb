@@ -7,6 +7,6 @@ class Train < RailVehicle
     @departure_city = "Kiev"
     @arrival_city = "Lviv"
     @places_total = 250
-    @paces_available = 10
+    @places_available = 10
   end
 end

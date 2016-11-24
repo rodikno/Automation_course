@@ -4,7 +4,8 @@ class Transport
 
   def initialize
     @fuel_type = :gasoline
-    @fuel = 250
+    @fuel = 150
+    @max_fuel = 300
     @fuel_consumption = 10.0
     @mileage = 0
   end
@@ -24,12 +25,21 @@ class Transport
   end
 
   def refuel(quantity, fuel_type)
-    if fuel_type == @fuel_type
-      @fuel += quantity
-      puts "Vehicle refueled with #{quantity} of #{fuel_type.to_s}"
-      puts "Fuel left in total: #{@fuel}"
+    if @fuel == @max_fuel
+      puts "Vehicle doesn't need to be refueled."
+    elsif (@fuel + quantity) > @max_fuel
+      puts "You want to refuel vehicle on additional #{quantity}."
+      puts "Fuel tank capacity is #{@max_fuel} and you can't overfill it."
+      quantity = @max_fuel - @fuel
+      puts "Vehicle will be refueled on additional #{quantity} up to full tank."
     else
-      puts "Please choose correct fuel type for this vehicle"
+      if fuel_type == @fuel_type
+        @fuel += quantity
+        puts "Vehicle refueled with #{quantity} of #{fuel_type.to_s}"
+        puts "Fuel left in total: #{@fuel}"
+      else
+        puts "Please choose correct fuel type for this vehicle"
+      end
     end
   end
 

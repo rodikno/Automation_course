@@ -4,6 +4,7 @@ require '../transport'
 require '../../Transport/Wheel_Vehicle/wheel_vehicle'
 require '../../Transport/Rail_Vehicle/rail_vehicle'
 require '../Wheel_Vehicle/car'
+require '../Wheel_Vehicle/electric_car'
 require '../Rail_Vehicle/train'
 
 class TransportUnitTest < Test::Unit::TestCase
@@ -43,6 +44,14 @@ class TransportUnitTest < Test::Unit::TestCase
     mileage = test_drive(car, @distance)
 
     assert_equal(WheelVehicle, car.class.superclass)
+    assert_equal(mileage[:before] + @distance, mileage[:after])
+  end
+
+  def test_electric_car
+    electic_car = ElectricCar.new
+    mileage = test_drive(electic_car, @distance)
+
+    assert_equal(Car, electic_car.class.superclass)
     assert_equal(mileage[:before] + @distance, mileage[:after])
   end
 
