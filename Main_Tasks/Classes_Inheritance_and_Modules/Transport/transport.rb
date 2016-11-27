@@ -1,6 +1,6 @@
 class Transport
 
-  attr_reader :fuel_type, :fuel, :fuel_consumption, :mileage
+  attr_reader :fuel_type, :fuel, :max_fuel, :fuel_consumption, :mileage
 
   def initialize
     @fuel_type = :gasoline
