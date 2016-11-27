@@ -48,3 +48,4 @@ class Transport
     fuel_consumed = (@fuel_consumption/100)*distance
   end
 end
+

@@ -1,4 +1,4 @@
-require '../../Transport/Wheel_Vehicle/wheel_vehicle'
+require_relative 'wheel_vehicle'
 
 class Car < WheelVehicle
 
