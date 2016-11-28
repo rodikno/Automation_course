@@ -43,6 +43,11 @@ class Transport
     end
   end
 
+  def when_touched
+    puts 'You\'ve touched this vehicle now'
+    touched = true
+  end
+
   private
   def count_fuel_consumed(distance)
     fuel_consumed = (@fuel_consumption/100)*distance

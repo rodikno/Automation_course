@@ -8,15 +8,20 @@ require '../Wheel_Vehicle/electric_car'
 require '../Rail_Vehicle/train'
 require '../../Transport/Wheel_Vehicle/tesla_car'
 require '../../Transport/Modules/climate_control'
+require '../Wheel_Vehicle/BMW_325i'
+require '../../Actions/actions'
+require '../Modules/security_alarm'
 
 class TransportUnitTest < Test::Unit::TestCase
 
   include TransportUnitTestHelper
   include ClimateControl
+  include SecurityAlarm
 
   def setup
     @distance = 100
     @tesla = TeslaCar.new
+    @bmw = BMW325i.new
   end
 
   def test_transport
@@ -71,6 +76,10 @@ class TransportUnitTest < Test::Unit::TestCase
     temp = 21
     @tesla.set_onboard_temperature(temp)
     assert_equal(temp, @tesla.onboard_temperature)
+  end
+
+  def test_touch_vehicle
+    assert_equal(Actions.touch(@bmw), true)
   end
 
 end
