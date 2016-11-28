@@ -11,17 +11,21 @@ require '../../Transport/Modules/climate_control'
 require '../Wheel_Vehicle/BMW_325i'
 require '../../Actions/actions'
 require '../Modules/security_alarm'
+require '../Rail_Vehicle/hyundai_hrcs2'
+require '../Modules/wifi'
 
 class TransportUnitTest < Test::Unit::TestCase
 
   include TransportUnitTestHelper
   include ClimateControl
   include SecurityAlarm
+  include WiFi
 
   def setup
     @distance = 100
     @tesla = TeslaCar.new
     @bmw = BMW325i.new
+    @hyundai = HyundaiHRCS2.new
   end
 
   def test_transport
@@ -48,6 +52,24 @@ class TransportUnitTest < Test::Unit::TestCase
     assert_equal(mileage[:before] + @distance, mileage[:after])
   end
 
+  def test_train
+    train = Train.new
+    mileage = test_drive(train, @distance)
+
+    assert_equal(RailVehicle, train.class.superclass)
+    assert_equal(mileage[:before] + @distance, mileage[:after])
+  end
+
+  def test_hyundai_wifi_enable
+    @hyundai.connect_wifi
+    assert_true(@hyundai.is_wifi_enabled)
+  end
+
+  def test_hyundai_wifi_disable
+    @hyundai.disconnect_wifi
+    assert_false(@hyundai.is_wifi_enabled)
+  end
+
   def test_car
     car = Car.new
     mileage = test_drive(car, @distance)
@@ -61,14 +83,6 @@ class TransportUnitTest < Test::Unit::TestCase
     mileage = test_drive(electic_car, @distance)
 
     assert_equal(Car, electic_car.class.superclass)
-    assert_equal(mileage[:before] + @distance, mileage[:after])
-  end
-
-  def test_train
-    train = Train.new
-    mileage = test_drive(train, @distance)
-
-    assert_equal(RailVehicle, train.class.superclass)
     assert_equal(mileage[:before] + @distance, mileage[:after])
   end
 
