@@ -1,6 +1,7 @@
 require '../../Transport/Rail_Vehicle/rail_vehicle'
 
 class Train < RailVehicle
+
   def initialize
     super
     @wagons = 5
@@ -9,4 +10,5 @@ class Train < RailVehicle
     @places_total = 250
     @places_available = 10
   end
+
 end

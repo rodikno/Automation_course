@@ -1,10 +1,10 @@
 module WiFi
 
-  def connect
+  def connect_wifi
     puts 'You\'ve connected to WiFi'
   end
-  
-  def disconnect
+
+  def disconnect_wifi
     puts 'You\'ve disconnected from WiFi'
   end
 
