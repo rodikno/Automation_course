@@ -12,8 +12,3 @@ class BMW325i < Car
   end
 
 end
-
-bmw = BMW325i.new
-
-bmw.drive(150)
-Actions.touch(bmw)
