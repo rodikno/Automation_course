@@ -32,17 +32,17 @@ module OurModule
     @driver.navigate.to(url)
   end
 
-  def register_user
+  # @param [RedmineUser] user
+  def register_user(user)
     @driver.navigate.to 'http://demo.redmine.org'
     find_element_by_class('register').click
-
     @wait.until {find_element_by_id('user_login').displayed?}
 
-    user_login = ('login' + rand(99999).to_s)
-    password = 's0meP@ssw0rd'
-    firstname = 'George'
-    lastname = 'Aobumeyang'
-    user_email = user_login + 'myuser@xxx.com'
+    user_login = user.login
+    password = user.password
+    firstname = user.first_name
+    lastname = user.last_name
+    user_email = user.email
 
     find_element_by_id('user_login').send_keys user_login
     find_element_by_id('user_password').send_keys password
@@ -50,11 +50,11 @@ module OurModule
     find_element_by_id('user_firstname').send_keys firstname
     find_element_by_id('user_lastname').send_keys lastname
     find_element_by_id('user_mail').send_keys user_email
-
     find_element_by_name('commit').click
     user_id = find_element_by_css('div#loggedas>a').attribute('href').split('/').last
+    user.id = user_id
 
-    {:user_id => user_id, :login => user_login, :password => password, :first_name => firstname, :last_name => lastname, :email => user_email}
+    user
   end
 
   def log_out
