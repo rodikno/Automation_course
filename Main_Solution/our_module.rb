@@ -1,4 +1,14 @@
+require 'faraday'
+require './Main_Tasks/Exceptions/my_exceptions'
+
 module OurModule
+
+  include MyExceptions
+
+  def get_http_response_code(url)
+    response = Faraday.get(url)
+    response.status
+  end
 
   def find_element_by_name(name)
     @driver.find_element(:name, name)
@@ -121,6 +131,15 @@ module OurModule
   def is_issue_watched?
     if find_element_by_css("a.icon-fav").displayed?
       true
+    end
+  end
+
+  def project_exists?(project_url)
+    status = get_http_response_code(project_url)
+    if status == 200
+      true
+    else
+      raise MyExceptions::ProjectNotFoundError
     end
   end
 end
