@@ -2,6 +2,7 @@ require 'test/unit'
 require 'selenium-webdriver'
 require_relative 'our_module'
 require_relative 'redmine_user'
+require_relative 'redmine_project'
 require 'uri'
 
 class TestFirst < Test::Unit::TestCase
@@ -13,6 +14,7 @@ class TestFirst < Test::Unit::TestCase
     #@driver = Selenium::WebDriver.for :firefox
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
     @user = RedmineUser.new
+    @project = RedmineProject.new
   end
 
   def test_registration
