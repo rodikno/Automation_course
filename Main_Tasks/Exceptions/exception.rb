@@ -1,4 +1,4 @@
 
 class MyException < StandardError
-  
+
 end
