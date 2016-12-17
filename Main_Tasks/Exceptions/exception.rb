@@ -1,4 +1,0 @@
-
-class MyException < StandardError
-
-end
