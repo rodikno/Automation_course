@@ -70,11 +70,11 @@ class TestFirst < Test::Unit::TestCase
       i += 1
       project_exists?(random_project_url)
     rescue ProjectNotFoundError
-      create_project('some')
+      create_project(project_name)
       retry if i < 3
     end
-    elem = find_element_by_xpath("//div[@id='header']/h1")
-    assert_equal(project_name, elem.text)
+    header = find_element_by_xpath("//div[@id='header']/h1")
+    assert_equal(project_name, header.text)
   end
 
 

@@ -136,7 +136,7 @@ module OurModule
     if status == 200
       true
     else
-      raise ProjectNotFoundError
+      raise ProjectNotFoundError, "Project not found: #{project_url}"
     end
   end
 end
