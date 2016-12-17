@@ -61,6 +61,22 @@ class TestFirst < Test::Unit::TestCase
     assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
   end
 
+  def test_open_random_project
+    register_user(@user)
+    project_name = Faker::Hipster.word.capitalize
+    random_project_url = "http://demo.redmine.org/projects/#{project_name}"
+    i = 0
+    begin
+      i += 1
+      project_exists?(random_project_url)
+    rescue ProjectNotFoundError
+      create_project('some')
+      retry if i < 3
+    end
+    elem = find_element_by_xpath("//div[@id='header']/h1")
+    assert_equal(project_name, elem.text)
+  end
+
 
   def test_create_version
     register_user(@user)

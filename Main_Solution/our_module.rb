@@ -83,19 +83,16 @@ module OurModule
     find_element_by_name('login').click
   end
 
-  def create_project
-    random_number_string = rand(99999).to_s
-    project_name = 'rodioba_project_' + random_number_string
-
+  def create_project(name = 'rodioba_project_' + rand(99999).to_s)
     @driver.navigate.to('http://demo.redmine.org/projects')
     find_element_by_css('a.icon-add').click
 
     @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
 
-    find_element_by_id('project_name').send_keys(project_name)
+    find_element_by_id('project_name').send_keys(name)
     find_element_by_name('commit').click
 
-    project_name
+    name
   end
 
   def create_issue(issue_type)
@@ -139,7 +136,7 @@ module OurModule
     if status == 200
       true
     else
-      raise MyExceptions::ProjectNotFoundError
+      raise ProjectNotFoundError
     end
   end
 end
