@@ -95,6 +95,19 @@ module OurModule
     name
   end
 
+  def open_random_project(name, retry_attempts = 3)
+    project_name = name
+    random_project_url = "http://demo.redmine.org/projects/#{project_name}"
+    i = 0
+    begin
+      i += 1
+      project_exists?(random_project_url)
+    rescue ProjectNotFoundError
+      create_project(project_name)
+      retry if i < retry_attempts
+    end
+  end
+
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!

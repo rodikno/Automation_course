@@ -64,16 +64,9 @@ class TestFirst < Test::Unit::TestCase
   def test_open_random_project
     register_user(@user)
     project_name = Faker::Hipster.word.capitalize
-    random_project_url = "http://demo.redmine.org/projects/#{project_name}"
-    i = 0
-    begin
-      i += 1
-      project_exists?(random_project_url)
-    rescue ProjectNotFoundError
-      create_project(project_name)
-      retry if i < 3
-    end
+    open_random_project(project_name, 3)
     header = find_element_by_xpath("//div[@id='header']/h1")
+    
     assert_equal(project_name, header.text)
   end
 
