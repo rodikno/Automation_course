@@ -1,4 +1,14 @@
+require 'faraday'
+require './Main_Tasks/Exceptions/my_exceptions'
+
 module OurModule
+
+  include MyExceptions
+
+  def get_http_response_code(url)
+    response = Faraday.get(url)
+    response.status
+  end
 
   def find_element_by_name(name)
     @driver.find_element(:name, name)
@@ -73,19 +83,29 @@ module OurModule
     find_element_by_name('login').click
   end
 
-  def create_project
-    random_number_string = rand(99999).to_s
-    project_name = 'rodioba_project_' + random_number_string
-
+  def create_project(name = 'rodioba_project_' + rand(99999).to_s)
     @driver.navigate.to('http://demo.redmine.org/projects')
     find_element_by_css('a.icon-add').click
 
     @wait.until{@driver.current_url == 'http://demo.redmine.org/projects/new'}
 
-    find_element_by_id('project_name').send_keys(project_name)
+    find_element_by_id('project_name').send_keys(name)
     find_element_by_name('commit').click
 
-    project_name
+    name
+  end
+
+  def open_random_project(name, retry_attempts = 3)
+    project_name = name
+    random_project_url = "http://demo.redmine.org/projects/#{project_name}"
+    i = 0
+    begin
+      i += 1
+      project_exists?(random_project_url)
+    rescue ProjectNotFoundError
+      create_project(project_name)
+      retry if i < retry_attempts
+    end
   end
 
   def create_issue(issue_type)
@@ -121,6 +141,15 @@ module OurModule
   def is_issue_watched?
     if find_element_by_css("a.icon-fav").displayed?
       true
+    end
+  end
+
+  def project_exists?(project_url)
+    status = get_http_response_code(project_url)
+    if status == 200
+      true
+    else
+      raise ProjectNotFoundError, "Project not found: #{project_url}"
     end
   end
 end
