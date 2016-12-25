@@ -1,5 +1,6 @@
-require 'test/unit'
 require 'faker'
+require 'rspec'
+require 'test/unit'
 require_relative 'trello_user'
 require_relative 'trello_board'
 require_relative 'trello_list'
@@ -9,6 +10,7 @@ require_relative 'unit_test_helper'
 
 class TestTrelloModel < Test::Unit::TestCase
 
+  include RSpec::Matchers
   include TrelloUnitTestHelper
 
   def setup
@@ -22,17 +24,17 @@ class TestTrelloModel < Test::Unit::TestCase
   def test_create_user
     first_user = create_user(@username)
 
-    assert(first_user.kind_of?(TrelloUser))
-    assert_equal(@username, first_user.username)
+    expect(first_user).to be_a_kind_of TrelloUser
+    expect(first_user.username).to eql @username
   end
 
   def test_create_board
     some_user = create_user(@username)
     board = some_user.create_board(@boardname)
 
-    assert(board.kind_of?(TrelloBoard))
-    assert_equal(some_user, board.creator)
-    assert_equal(@boardname, board.name)
+    expect(board).to be_a_kind_of TrelloBoard
+    expect(board.creator).to eql some_user
+    expect(board.name).to eql @boardname
   end
 
   def test_join_board
