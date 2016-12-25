@@ -34,7 +34,7 @@ module BonusTaskHelpers
 
 
     #using jQuery HTML5 D&D simulator as a hack
-    drag_and_drop_js = File.read(Dir.pwd + '/drag_and_drop_helper.js')
+    drag_and_drop_js = File.read(Dir.pwd + '/Main_Solution/drag_and_drop_helper.js')
     @driver.execute_script(drag_and_drop_js + "$('#{source_element_id}').simulateDragDrop({ dropTarget: '#{target_element_id}'});")
 
 

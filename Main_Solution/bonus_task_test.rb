@@ -1,11 +1,14 @@
-require 'test/unit'
+require 'rspec'
 require 'selenium-webdriver'
+require 'test/unit'
+require 'uri'
 require_relative 'bonus_task_helpers'
 require_relative 'our_module'
-require 'uri'
 
-class TestFirst < Test::Unit::TestCase
 
+class TestBonusTask < Test::Unit::TestCase
+
+  include RSpec::Matchers
   include BonusTaskHelpers
   include OurModule
 
@@ -16,16 +19,14 @@ class TestFirst < Test::Unit::TestCase
   end
 
   def test_hover
-
     link_to_profile = hover_on_avatar_of_user 1
-    assert(link_to_profile.displayed?)
+    expect(link_to_profile.displayed?).to be
 
     link_to_profile = hover_on_avatar_of_user 2
-    assert(link_to_profile.displayed?)
+    expect(link_to_profile.displayed?).to be
 
     link_to_profile = hover_on_avatar_of_user 3
-    assert(link_to_profile.displayed?)
-
+    expect(link_to_profile.displayed?).to be
   end
 
   def test_drag_and_drop
@@ -33,28 +34,25 @@ class TestFirst < Test::Unit::TestCase
 
     source_element_id = '#column-a'
     target_element_id = '#column-b'
-
     columns_hash = html5_drag_and_drop source_element_id, target_element_id
 
-    assert_equal('B', columns_hash[:source_element].text)
-    assert_equal('A', columns_hash[:target_element].text)
+    expect(columns_hash[:source_element].text).to eql 'B'
+    expect(columns_hash[:target_element].text).to eql 'A'
 
   end
 
   def test_select_from_list
-
     navigate_to 'https://the-internet.herokuapp.com/dropdown'
     dropdown_id = 'dropdown'
     available_options = ['1', '2']
 
     available_options.each do |option|
-      assert_equal(option, select_option_from_dropdown(dropdown_id, option))
+      expect(select_option_from_dropdown(dropdown_id,option)).to eql option
     end
 
   end
 
   def test_keypress
-
     navigate_to('https://the-internet.herokuapp.com/key_presses')
 
     page = find_element_by_css('body')
@@ -63,12 +61,10 @@ class TestFirst < Test::Unit::TestCase
     keypress_indicator = find_element_by_id('result')
     expected_text = 'ENTER'
 
-    assert(keypress_indicator.text.include?(expected_text))
-
+    expect(keypress_indicator.text).to include expected_text
   end
 
   def test_jquery_ui_menu
-
     navigate_to 'https://the-internet.herokuapp.com/jqueryui/menu'
 
     jquery_menu_1st_level = find_element_by_id('ui-id-3')
@@ -82,18 +78,15 @@ class TestFirst < Test::Unit::TestCase
       mouse_move_to(menu)
     end
 
-    assert(multilevel_menu.last.displayed?)
-
+    expect(multilevel_menu.last.displayed?).to be
   end
 
   def test_iframe_functionality
-
     navigate_to 'https://the-internet.herokuapp.com/iframe'
 
     frame_body = find_element_by_id('mceu_13-body')
     bold_button = find_element_by_id('mceu_3')
     textbox_iframe_id = 'mce_0_ifr'
-
 
     wait_until_displayed(frame_body)
 
@@ -111,11 +104,10 @@ class TestFirst < Test::Unit::TestCase
     @driver.switch_to.frame(textbox_iframe_id)
     strong_tag_around_text = find_element_by_css('#tinymce>p>strong')
 
-    assert(strong_tag_around_text.displayed?)
+    expect(strong_tag_around_text.displayed?).to be
   end
 
   def test_javascript_alert
-
     navigate_to 'https://the-internet.herokuapp.com/javascript_alerts'
 
     js_alert_button = find_element_by_css("button[onclick='jsAlert()']")
@@ -123,15 +115,12 @@ class TestFirst < Test::Unit::TestCase
 
     wait_until_displayed(js_alert_button)
     move_to_and_click(js_alert_button)
-
     @driver.switch_to.alert.accept
 
-    assert(result_after_click.displayed?)
-
+    expect(result_after_click.displayed?).to be
   end
 
   def test_multiple_windows
-
     navigate_to 'https://the-internet.herokuapp.com/windows'
 
     link_to_new_window = find_element_by_css('.example>a')
@@ -139,11 +128,9 @@ class TestFirst < Test::Unit::TestCase
     new_window_text = find_element_by_css('.example>h3')
 
     move_to_and_click(link_to_new_window)
-
     @driver.switch_to.window(all_windows.last)
 
-    assert(new_window_text.displayed?)
-
+    expect(new_window_text.displayed?).to be
   end
 
   def teardown
