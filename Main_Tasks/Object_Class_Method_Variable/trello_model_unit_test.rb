@@ -43,8 +43,10 @@ class TestTrelloModel < Test::Unit::TestCase
     board = board_creator.create_board(@boardname)
     some_user.join_board(board)
 
-    assert(some_user.boards_joined.has_value?(board))
-    assert(board.members.include?(some_user))
+    expect(some_user.boards_joined).to have_value board
+    #TODO Ask Dima why this doesn't work (Array board.members doesn't respond to has_value? but responds to include?) WTF?
+    #expect(board.members).to have_value some_user
+    expect(board.members).to include some_user
   end
 
   def test_leave_board
