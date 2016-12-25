@@ -44,8 +44,6 @@ class TestTrelloModel < Test::Unit::TestCase
     some_user.join_board(board)
 
     expect(some_user.boards_joined).to have_value board
-    #TODO Ask Dima why this doesn't work (Array board.members doesn't respond to has_value? but responds to include?) WTF?
-    #expect(board.members).to have_value some_user
     expect(board.members).to include some_user
   end
 
@@ -55,8 +53,8 @@ class TestTrelloModel < Test::Unit::TestCase
     second_user.join_board(board)
     second_user.leave_board(board)
 
-    assert_false(second_user.boards_joined.has_value?(board))
-    assert_false(board.members.include?(second_user))
+    expect(second_user.boards_joined).to_not have_value board
+    expect(board.members).to_not include second_user
   end
 
   def test_create_list
