@@ -1,10 +1,7 @@
-require_relative 'our_module'
 require 'selenium-webdriver'
 require 'faker'
 
 class RedmineUser
-
-  include OurModule
 
   attr_reader :login, :password, :first_name, :last_name, :email
   attr_accessor :id

@@ -4,7 +4,6 @@ require_relative 'redmine_user'
 
 module OurModule
 
-  include RedmineUser
   include MyExceptions
 
   def initialize_user

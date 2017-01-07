@@ -1,3 +1,3 @@
-require '../../Main_Solution/our_module'
+require_relative 'redmine_cucumber_helper'
 
-World(OurModule)
+World(RedmineCucumberHelper)
