@@ -1,9 +1,15 @@
 require 'faraday'
 require 'C:\_projects\automation_course\Main_Tasks\Exceptions\my_exceptions.rb'
+require_relative 'redmine_user'
 
 module OurModule
 
+  include RedmineUser
   include MyExceptions
+
+  def initialize_user
+    RedmineUser.new
+  end
 
   def get_http_response_code(url)
     response = Faraday.get(url)
