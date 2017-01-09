@@ -1,8 +1,7 @@
 Feature: Redmine project tests
 
-  Scenario: Registation positive
-    Given I am on the main page
-    When I submit the registration form
+  Scenario: Registration positive
+    Given I register a user
     Then New user is registered
 
   Scenario: Logout positive
@@ -21,3 +20,8 @@ Feature: Redmine project tests
     When I change password
     Then Success message displayed
     And I can login with a new password
+
+  Scenario: Create project positive
+    Given I register a user
+    When I create a project
+    Then Project details page is displayed

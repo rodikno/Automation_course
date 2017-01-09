@@ -54,3 +54,13 @@ And(/^I can login with a new password$/) do
   log_out
   log_in(@user.login, @user.password)
 end
+
+When(/^I create a project$/) do
+  @project[:name] = create_project
+  @wait.until{find_element_by_id('flash_notice').displayed?}
+end
+
+Then(/^Project details page is displayed$/) do
+  project_settings_page_url = "http://demo.redmine.org/projects/#{@project[:name]}/settings"
+  expect(@driver.current_url).to eql project_settings_page_url
+end
