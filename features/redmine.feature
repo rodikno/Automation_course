@@ -25,3 +25,8 @@ Feature: Redmine project tests
     Given I register a user
     When I create a project
     Then Project details page is displayed
+
+  Scenario: Open random project
+    Given I register a user
+    When I try to open random project with 3 retries
+    Then Desired project is created

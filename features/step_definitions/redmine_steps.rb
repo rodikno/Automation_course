@@ -64,3 +64,13 @@ Then(/^Project details page is displayed$/) do
   project_settings_page_url = "http://demo.redmine.org/projects/#{@project[:name]}/settings"
   expect(@driver.current_url).to eql project_settings_page_url
 end
+
+When(/^I try to open random project with (\d+) retries$/) do |retries_count|
+  @project[:name] = Faker::Hipster.word.capitalize
+  open_random_project(@project[:name], retries_count.to_i)
+end
+
+Then(/^Desired project is created$/) do
+  header = find_element_by_xpath("//div[@id='header']/h1")
+  expect(header.text).to eql @project[:name]
+end
