@@ -113,6 +113,26 @@ module OurModule
     end
   end
 
+  def change_password(user)
+    old_password = user.password
+    new_password = Faker::Internet.password
+
+    find_element_by_class('icon-passwd').click
+    @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
+    find_element_by_name('password').send_keys(old_password)
+    find_element_by_name('new_password').send_keys(new_password)
+    find_element_by_name('new_password_confirmation').send_keys(new_password)
+    find_element_by_name('commit').click
+
+    new_password
+  end
+
+  def log_out
+    find_element_by_class('logout').click
+    login_button = find_element_by_class('login')
+    @wait.until{login_button.displayed?}
+  end
+
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!

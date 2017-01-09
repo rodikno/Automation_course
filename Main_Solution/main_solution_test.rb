@@ -47,15 +47,7 @@ class TestFirst < Test::Unit::TestCase
 
   def test_change_password
     register_user(@user)
-    old_password = @user.password
-    new_password = Faker::Internet.password
-
-    find_element_by_class('icon-passwd').click
-    @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
-    find_element_by_name('password').send_keys(old_password)
-    find_element_by_name('new_password').send_keys(new_password)
-    find_element_by_name('new_password_confirmation').send_keys(new_password)
-    find_element_by_name('commit').click
+    change_password(@user)
 
     success_message = find_element_by_id('flash_notice')
 
