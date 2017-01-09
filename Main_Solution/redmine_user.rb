@@ -3,8 +3,8 @@ require 'faker'
 
 class RedmineUser
 
-  attr_reader :login, :password, :first_name, :last_name, :email
-  attr_accessor :id
+  attr_reader :first_name, :last_name, :email
+  attr_accessor :id, :login, :password
 
   def initialize
     @first_name = Faker::Name.first_name
