@@ -30,3 +30,23 @@ Feature: Redmine project tests
     Given I register a user
     When I try to open random project with 3 retries
     Then Desired project is created
+
+  Scenario: Create version
+    Given I register a user
+    When I create a project
+    And I create a version
+    Then Version settings page is displayed
+
+  Scenario Outline: Create each of the issue types
+    Given I register a user
+    When I create a project
+    And I create a '<issue_type>' issue
+    Then Then issue details page is displayed
+    And Success message is shown with correct issue id
+    Examples:
+      | issue_type |
+      | bug        |
+      | feature    |
+      | support    |
+    
+  Scenario: Create random issue and add user to watchers

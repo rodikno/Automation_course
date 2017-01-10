@@ -77,15 +77,9 @@ class TestFirst < Test::Unit::TestCase
   def test_create_version
     register_user(@user)
     project_name = create_project
-    version_name = "version_" + rand(99999).to_s
+    create_version(project_name)
+
     version_page_url = "http://demo.redmine.org/projects/#{project_name}/settings/versions"
-
-    @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
-    version_name_input = find_element_by_id('version_name')
-    @wait.until{version_name_input.displayed?}
-    version_name_input.send_keys(version_name)
-    find_element_by_name('commit').click
-
     expect(@driver.current_url).to eql version_page_url
   end
 

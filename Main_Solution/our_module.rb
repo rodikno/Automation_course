@@ -113,6 +113,16 @@ module OurModule
     end
   end
 
+  def create_version(project_name)
+    version_name = "version_" + rand(99999).to_s
+
+    @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
+    version_name_input = find_element_by_id('version_name')
+    @wait.until{version_name_input.displayed?}
+    version_name_input.send_keys(version_name)
+    find_element_by_name('commit').click
+  end
+
   def change_password(user)
     old_password = user.password
     new_password = Faker::Internet.password

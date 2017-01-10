@@ -74,3 +74,28 @@ Then(/^Desired project is created$/) do
   header = find_element_by_xpath("//div[@id='header']/h1")
   expect(header.text).to eql @project[:name]
 end
+
+And(/^I create a version$/) do
+  create_version(@project[:name])
+
+end
+
+Then(/^Version settings page is displayed$/) do
+  version_page_url = "http://demo.redmine.org/projects/#{@project[:name]}/settings/versions"
+  expect(@driver.current_url).to eql version_page_url
+end
+
+And(/^I create a '(.+)' issue$/) do |issue_type|
+  issue_properties = create_issue(issue_type)
+  @issue[:visible_id], @issue[:real_id] = issue_properties[:visible_issue_id], issue_properties[:created_issue_id]
+end
+
+Then(/^Then issue details page is displayed$/) do
+  issue_url = "http://demo.redmine.org/issues/#{@issue[:real_id]}"
+  expect(@driver.current_url).to eql issue_url
+end
+
+
+And(/^Success message is shown with correct issue id$/) do
+  expect(@issue[:visible_id]).to eql @issue[:real_id]
+end
