@@ -90,7 +90,7 @@ And(/^I create a '(.+)' issue$/) do |issue_type|
   @issue[:visible_id], @issue[:real_id] = issue_properties[:visible_issue_id], issue_properties[:created_issue_id]
 end
 
-Then(/^Then issue details page is displayed$/) do
+Then(/^Issue details page is displayed$/) do
   issue_url = "http://demo.redmine.org/issues/#{@issue[:real_id]}"
   expect(@driver.current_url).to eql issue_url
 end

@@ -41,12 +41,12 @@ Feature: Redmine project tests
     Given I register a user
     When I create a project
     And I create a '<issue_type>' issue
-    Then Then issue details page is displayed
+    Then Issue details page is displayed
     And Success message is shown with correct issue id
     Examples:
       | issue_type |
       | bug        |
       | feature    |
       | support    |
-    
+
   Scenario: Create random issue and add user to watchers
