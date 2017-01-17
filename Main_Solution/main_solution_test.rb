@@ -129,7 +129,6 @@ class TestFirst < Test::Unit::TestCase
     random_boolean ? create_issue('bug') : create_issue('support')
 
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
-
     issues_list = find_elements_by_class("issue")
     bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
 
@@ -145,12 +144,10 @@ class TestFirst < Test::Unit::TestCase
       watch_icon.click
     end
 
-    @wait.until{is_issue_watched?}
-    expect(is_issue_watched?).to be
+    @wait.until{find_element_by_css("a.icon-fav").displayed?}
     @driver.navigate.refresh
-    watchers_list = find_element_by_id("watchers")
-    @wait.until{watchers_list.displayed?}
     username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
+    @wait.until{find_element_by_id("watchers").displayed?}
 
     expect(username_in_watchers_list).to be_displayed
   end

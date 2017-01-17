@@ -138,12 +138,6 @@ module OurModule
     {:issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
   end
 
-  def is_issue_watched?
-    if find_element_by_css("a.icon-fav").displayed?
-      true
-    end
-  end
-
   def project_exists?(project_url)
     status = get_http_response_code(project_url)
     if status == 200
