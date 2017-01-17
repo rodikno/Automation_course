@@ -124,13 +124,12 @@ class TestFirst < Test::Unit::TestCase
     end
 
     @wait.until{is_issue_watched?}
-    expect(is_issue_watched?).to be
     @driver.navigate.refresh
     watchers_list = find_element_by_id("watchers")
     @wait.until{watchers_list.displayed?}
     username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
 
-    expect(username_in_watchers_list.displayed?).to be
+    expect(username_in_watchers_list).to be_displayed
   end
 
   def teardown
