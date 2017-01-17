@@ -4,6 +4,8 @@ module RedmineCucumberHelper
 
   include OurModule
 
-
+  def reset_hash(hash)
+    hash.each_value{|value| value = nil}
+  end
 
 end

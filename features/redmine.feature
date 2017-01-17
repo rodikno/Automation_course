@@ -49,4 +49,10 @@ Feature: Redmine project tests
       | feature    |
       | support    |
 
-  Scenario: Create random issue and add user to watchers
+  Scenario: Create issue of a random type and add user to watchers
+    Given I register a user
+    When I create a project
+    And I create a random issue
+    And I create a 'bug' issue if it wasn't created
+    And I start watching the issue
+    Then I see my user in the list of issue watchers

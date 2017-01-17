@@ -86,8 +86,23 @@ Then(/^Version settings page is displayed$/) do
 end
 
 And(/^I create a '(.+)' issue$/) do |issue_type|
-  issue_properties = create_issue(issue_type)
-  @issue[:visible_id], @issue[:real_id] = issue_properties[:visible_issue_id], issue_properties[:created_issue_id]
+  issue = create_issue(issue_type)
+  reset_hash(@issue)
+  @issue = issue
+end
+
+And(/^I create a '(.+)' issue if it wasn't created$/) do |issue_type|
+  @issue = create_issue(issue_type) unless @issue[:type].eql? issue_type
+end
+
+And(/^I create a random issue$/) do
+  issue = create_random_issue
+  reset_hash(@issue)
+  @issue = issue
+end
+
+And(/^I start watching the issue$/) do
+  start_watching_issue(@issue)
 end
 
 Then(/^Issue details page is displayed$/) do
@@ -98,4 +113,15 @@ end
 
 And(/^Success message is shown with correct issue id$/) do
   expect(@issue[:visible_id]).to eql @issue[:real_id]
+end
+
+
+Then(/^I see my user in the list of issue watchers$/) do
+  @wait.until{is_issue_watched?}
+  @driver.navigate.refresh
+  watchers_list = find_element_by_id("watchers")
+  @wait.until{watchers_list.displayed?}
+  username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
+
+  expect(username_in_watchers_list).to be_displayed
 end
