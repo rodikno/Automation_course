@@ -170,24 +170,23 @@ module OurModule
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
-    {:issue_type => capitalized_issue_type, :issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
+    {:type => capitalized_issue_type, :title => issue_name, :visible_id => issue_url_slug, :real_id => created_issue_url_slug}
   end
 
   def create_random_issue
-    #random_boolean = [true, false].sample
-    random_boolean = false
+    random_boolean = [true, false].sample
     random_boolean ? create_issue('bug') : create_issue('support')
   end
 
   def start_watching_issue(issue)
-    issue_id = issue[:created_issue_id]
+    issue_id = issue[:real_id]
     watch_icon = find_element_by_css("a.issue-#{issue_id}-watcher")
     @wait.until{watch_icon.displayed?}
     watch_icon.click
   end
 
   def is_issue_a_bug?(issue)
-    if issue[:issue_type] == 'Bug'
+    if issue[:type] == 'Bug'
       true
     end
   end

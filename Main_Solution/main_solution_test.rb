@@ -88,7 +88,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('bug')
 
-    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
+    expect(issue_options[:visible_id]).to eql issue_options[:real_id]
   end
 
   def test_create_issue_feature
@@ -96,7 +96,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('feature')
 
-    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
+    expect(issue_options[:visible_id]).to eql issue_options[:real_id]
   end
 
   def test_create_issue_support
@@ -104,7 +104,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('support')
 
-    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
+    expect(issue_options[:visible_id]).to eql issue_options[:real_id]
   end
 
   def test_conditional_watch_issue
@@ -115,7 +115,7 @@ class TestFirst < Test::Unit::TestCase
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
 
     if is_issue_a_bug?(issue)
-      issue_id = issue[:created_issue_id]
+      issue_id = issue[:real_id]
       navigate_to "http://demo.redmine.org/issues/#{issue_id}"
       start_watching_issue(issue)
     else
