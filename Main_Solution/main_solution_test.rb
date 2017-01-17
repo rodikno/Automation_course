@@ -110,25 +110,17 @@ class TestFirst < Test::Unit::TestCase
   def test_conditional_watch_issue
     register_user(@user)
     project_name = create_project
-    random_boolean = [true, false].sample
-
-    random_boolean ? create_issue('bug') : create_issue('support')
+    issue = create_random_issue
 
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
 
-    issues_list = find_elements_by_class("issue")
-    bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
-
-    if bug_elem #checking if at least one bug was found in the list
-      bug_id = bug_elem.find_element(:css, ".id > a").text
-      navigate_to "http://demo.redmine.org/issues/#{bug_id}"
-      watch_icon = find_element_by_css("a.issue-#{bug_id}-watcher")
-      @wait.until{watch_icon.displayed?}
-      watch_icon.click
-    else #if bug wasn't found, we'll create a new one now
+    if is_issue_a_bug?(issue)
+      issue_id = issue[:created_issue_id]
+      navigate_to "http://demo.redmine.org/issues/#{issue_id}"
+      start_watching_issue(issue)
+    else
       new_bug = create_issue('bug')
-      watch_icon = find_element_by_css("a.issue-#{new_bug[:created_issue_id]}-watcher")
-      watch_icon.click
+      start_watching_issue(new_bug)
     end
 
     @wait.until{is_issue_watched?}
