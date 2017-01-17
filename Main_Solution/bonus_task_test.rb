@@ -44,12 +44,14 @@ class TestBonusTask < Test::Unit::TestCase
   def test_select_from_list
     navigate_to 'https://the-internet.herokuapp.com/dropdown'
     dropdown_id = 'dropdown'
-    available_options = ['1', '2']
+    expected_options = ['1', '2']
+    actual_options = []
 
-    available_options.each do |option|
-      expect(select_option_from_dropdown(dropdown_id,option)).to eql option
+    expected_options.each do |option|
+      actual_options << select_option_from_dropdown(dropdown_id, option)
     end
 
+    expect(actual_options).to be_eql expected_options
   end
 
   def test_keypress
