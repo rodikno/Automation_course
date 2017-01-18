@@ -10,7 +10,7 @@ Then(/^New user is registered$/) do
   success_message = find_element_by_id('flash_notice')
 
   expect(@driver.current_url).to eql @my_account_page_url
-  expect(success_message.displayed?).to be
+  expect(success_message).to be_displayed
 end
 
 Then(/^I am logged in$/) do
@@ -19,16 +19,13 @@ end
 
 When(/^I log out$/) do
   log_out
-  # find_element_by_class('logout').click
-  # login_button = find_element_by_class('login')
-  # @wait.until{login_button.displayed?}
 end
 
 
 Then(/^I am logged out$/) do
   login_button = find_element_by_class('login')
   expect(@driver.current_url).to eql @homepage_url
-  expect(login_button.displayed?)
+  expect(login_button).to be_displayed
 end
 
 
@@ -46,7 +43,7 @@ end
 
 Then(/^Success message displayed$/) do
   success_message = find_element_by_id('flash_notice')
-  expect(success_message.displayed?).to be
+  expect(success_message).to be_displayed
 end
 
 
