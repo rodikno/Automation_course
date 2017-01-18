@@ -1,5 +1,5 @@
 require 'faraday'
-require './Main_Tasks/Exceptions/my_exceptions'
+require 'C:\_projects\automation_course\Main_Tasks\Exceptions\my_exceptions.rb'
 
 module OurModule
 
@@ -136,12 +136,6 @@ module OurModule
 
     #return hash with all issue data required
     {:issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
-  end
-
-  def is_issue_watched?
-    if find_element_by_css("a.icon-fav").displayed?
-      true
-    end
   end
 
   def project_exists?(project_url)

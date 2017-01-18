@@ -1,11 +1,13 @@
-require 'test/unit'
+require 'rspec'
 require 'selenium-webdriver'
+require 'test/unit'
+require 'uri'
 require_relative 'our_module'
 require_relative 'redmine_user'
-require 'uri'
 
 class TestFirst < Test::Unit::TestCase
 
+  include RSpec::Matchers
   include OurModule
 
   def setup
@@ -13,12 +15,16 @@ class TestFirst < Test::Unit::TestCase
     #@driver = Selenium::WebDriver.for :firefox
     @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
     @user = RedmineUser.new
+    @homepage_url = 'http://demo.redmine.org/'
+    @my_account_page_url = 'http://demo.redmine.org/my/account'
   end
 
   def test_registration
     register_user(@user)
-    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
-    assert(find_element_by_id('flash_notice'))
+    success_message = find_element_by_id('flash_notice')
+
+    expect(@driver.current_url).to eql @my_account_page_url
+    expect(success_message).to be_displayed
   end
 
   def test_log_out
@@ -26,15 +32,17 @@ class TestFirst < Test::Unit::TestCase
     find_element_by_class('logout').click
     login_button = find_element_by_class('login')
     @wait.until{login_button.displayed?}
-    assert(login_button.displayed?)
-    assert_equal('http://demo.redmine.org/' ,@driver.current_url)
+
+    expect(@driver.current_url).to eql @homepage_url
+    expect(login_button).to be_displayed
   end
 
   def test_log_in
     register_user(@user)
     log_out
     log_in(@user.login, @user.password)
-    assert_equal(@user.login, find_element_by_class('user').text)
+
+    expect(find_element_by_class('user').text).to eql @user.login
   end
 
   def test_change_password
@@ -49,16 +57,19 @@ class TestFirst < Test::Unit::TestCase
     find_element_by_name('new_password_confirmation').send_keys(new_password)
     find_element_by_name('commit').click
 
-    assert_equal(@driver.current_url, 'http://demo.redmine.org/my/account')
-    assert (find_element_by_id('flash_notice').displayed?)
+    success_message = find_element_by_id('flash_notice')
+
+    expect(@driver.current_url).to eql @my_account_page_url
+    expect(success_message).to be_displayed
   end
 
   def test_create_project
     register_user(@user)
     project_name = create_project
+    project_settings_page_url = "http://demo.redmine.org/projects/#{project_name}/settings"
     @wait.until{find_element_by_id('flash_notice').displayed?}
 
-    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings", @driver.current_url)
+    expect(@driver.current_url).to eql project_settings_page_url
   end
 
   def test_open_random_project
@@ -66,8 +77,8 @@ class TestFirst < Test::Unit::TestCase
     project_name = Faker::Hipster.word.capitalize
     open_random_project(project_name, 3)
     header = find_element_by_xpath("//div[@id='header']/h1")
-    
-    assert_equal(project_name, header.text)
+
+    expect(header.text).to eql project_name
   end
 
 
@@ -75,15 +86,15 @@ class TestFirst < Test::Unit::TestCase
     register_user(@user)
     project_name = create_project
     version_name = "version_" + rand(99999).to_s
+    version_page_url = "http://demo.redmine.org/projects/#{project_name}/settings/versions"
 
     @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
     version_name_input = find_element_by_id('version_name')
     @wait.until{version_name_input.displayed?}
-
     version_name_input.send_keys(version_name)
     find_element_by_name('commit').click
 
-    assert_equal("http://demo.redmine.org/projects/#{project_name}/settings/versions", @driver.current_url)
+    expect(@driver.current_url).to eql version_page_url
   end
 
   def test_create_issue_bug
@@ -91,7 +102,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('bug')
 
-    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
+    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
   end
 
   def test_create_issue_feature
@@ -99,7 +110,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('feature')
 
-    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
+    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
   end
 
   def test_create_issue_support
@@ -107,7 +118,7 @@ class TestFirst < Test::Unit::TestCase
     create_project
     issue_options = create_issue('support')
 
-    assert_equal(issue_options[:visible_issue_id], issue_options[:created_issue_id])
+    expect(issue_options[:visible_issue_id]).to eql issue_options[:created_issue_id]
   end
 
   def test_conditional_watch_issue
@@ -118,7 +129,6 @@ class TestFirst < Test::Unit::TestCase
     random_boolean ? create_issue('bug') : create_issue('support')
 
     navigate_to "http://demo.redmine.org/projects/#{project_name}/issues"
-
     issues_list = find_elements_by_class("issue")
     bug_elem = issues_list.find { |issue| issue.find_element(:class, 'tracker').text == "Bug" }
 
@@ -134,11 +144,12 @@ class TestFirst < Test::Unit::TestCase
       watch_icon.click
     end
 
-    @wait.until{is_issue_watched?}
-    assert(is_issue_watched?)
+    @wait.until{find_element_by_css("a.icon-fav").displayed?}
     @driver.navigate.refresh
+    username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
     @wait.until{find_element_by_id("watchers").displayed?}
-    assert(find_element_by_css("li.user-#{@user.id}").displayed?)
+
+    expect(username_in_watchers_list).to be_displayed
   end
 
   def teardown
