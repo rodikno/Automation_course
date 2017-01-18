@@ -24,7 +24,7 @@ class TestFirst < Test::Unit::TestCase
     success_message = find_element_by_id('flash_notice')
 
     expect(@driver.current_url).to eql @my_account_page_url
-    expect(success_message.displayed?).to be
+    expect(success_message).to be_displayed
   end
 
   def test_log_out
@@ -34,7 +34,7 @@ class TestFirst < Test::Unit::TestCase
     @wait.until{login_button.displayed?}
 
     expect(@driver.current_url).to eql @homepage_url
-    expect(login_button.displayed?)
+    expect(login_button).to be_displayed
   end
 
   def test_log_in
@@ -52,7 +52,7 @@ class TestFirst < Test::Unit::TestCase
     success_message = find_element_by_id('flash_notice')
 
     expect(@driver.current_url).to eql @my_account_page_url
-    expect(success_message.displayed?).to be
+    expect(success_message).to be_displayed
   end
 
   def test_create_project
@@ -122,12 +122,11 @@ class TestFirst < Test::Unit::TestCase
       new_bug = create_issue('bug')
       start_watching_issue(new_bug)
     end
-
-    @wait.until{is_issue_watched?}
+    
+    @wait.until{find_element_by_css("a.icon-fav").displayed?}
     @driver.navigate.refresh
-    watchers_list = find_element_by_id("watchers")
-    @wait.until{watchers_list.displayed?}
     username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
+    @wait.until{find_element_by_id("watchers").displayed?}
 
     expect(username_in_watchers_list).to be_displayed
   end

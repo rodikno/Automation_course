@@ -20,13 +20,13 @@ class TestBonusTask < Test::Unit::TestCase
 
   def test_hover
     link_to_profile = hover_on_avatar_of_user 1
-    expect(link_to_profile.displayed?).to be
+    expect(link_to_profile).to be_displayed
 
     link_to_profile = hover_on_avatar_of_user 2
-    expect(link_to_profile.displayed?).to be
+    expect(link_to_profile).to be_displayed
 
     link_to_profile = hover_on_avatar_of_user 3
-    expect(link_to_profile.displayed?).to be
+    expect(link_to_profile).to be_displayed
   end
 
   def test_drag_and_drop
@@ -44,12 +44,14 @@ class TestBonusTask < Test::Unit::TestCase
   def test_select_from_list
     navigate_to 'https://the-internet.herokuapp.com/dropdown'
     dropdown_id = 'dropdown'
-    available_options = ['1', '2']
+    expected_options = ['1', '2']
+    actual_options = []
 
-    available_options.each do |option|
-      expect(select_option_from_dropdown(dropdown_id,option)).to eql option
+    expected_options.each do |option|
+      actual_options << select_option_from_dropdown(dropdown_id, option)
     end
 
+    expect(actual_options).to be_eql expected_options
   end
 
   def test_keypress
@@ -78,7 +80,7 @@ class TestBonusTask < Test::Unit::TestCase
       mouse_move_to(menu)
     end
 
-    expect(multilevel_menu.last.displayed?).to be
+    expect(multilevel_menu.last).to be_displayed
   end
 
   def test_iframe_functionality
@@ -104,7 +106,7 @@ class TestBonusTask < Test::Unit::TestCase
     @driver.switch_to.frame(textbox_iframe_id)
     strong_tag_around_text = find_element_by_css('#tinymce>p>strong')
 
-    expect(strong_tag_around_text.displayed?).to be
+    expect(strong_tag_around_text).to be_displayed
   end
 
   def test_javascript_alert
@@ -117,7 +119,7 @@ class TestBonusTask < Test::Unit::TestCase
     move_to_and_click(js_alert_button)
     @driver.switch_to.alert.accept
 
-    expect(result_after_click.displayed?).to be
+    expect(result_after_click).to be_displayed
   end
 
   def test_multiple_windows
@@ -130,7 +132,7 @@ class TestBonusTask < Test::Unit::TestCase
     move_to_and_click(link_to_new_window)
     @driver.switch_to.window(all_windows.last)
 
-    expect(new_window_text.displayed?).to be
+    expect(new_window_text).to be_displayed
   end
 
   def teardown

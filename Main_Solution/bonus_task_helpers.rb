@@ -42,11 +42,17 @@ module BonusTaskHelpers
   end
 
   def select_option_from_dropdown(string_dropdown_id, string_option_value)
+    selected_option_value = nil
 
     my_select = Selenium::WebDriver::Support::Select.new(find_element_by_id(string_dropdown_id))
-    my_select.select_by(:value, string_option_value)
-
-    selected_option_value = my_select.selected_options[0].attribute('value')
+    begin
+      my_select.select_by(:value, string_option_value)
+    rescue Selenium::WebDriver::Error::NoSuchElementError => e
+      puts "Error: [#{e.message}]"
+      selected_option_value
+    else
+      selected_option_value = my_select.selected_options[0].attribute('value')
+    end
   end
 
   def mouse_move_to(element)
