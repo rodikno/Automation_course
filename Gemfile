@@ -1,4 +1,5 @@
 source 'http://rubygems.org'
+gem 'cucumber'
 gem 'debase', '~> 0.2.1'
 gem 'faker', '~> 1.6', '>= 1.6.3'
 gem 'faraday'

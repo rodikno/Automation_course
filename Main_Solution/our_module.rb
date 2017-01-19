@@ -1,9 +1,14 @@
 require 'faraday'
 require 'C:\_projects\automation_course\Main_Tasks\Exceptions\my_exceptions.rb'
+require_relative 'redmine_user'
 
 module OurModule
 
   include MyExceptions
+
+  def initialize_user
+    RedmineUser.new
+  end
 
   def get_http_response_code(url)
     response = Faraday.get(url)
@@ -108,6 +113,36 @@ module OurModule
     end
   end
 
+  def create_version(project_name)
+    version_name = "version_" + rand(99999).to_s
+
+    @driver.navigate.to("http://demo.redmine.org/projects/#{project_name}/versions/new?back_url=")
+    version_name_input = find_element_by_id('version_name')
+    @wait.until{version_name_input.displayed?}
+    version_name_input.send_keys(version_name)
+    find_element_by_name('commit').click
+  end
+
+  def change_password(user)
+    old_password = user.password
+    new_password = Faker::Internet.password
+
+    find_element_by_class('icon-passwd').click
+    @wait.until {@driver.current_url == 'http://demo.redmine.org/my/password'}
+    find_element_by_name('password').send_keys(old_password)
+    find_element_by_name('new_password').send_keys(new_password)
+    find_element_by_name('new_password_confirmation').send_keys(new_password)
+    find_element_by_name('commit').click
+
+    new_password
+  end
+
+  def log_out
+    find_element_by_class('logout').click
+    login_button = find_element_by_class('login')
+    @wait.until{login_button.displayed?}
+  end
+
   def create_issue(issue_type)
 
     capitalized_issue_type = issue_type.to_s.capitalize!
@@ -135,7 +170,25 @@ module OurModule
     created_issue_url_slug = @driver.current_url.split('/').last
 
     #return hash with all issue data required
-    {:issue_title => issue_name, :visible_issue_id => issue_url_slug, :created_issue_id => created_issue_url_slug}
+    {:type => capitalized_issue_type, :title => issue_name, :visible_id => issue_url_slug, :real_id => created_issue_url_slug}
+  end
+
+  def create_random_issue
+    random_boolean = [true, false].sample
+    random_boolean ? create_issue('bug') : create_issue('support')
+  end
+
+  def start_watching_issue(issue)
+    issue_id = issue[:real_id]
+    watch_icon = find_element_by_css("a.issue-#{issue_id}-watcher")
+    @wait.until{watch_icon.displayed?}
+    watch_icon.click
+  end
+
+  def is_issue_a_bug?(issue)
+    if issue[:type] == 'Bug'
+      true
+    end
   end
 
   def project_exists?(project_url)

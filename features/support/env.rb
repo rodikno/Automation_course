@@ -1,0 +1,3 @@
+require_relative 'redmine_cucumber_helper'
+
+World(RedmineCucumberHelper)
