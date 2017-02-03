@@ -1,0 +1,9 @@
+1. Investigate Page Sections feature in PageObject gem and describe when and why we would need it
+
+
+
+2. Explain what PageFactory module does and why we need it
+
+3. Investigate and understand what happening when we call on(MyPageClass) method and why we're able to call page methods just after this method call?
+
+4. Create all appropriate files and folder structure to our main project needed to move our current Cucumber project completely to PageObject gem
