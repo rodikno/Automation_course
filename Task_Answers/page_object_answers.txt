@@ -4,26 +4,24 @@ Page Sections feature makes it easy to declare specific areas of interest within
 without taking care of calling some methods from Page scope.
 For example, if we have a page which includes search bar on it, we can make something like:
 
-class PlaylistsPage
-  include PageObject
+  class PlaylistsPage
+    include PageObject
 
-  page_section(:search, SearchBar, id: 'search_bar')
-  page_section(:sorter, SortingSelect, id: 'pl_sorting')
+    page_section(:search, SearchBar, id: 'search_bar')
+    page_section(:sorter, SortingSelect, id: 'pl_sorting')
 
-  # any elements which do we need for the PlaylistsPage itself excluding Search and Sorter
-end
+    # any elements which do we need for the PlaylistsPage itself excluding Search and Sorter
+  end
 
-on PlaylistsPage do |page|
-  page.search.for 'madonna'
+  on PlaylistsPage do |page|
+    page.search.for 'madonna'
+    #verify appropriate page is shown with search resuts
+  end
 
-  #verify appropriate page is shown with search resuts
-end
-
-on PlaylistsPage do |page|
-  page.sorter.select_by_newest
-
-  #verify sorting has been applied
-end
+  on PlaylistsPage do |page|
+    page.sorter.select_by_newest
+    #verify sorting has been applied
+  end
 
 2. Explain what PageFactory module does and why we need it
 
@@ -43,52 +41,53 @@ So the 'Factory' means it can produce a PageObjects by using it.
 
 Methods 'visit' and 'on' also accept blocks, so we can call any methods of PageObject we've just called:
 
-    When /^I change sorter on the playlists page$/ do
-        visit PlaylistsPage do |page|
-          page.sorter.select_by_newest
-        end
+  When /^I change sorter on the playlists page$/ do
+    visit PlaylistsPage do |page|
+      page.sorter.select_by_newest
     end
+  end
 
 Or there's a shorter version for it
-    When /^I change sorter on the playlists page$/ do
-        on(PlaylistsPage).sorter.select_by_newest
-    end
+
+  When /^I change sorter on the playlists page$/ do
+    on(PlaylistsPage).sorter.select_by_newest
+  end
 
 3. Investigate and understand what happening when we call on(MyPageClass) method and why we're able to call page methods just after this method call?
 
 When on(MyPageClass) method is called the more precise impression what it does could be made from the source of the method =)
 
-    # File 'lib/page-object/page_factory.rb', line 69
+  # File 'lib/page-object/page_factory.rb', line 69
 
-    def on_page(page_class, params={:using_params => {}}, visit=false, &block)
-      page_class = class_from_string(page_class) if page_class.is_a? String
-      return super(page_class, params, visit, &block) unless page_class.ancestors.include? PageObject
-      merged = page_class.params.merge(params[:using_params])
-      page_class.instance_variable_set("@merged_params", merged) unless merged.empty?
-      @current_page = page_class.new(@browser, visit)
-      block.call @current_page if block
-      @current_page
-    end
+  def on_page(page_class, params={:using_params => {}}, visit=false, &block)
+    page_class = class_from_string(page_class) if page_class.is_a? String
+    return super(page_class, params, visit, &block) unless page_class.ancestors.include? PageObject
+    merged = page_class.params.merge(params[:using_params])
+    page_class.instance_variable_set("@merged_params", merged) unless merged.empty?
+    @current_page = page_class.new(@browser, visit)
+    block.call @current_page if block
+    @current_page
+  end
 
 So it starts from making a String from the page_class we specified as an argument
 
-    on(PlaylistsPage) => "PlaylistsPage"
+  on(PlaylistsPage) => "PlaylistsPage"
 
 Then it calls looks for all methods and properties of a 'PlaylistsPage' class and merges parameters, which
 were specified in 'on' call to make them available in a resulting object.
 
-     return super(page_class, params, visit, &block) unless page_class.ancestors.include? PageObject
-     merged = page_class.params.merge(params[:using_params])
-     page_class.instance_variable_set("@merged_params", merged) unless merged.empty?
+  return super(page_class, params, visit, &block) unless page_class.ancestors.include? PageObject
+  merged = page_class.params.merge(params[:using_params])
+  page_class.instance_variable_set("@merged_params", merged) unless merged.empty?
 
 Then it sets a @current_page property to the newly created instance of the desired PageObject class and visits it with
 a 'visit' method for current @browser
 
-     @current_page = page_class.new(@browser, visit)
+  @current_page = page_class.new(@browser, visit)
 
 And finally calls the block (if it was specified in 'on' method and returns the @current_page object
 
-     block.call @current_page if block
-     @current_page
+  block.call @current_page if block
+  @current_page
 
 4. Create all appropriate files and folder structure to our main project needed to move our current Cucumber project completely to PageObject gem
