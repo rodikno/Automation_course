@@ -69,9 +69,9 @@ When on(MyPageClass) method is called the more precise impression what it does c
     @current_page
   end
 
-So it starts from making a String from the page_class we specified as an argument
+So it starts from making a Class from the String we specified as an argument
 
-  on(PlaylistsPage) => "PlaylistsPage"
+  page_class = class_from_string(page_class) if page_class.is_a? String
 
 Then it calls looks for all methods and properties of a 'PlaylistsPage' class and merges parameters, which
 were specified in 'on' call to make them available in a resulting object.
