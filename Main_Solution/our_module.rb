@@ -191,6 +191,14 @@ module OurModule
     end
   end
 
+  def is_issue_watched?
+    if find_element_by_css('a.icon-fav').displayed?
+      true
+    else
+      false
+    end
+  end
+
   def project_exists?(project_url)
     status = get_http_response_code(project_url)
     if status == 200

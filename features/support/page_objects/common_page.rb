@@ -1,3 +1,5 @@
+require_relative 'top_menu_section'
+
 class CommonPage
   include PageObject
 
