@@ -1,7 +1,7 @@
 require 'selenium-webdriver'
 
 Before do
-  @driver = Selenium::WebDriver.for :chrome, :switches => %w[--ignore-certificate-errors --disable-popup-blocking --disable-translate --disable-extensions]
+  @browser = Selenium::WebDriver.for :chrome, :switches => %w[--ignore-certificate-errors --disable-popup-blocking --disable-translate --disable-extensions]
   @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
   @user = initialize_user
   @project = {name: nil}
@@ -11,5 +11,5 @@ Before do
 end
 
 After do
-  @driver.quit if @driver
+  @browser.quit if @browser
 end

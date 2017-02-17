@@ -30,7 +30,7 @@ end
 
 
 Given(/^I register a user$/) do
-  register_user(@user)
+  visit(RegistrationPage).register_user(@user)
 end
 
 And(/^I log in$/) do
