@@ -72,10 +72,6 @@ module OurModule
     user
   end
 
-  def log_out
-    find_element_by_class('logout').click
-  end
-
   def log_in(login, password)
     find_element_by_class('login').click
 

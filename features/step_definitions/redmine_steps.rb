@@ -42,18 +42,22 @@ And(/^I log in$/) do
 end
 
 When(/^I change password$/) do
-  @user.password = change_password(@user)
+  new_password = Faker::Internet.password
+  visit(ChangePasswordPage).change_password(@user.password, new_password)
+
+  @user.password = new_password
 end
 
 Then(/^Success message displayed$/) do
-  success_message = find_element_by_id('flash_notice')
-  expect(success_message).to be_displayed
+  success_message = on(MyAccountPage).success_message_element
+  expect(success_message).to be_visible
 end
 
 
 And(/^I can login with a new password$/) do
-  log_out
-  log_in(@user.login, @user.password)
+  step 'I log out'
+  step 'I log in'
+  step 'I am logged in'
 end
 
 When(/^I create a project$/) do
