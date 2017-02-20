@@ -61,13 +61,14 @@ And(/^I can login with a new password$/) do
 end
 
 When(/^I create a project$/) do
-  @project[:name] = create_project
-  @wait.until{find_element_by_id('flash_notice').displayed?}
+  @project[:name] = 'rodioba_project_' + rand(99999).to_s
+  visit(CreateProjectPage).create_project(@project[:name])
 end
 
 Then(/^Project details page is displayed$/) do
-  project_settings_page_url = "http://demo.redmine.org/projects/#{@project[:name]}/settings"
-  expect(@driver.current_url).to eql project_settings_page_url
+  on ProjectSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
+    expect(page.success_message_element).to be_visible
+  end
 end
 
 When(/^I try to open random project with (\d+) retries$/) do |retries_count|
