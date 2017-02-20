@@ -7,25 +7,29 @@ When(/^I submit the registration form$/) do
 end
 
 Then(/^New user is registered$/) do
-  success_message = find_element_by_id('flash_notice')
 
-  expect(@driver.current_url).to eql @my_account_page_url
-  expect(success_message).to be_displayed
+
+  success_message = on(MyAccountPage).success_message_element
+
+  expect(@current_page.page_url_value).to eql on(MyAccountPage).page_url_value
+  expect(success_message).to be_visible
 end
 
 Then(/^I am logged in$/) do
-  expect(find_element_by_class('user').text).to eql @user.login
+  active_username = on(MyPage).top_menu.active_user_element.attribute 'text'
+  expect(active_username).to eql @user.login
 end
 
 When(/^I log out$/) do
-  log_out
+  on(TopMenuSection).log_out
 end
 
 
 Then(/^I am logged out$/) do
-  login_button = find_element_by_class('login')
-  expect(@driver.current_url).to eql @homepage_url
-  expect(login_button).to be_displayed
+  login_button = on(HomePage).top_menu.log_in_element
+
+  expect(@current_page.page_url_value).to eql on(HomePage).page_url_value
+  expect(login_button).to be_visible
 end
 
 
@@ -34,7 +38,7 @@ Given(/^I register a user$/) do
 end
 
 And(/^I log in$/) do
-  log_in(@user.login, @user.password)
+  visit(LoginPage).log_in(@user)
 end
 
 When(/^I change password$/) do

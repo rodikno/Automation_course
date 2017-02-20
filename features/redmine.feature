@@ -1,6 +1,6 @@
 Feature: Redmine project tests
 
-  Scenario: My Debugging Scenario
+  Background:
     Given I register a user
 
   Scenario: Registration positive
