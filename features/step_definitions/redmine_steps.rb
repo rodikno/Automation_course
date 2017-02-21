@@ -65,6 +65,11 @@ When(/^I create a project$/) do
   visit(CreateProjectPage).create_project(@project[:name])
 end
 
+When(/^I create a project named '(.+)'$/) do |name|
+  @project[:name] = name
+  visit(CreateProjectPage).create_project(@project[:name])
+end
+
 Then(/^Project details page is displayed$/) do
   on ProjectSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
     expect(page.success_message_element).to be_visible
@@ -73,12 +78,22 @@ end
 
 When(/^I try to open random project with (\d+) retries$/) do |retries_count|
   @project[:name] = Faker::Hipster.word.capitalize
-  open_random_project(@project[:name], retries_count.to_i)
+  random_project_url = "http://demo.redmine.org/projects/#{@project[:name]}"
+
+  i = 0
+  begin
+    i += 1
+    project_exists?(random_project_url)
+  rescue StandardError
+    step "I create a project named '#{@project[:name]}'"
+    retry if i < retries_count.to_i
+  end
 end
 
 Then(/^Desired project is created$/) do
-  header = find_element_by_xpath("//div[@id='header']/h1")
-  expect(header.text).to eql @project[:name]
+  on ProjectSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
+    expect(page.project_title).to eql @project[:name]
+  end
 end
 
 And(/^I create a version$/) do
