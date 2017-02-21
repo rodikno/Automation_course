@@ -97,13 +97,16 @@ Then(/^Desired project is created$/) do
 end
 
 And(/^I create a version$/) do
-  create_version(@project[:name])
-
+  version_name = Faker::Hacker.noun
+  visit CreateVersionPage, :using_params => {:project_name => @project[:name]} do |page|
+    page.create_version(version_name)
+  end
 end
 
 Then(/^Version settings page is displayed$/) do
-  version_page_url = "http://demo.redmine.org/projects/#{@project[:name]}/settings/versions"
-  expect(@driver.current_url).to eql version_page_url
+  on VersionSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
+    expect(page.success_message_element).to be_visible
+  end
 end
 
 And(/^I create a '(.+)' issue$/) do |issue_type|
