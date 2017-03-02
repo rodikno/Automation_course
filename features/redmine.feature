@@ -3,24 +3,26 @@ Feature: Redmine project tests
   Background:
     Given I register a user
 
-  Scenario: Registration positive
+  Scenario: [User: Registration] positive
     Then New user is registered
 
-  Scenario: Logout positive
+  @user
+  Scenario: [User: Logout]
     When I log out
     Then I am logged out
 
-  Scenario: Login positive
+  @user
+  Scenario: [User: Login]
     When I log out
     And I log in
     Then I am logged in
 
-  Scenario: Change password positive
+  @user
+  Scenario: [User: Change password]
     When I change password
-    Then Success message displayed
-    And I can login with a new password
+    Then My password is changed
 
-  Scenario: Create project positive
+  Scenario: [Project: create]
     When I create a project
     Then Project details page is displayed
 

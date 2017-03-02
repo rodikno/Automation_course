@@ -7,17 +7,11 @@ When(/^I submit the registration form$/) do
 end
 
 Then(/^New user is registered$/) do
-
-
-  success_message = on(MyAccountPage).success_message_element
-
-  expect(@current_page.page_url_value).to eql on(MyAccountPage).page_url_value
-  expect(success_message).to be_visible
+  expect(on(MyAccountPage)).to have_success_message
 end
 
 Then(/^I am logged in$/) do
-  active_username = on(MyPage).top_menu.active_user_element.attribute 'text'
-  expect(active_username).to eql @user.login
+  expect(on(MyPage).top_menu.active_user_element.text).to eql @user.login
 end
 
 When(/^I log out$/) do
@@ -26,10 +20,7 @@ end
 
 
 Then(/^I am logged out$/) do
-  login_button = on(HomePage).top_menu.log_in_element
-
-  expect(@current_page.page_url_value).to eql on(HomePage).page_url_value
-  expect(login_button).to be_visible
+  expect(on(HomePage).top_menu.log_in_element).to be_visible
 end
 
 
@@ -42,22 +33,12 @@ And(/^I log in$/) do
 end
 
 When(/^I change password$/) do
-  new_password = Faker::Internet.password
-  visit(ChangePasswordPage).change_password(@user.password, new_password)
-
-  @user.password = new_password
+  new_password = Faker::Internet.password(4)
+  visit(ChangePasswordPage).change_password(@user, new_password)
 end
 
-Then(/^Success message displayed$/) do
-  success_message = on(MyAccountPage).success_message_element
-  expect(success_message).to be_visible
-end
-
-
-And(/^I can login with a new password$/) do
-  step 'I log out'
-  step 'I log in'
-  step 'I am logged in'
+Then(/^My password is changed$/) do
+  expect(on(MyAccountPage)).to have_success_message
 end
 
 When(/^I create a project$/) do
