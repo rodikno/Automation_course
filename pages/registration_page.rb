@@ -21,7 +21,7 @@ class RegistrationPage
     self.first_name = user.first_name
     self.last_name = user.last_name
     self.email = user.email
-    self.submit
+    submit
   end
 
 end

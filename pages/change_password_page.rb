@@ -1,3 +1,4 @@
+
 class ChangePasswordPage
   include PageObject
 
@@ -9,10 +10,11 @@ class ChangePasswordPage
   button(:submit, :name => 'commit')
 
 
-  def change_password(old_pw, new_pw)
-    self.old_password = old_pw
+  def change_password(user, new_pw)
+    self.old_password = user.password
     self.new_password = new_pw
     self.password_confirmation = new_pw
     submit
+    user.password = new_pw
   end
 end

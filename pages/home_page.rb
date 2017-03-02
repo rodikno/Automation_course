@@ -1,4 +1,4 @@
-require_relative 'top_menu_section'
+require_relative 'sections/top_menu_section'
 
 class HomePage
   include PageObject
