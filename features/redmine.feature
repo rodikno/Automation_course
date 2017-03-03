@@ -22,11 +22,13 @@ Feature: Redmine project tests
     When I change password
     Then My password is changed
 
+  @project
   Scenario: [Project: create]
     When I create a project
-    Then Project details page is displayed
+    Then Project is created
 
-  Scenario: Open random project
+  @project
+  Scenario: [Project: open random one]
     When I try to open random project with 3 retries
     Then Desired project is created
 

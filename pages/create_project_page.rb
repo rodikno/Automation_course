@@ -1,3 +1,5 @@
+require 'faker'
+
 class CreateProjectPage
   include PageObject
 
@@ -8,9 +10,9 @@ class CreateProjectPage
   button(:create, :name => 'commit')
   button(:create_and_continue, :name => 'continue')
 
-  def create_project(name)
-    self.name = name
-    self.description = "Some description"
+  def create_project(project)
+    self.name = project.name
+    self.description = Faker::Hipster.sentence
     create
   end
 end

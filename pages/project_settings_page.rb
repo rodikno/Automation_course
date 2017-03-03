@@ -1,4 +1,4 @@
-class ProjectSettingsPage
+class ProjectSettingsPage < BasicPage
   include PageObject
 
   page_url 'http://demo.redmine.org/projects/<%=params[:project_name]%>/settings'

@@ -42,8 +42,7 @@ Then(/^My password is changed$/) do
 end
 
 When(/^I create a project$/) do
-  @project[:name] = 'rodioba_project_' + rand(99999).to_s
-  visit(CreateProjectPage).create_project(@project[:name])
+  visit(CreateProjectPage).create_project(@project)
 end
 
 When(/^I create a project named '(.+)'$/) do |name|
@@ -51,30 +50,29 @@ When(/^I create a project named '(.+)'$/) do |name|
   visit(CreateProjectPage).create_project(@project[:name])
 end
 
-Then(/^Project details page is displayed$/) do
-  on ProjectSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
-    expect(page.success_message_element).to be_visible
+Then(/^Project is created$/) do
+  on ProjectSettingsPage, :using_params => {:project_name => @project.name} do |page|
+    expect(page).to have_success_message
   end
 end
 
 When(/^I try to open random project with (\d+) retries$/) do |retries_count|
-  @project[:name] = Faker::Hipster.word.capitalize
-  random_project_url = "http://demo.redmine.org/projects/#{@project[:name]}"
+  random_name = Faker::Hipster.word.capitalize
+  random_project_url = BasicPage::BASIC_URL + '/projects/' + random_name
 
-  i = 0
-  begin
-    i += 1
-    project_exists?(random_project_url)
-  rescue StandardError
-    step "I create a project named '#{@project[:name]}'"
-    retry if i < retries_count.to_i
+  project_exists = open_url_with_retries(random_project_url, retries_count.to_i)
+
+  if project_exists
+    puts "Project with name [#{random_name}] already exists"
+  else
+    @project.name = random_name
+    visit(CreateProjectPage).create_project(@project)
+    puts "New project [#{@project.name}] created"
   end
 end
 
 Then(/^Desired project is created$/) do
-  on ProjectSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
-    expect(page.project_title).to eql @project[:name]
-  end
+  expect(on(ProjectSettingsPage).project_title).to eql @project.name
 end
 
 And(/^I create a version$/) do
