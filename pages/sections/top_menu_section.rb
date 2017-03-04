@@ -5,5 +5,5 @@ class TopMenuSection
   link(:log_out, :css => 'a.logout')
   link(:register, :css => 'a.register')
   link(:my_account, :css => 'a.my-account')
-  link(:active_user, :css => 'div#loggedas > a.user.active')
+  link(:active_user, :css => '#loggedas > a')
 end
