@@ -77,21 +77,22 @@ end
 
 And(/^I create a version$/) do
   version_name = Faker::Hacker.noun
-  visit CreateVersionPage, :using_params => {:project_name => @project[:name]} do |page|
+  visit CreateVersionPage, :using_params => {:project_name => @project.name} do |page|
     page.create_version(version_name)
   end
 end
 
 Then(/^Version settings page is displayed$/) do
-  on VersionSettingsPage, :using_params => {:project_name => @project[:name]} do |page|
+  on VersionSettingsPage, :using_params => {:project_name => @project.name} do |page|
     expect(page.success_message_element).to be_visible
   end
 end
 
 And(/^I create a '(.+)' issue$/) do |issue_type|
-  issue = create_issue(issue_type)
-  reset_hash(@issue)
-  @issue = issue
+  @issue.type = issue_type
+  visit CreateIssuePage, :using_params => {:project_name => @project.name} do |page|
+    page.create_issue(@issue)
+  end
 end
 
 And(/^I create a '(.+)' issue if it wasn't created$/) do |issue_type|
@@ -108,14 +109,8 @@ And(/^I start watching the issue$/) do
   start_watching_issue(@issue)
 end
 
-Then(/^Issue details page is displayed$/) do
-  issue_url = "http://demo.redmine.org/issues/#{@issue[:real_id]}"
-  expect(@driver.current_url).to eql issue_url
-end
-
-
-And(/^Success message is shown with correct issue id$/) do
-  expect(@issue[:visible_id]).to eql @issue[:real_id]
+Then(/^Issue is created$/) do
+  expect(on(IssueDetailsPage)).to have_success_message
 end
 
 

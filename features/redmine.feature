@@ -32,7 +32,7 @@ Feature: Redmine project tests
     When I try to open random project with 3 retries
     Then Desired project is created
 
-  Scenario: Create version
+  Scenario: [Project: Create version]
     When I create a project
     And I create a version
     Then Version settings page is displayed
@@ -40,13 +40,12 @@ Feature: Redmine project tests
   Scenario Outline: Create each of the issue types
     When I create a project
     And I create a '<issue_type>' issue
-    Then Issue details page is displayed
-    And Success message is shown with correct issue id
+    Then Issue is created
     Examples:
       | issue_type |
-      | bug        |
-      | feature    |
-      | support    |
+      | Bug        |
+      | Feature    |
+      | Support    |
 
   Scenario: Create issue of a random type and add user to watchers
     When I create a project
