@@ -4,18 +4,19 @@ class IssueDetailsPage < BasicPage
 
   page_url BASIC_URL + '/issues/<%=params[:issue_id]%>'
 
-  div(:success_message, :id => 'flash_notice')
-  cell(:issue_status, :css => 'td.status')
-  cell(:issue_priority, :css => 'td.priority')
-  link(:issue_link, :css => 'div#flash_notice > a')
-  link(:assigned_to, :css => 'td.assigned-to > a')
-  link(:log_time_link, :css => 'a.icon-time-add')
-  link(:edit_issue, :css => 'a.icon-edit')
-  link(:spent_time, :css => 'td.spent-time > a')
   button(:submit, :css => "div#update input[name='commit']")
+  cell(:issue_priority, :css => 'td.priority')
+  cell(:issue_status, :css => 'td.status')
+  div(:success_message, :id => 'flash_notice')
+  link(:assigned_to, :css => 'td.assigned-to > a')
+  link(:edit_issue, :css => 'a.icon-edit')
+  link(:issue_link, :css => 'div#flash_notice > a')
+  link(:log_time_link, :css => 'a.icon-time-add')
+  link(:spent_time, :css => 'td.spent-time > a')
+  link(:watch_issue, :css => 'a.icon-fav-off')
   select_list(:assignee_select, :id => 'issue_assigned_to_id')
   select_list(:status_select, :id => 'issue_status_id')
-
+  unordered_list(:watchers_list, :css => 'ul.watchers')
 
   def assign_user(user)
     self.edit_issue
@@ -43,6 +44,10 @@ class IssueDetailsPage < BasicPage
 
   def is_closed?
     self.issue_status == 'Closed' ? true : false
+  end
+
+  def watched_by?(user)
+    self.watchers_list.include?(user.full_name) ? true : false
   end
 
 end

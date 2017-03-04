@@ -1,6 +1,6 @@
 require 'page-object'
 
-class RegistrationPage
+class RegistrationPage < BasicPage
   include PageObject
 
   page_url 'http://demo.redmine.org/account/register'
@@ -21,7 +21,8 @@ class RegistrationPage
     self.first_name = user.first_name
     self.last_name = user.last_name
     self.email = user.email
-    submit
+    self.submit
+    user.id = get_current_user_id
   end
 
 end

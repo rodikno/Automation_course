@@ -1,11 +1,3 @@
-Given(/^I am on the main page$/) do
-  navigate_to(@homepage_url)
-end
-
-When(/^I submit the registration form$/) do
-  register_user(@user)
-end
-
 Then(/^New user is registered$/) do
   expect(on(MyAccountPage)).to have_success_message
 end
@@ -96,17 +88,24 @@ And(/^I create a '(.+)' issue$/) do |issue_type|
 end
 
 And(/^I create a '(.+)' issue if it wasn't created$/) do |issue_type|
-  @issue = create_issue(issue_type) unless @issue[:type].eql? issue_type
+
+  unless @issue.type == issue_type
+    @issue.type = issue_type
+    visit CreateIssuePage, :using_params => {:project_name => @project.name} do |page|
+      page.create_issue(@issue)
+    end
+  end
 end
 
 And(/^I create a random issue$/) do
-  issue = create_random_issue
-  reset_hash(@issue)
-  @issue = issue
+  @issue.type = ['Bug', 'Feature', 'Support'].sample
+  visit CreateIssuePage, :using_params => {:project_name => @project.name} do |page|
+    page.create_issue(@issue)
+  end
 end
 
 And(/^I start watching the issue$/) do
-  start_watching_issue(@issue)
+  on(IssueDetailsPage).watch_issue
 end
 
 Then(/^Issue is created$/) do
@@ -115,11 +114,6 @@ end
 
 
 Then(/^I see my user in the list of issue watchers$/) do
-  @wait.until{is_issue_watched?}
-  @driver.navigate.refresh
-  watchers_list = find_element_by_id("watchers")
-  @wait.until{watchers_list.displayed?}
-  username_in_watchers_list = find_element_by_css("li.user-#{@user.id}")
-
-  expect(username_in_watchers_list).to be_displayed
+  @browser.navigate.refresh
+  expect(on(IssueDetailsPage)).to be_watched_by(@user)
 end
