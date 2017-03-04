@@ -1,3 +1,4 @@
+
 class MyAccountPage < BasicPage
   include PageObject
 

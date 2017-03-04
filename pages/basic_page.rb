@@ -8,6 +8,7 @@ class BasicPage
   div(:success_message, :id => 'flash_notice')
   link(:log_out, :css => '.logout')
   link(:user_link, :css => '#loggedas a')
+  page_section(:top_menu, TopMenuSection, id: 'top-menu')
 
   def has_success_message?
     self.success_message_element.visible?

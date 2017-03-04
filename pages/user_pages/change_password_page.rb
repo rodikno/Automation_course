@@ -1,5 +1,5 @@
 
-class ChangePasswordPage
+class ChangePasswordPage < BasicPage
   include PageObject
 
   page_url 'http://demo.redmine.org/my/password'

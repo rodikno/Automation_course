@@ -3,7 +3,7 @@ Then(/^New user is registered$/) do
 end
 
 Then(/^I am logged in$/) do
-  expect(on(MyPage).top_menu.active_user_element.text).to eql @user.login
+  expect(on(TopMenuSection).active_user_element.text).to eql @user.login
 end
 
 When(/^I log out$/) do
@@ -12,7 +12,7 @@ end
 
 
 Then(/^I am logged out$/) do
-  expect(on(HomePage).top_menu.log_in_element).to be_visible
+  expect(on(TopMenuSection).log_in_element).to be_visible
 end
 
 

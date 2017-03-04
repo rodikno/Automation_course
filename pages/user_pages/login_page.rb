@@ -1,4 +1,5 @@
-class LoginPage
+
+class LoginPage < BasicPage
   include PageObject
 
   page_url 'http://demo.redmine.org/login'
