@@ -2,7 +2,7 @@
 class CreateVersionPage < BasicPage
   include PageObject
 
-  page_url 'http://demo.redmine.org/projects/<%=params[:project_name]%>/versions/new?back_url='
+  page_url BASIC_URL + '/projects/<%=params[:project_name]%>/versions/new?back_url='
 
   text_field(:name, :id => 'version_name')
   text_field(:description, :id => 'version_description')

@@ -3,7 +3,7 @@ require 'page-object'
 class BasicPage
   include PageObject
 
-  BASIC_URL = 'http://demo.redmine.org'
+  BASIC_URL = ('http://demo.redmine.org').freeze
 
   div(:success_message, :id => 'flash_notice')
   link(:log_out, :css => '.logout')

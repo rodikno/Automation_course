@@ -2,7 +2,7 @@
 class RegistrationPage < BasicPage
   include PageObject
 
-  page_url 'http://demo.redmine.org/account/register'
+  page_url BASIC_URL + '/account/register'
 
   text_field(:login, :id => 'user_login')
   text_field(:password, :id => 'user_password')

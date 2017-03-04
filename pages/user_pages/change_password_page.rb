@@ -2,7 +2,7 @@
 class ChangePasswordPage < BasicPage
   include PageObject
 
-  page_url 'http://demo.redmine.org/my/password'
+  page_url BASIC_URL + '/my/password'
 
   text_field(:old_password, :id => 'password')
   text_field(:new_password, :id => 'new_password')

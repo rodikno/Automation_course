@@ -2,6 +2,6 @@
 class ProjectsOverviewPage < BasicPage
   include PageObject
 
-  page_url 'http://demo.redmine.org/projects'
+  page_url BASIC_URL + '/projects'
 
 end
