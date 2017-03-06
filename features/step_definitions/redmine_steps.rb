@@ -114,6 +114,6 @@ end
 
 
 Then(/^I see my user in the list of issue watchers$/) do
-  @browser.navigate.refresh
+  @current_page.refresh
   expect(on(IssueDetailsPage)).to be_watched_by(@user)
 end
