@@ -1,5 +1,5 @@
 require 'faraday'
-require 'C:\_projects\automation_course\Main_Tasks\Exceptions\my_exceptions.rb'
+require_relative '../Main_Tasks/Exceptions/my_exceptions'
 
 module OurModule
 
