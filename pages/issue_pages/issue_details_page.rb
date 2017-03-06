@@ -19,7 +19,7 @@ class IssueDetailsPage < BasicPage
   unordered_list(:watchers_list, :css => 'ul.watchers')
 
   def assign_user(user)
-    self.edit_issue
+    edit_issue
     self.assignee_select = user.full_name
     submit
   end
@@ -37,17 +37,17 @@ class IssueDetailsPage < BasicPage
   end
 
   def close_issue
-    self.edit_issue
+    edit_issue
     self.status_select = 'Closed'
     submit
   end
 
   def is_closed?
-    self.issue_status == 'Closed' ? true : false
+    issue_status == 'Closed' ? true : false
   end
 
   def watched_by?(user)
-    self.watchers_list.include?(user.full_name) ? true : false
+    watchers_list.include?(user.full_name) ? true : false
   end
 
 end

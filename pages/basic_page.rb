@@ -11,7 +11,7 @@ class BasicPage
   page_section(:top_menu, TopMenuSection, id: 'top-menu')
 
   def has_success_message?
-    self.success_message_element.visible?
+    success_message_element.visible?
   end
 
   def get_current_user_id
