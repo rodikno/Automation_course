@@ -3,6 +3,7 @@ Feature: Redmine project tests
   Background:
     Given I register a user
 
+  @user @registration
   Scenario: [User: Registration] positive
     Then New user is registered
 
