@@ -1,6 +1,5 @@
 require 'faraday'
-require 'C:\_projects\automation_course\Main_Tasks\Exceptions\my_exceptions.rb'
-require_relative 'redmine_user'
+require_relative '../Main_Tasks/Exceptions/my_exceptions'
 
 module OurModule
 
@@ -70,10 +69,6 @@ module OurModule
     user.id = user_id
 
     user
-  end
-
-  def log_out
-    find_element_by_class('logout').click
   end
 
   def log_in(login, password)
@@ -191,12 +186,20 @@ module OurModule
     end
   end
 
+  def is_issue_watched?
+    if find_element_by_css('a.icon-fav').displayed?
+      true
+    else
+      false
+    end
+  end
+
   def project_exists?(project_url)
     status = get_http_response_code(project_url)
     if status == 200
       true
     else
-      raise ProjectNotFoundError, "Project not found: #{project_url}"
+      raise StandardError, "Project not found: #{project_url}"
     end
   end
 end

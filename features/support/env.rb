@@ -1,3 +1,4 @@
-require_relative 'redmine_cucumber_helper'
+require './helpers/redmine_helper'
+require 'page-object'
 
-World(RedmineCucumberHelper)
+World(PageObject::PageFactory, RedmineHelper)

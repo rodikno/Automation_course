@@ -3,7 +3,7 @@ require 'selenium-webdriver'
 require 'test/unit'
 require 'uri'
 require_relative 'our_module'
-require_relative 'redmine_user'
+require_relative '../helpers/redmine_user'
 
 class TestFirst < Test::Unit::TestCase
 
