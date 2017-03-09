@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 gem 'cucumber'
 gem 'debase'
+gem 'factory_girl'
 gem 'faker'
 gem 'faraday'
 gem 'nokogiri'
