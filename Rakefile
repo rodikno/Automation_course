@@ -26,7 +26,7 @@ namespace :cucumber do
   end
 
   task :run_all do
-    sh 'cucumber -f junit -o reports/ -f html -o reports/report.html'
+    sh 'cucumber -t @registration -f junit -o reports/ -f html -o reports/report.html'
   end
 
 end
