@@ -25,6 +25,10 @@ namespace :cucumber do
     run_cucumber_task(@without_registration_task)
   end
 
+  task :run_all do
+    sh 'cucumber -f junit -o reports/ -f html -o reports/report.html'
+  end
+
 end
 
 def run_cucumber_task(task)
