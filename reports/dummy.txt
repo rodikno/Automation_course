@@ -1,2 +1,0 @@
-# This file is created only with the purpose for the parent directory /reports to be saved in the
-# common structure as a folder (so if somebody clones this repository folder will exist already
