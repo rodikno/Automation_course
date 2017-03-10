@@ -26,7 +26,7 @@ namespace :cucumber do
   end
 
   task :run_all do
-    sh 'cucumber  -f AllureCucumber::Formatter -o reports/ -f junit -o reports/ -f html -o reports/report.html'
+    sh 'cucumber -f AllureCucumber::Formatter -o reports/allure/ -f junit -o reports/ -f html -o reports/report.html'
   end
 
   task :registration_allure do
