@@ -30,7 +30,7 @@ namespace :cucumber do
   end
 
   task :registration_allure do
-    sh 'cucumber -t @registration -f AllureCucumber::Formatter -o reports/'
+    sh 'cucumber -t @registration -f AllureCucumber::Formatter -o reports/allure/'
   end
 
 end
