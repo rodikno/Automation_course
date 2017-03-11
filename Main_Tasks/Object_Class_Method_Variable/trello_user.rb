@@ -10,7 +10,7 @@ class TrelloUser
   attr_reader :boards_owned, :boards_joined
 
   # @param [String] username
-  def initialize(username = "User" + rand(999))
+  def initialize(username = "User" + rand(999).to_s)
     @username = username
     @first_name = Faker::Name.first_name
     @last_name = Faker::Name.last_name
