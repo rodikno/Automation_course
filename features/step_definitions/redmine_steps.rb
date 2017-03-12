@@ -21,7 +21,7 @@ Given(/^I register a user$/) do
 end
 
 And(/^I log in$/) do
-  visit(LoginPage).log_in(@user)
+  visit(LoginPage).log_in_as(@user)
 end
 
 When(/^I change password$/) do

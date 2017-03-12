@@ -37,4 +37,12 @@ module RedmineHelper
     end
   end
 
+  def log_out
+    begin
+      @browser.find_element(css: '.logout').click
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+
+    end
+  end
+
 end

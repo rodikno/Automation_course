@@ -10,6 +10,6 @@ end
 shared_context 'Log in as' do |user|
   before :all do
     log_out
-    visit(LoginPage).log_in(user)
+    visit(LoginPage).log_in_as(user)
   end
 end
