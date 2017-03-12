@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe '[Project]' do
+describe '[Project]', :redmine, :project do
   user = RedmineUser.new
   context 'As an existing user' do
     include_context 'Register a new user', user

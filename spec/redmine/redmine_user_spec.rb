@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 
-describe '[User]', :user do
+describe '[User]', :redmine, :user do
 
   describe '[Registration]' do
     context 'When I register a user' do
