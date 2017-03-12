@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe TrelloComment do
+describe TrelloComment, :trello do
 
   user = TrelloUser.new
   board = user.create_board(Faker::Hacker.noun.capitalize)

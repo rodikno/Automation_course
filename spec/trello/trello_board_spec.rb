@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe TrelloBoard do
+describe TrelloBoard, :trello do
 
   user = TrelloUser.new
 

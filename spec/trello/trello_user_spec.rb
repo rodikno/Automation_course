@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe TrelloUser do
+describe TrelloUser, :trello do
   context 'When I create a new user' do
     user = TrelloUser.new
     it "new user is created" do

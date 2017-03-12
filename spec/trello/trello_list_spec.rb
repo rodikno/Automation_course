@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe TrelloList do
+describe TrelloList, :trello do
 
   user = TrelloUser.new
   board = user.create_board(Faker::Hacker.noun)
