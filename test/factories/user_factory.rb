@@ -1,6 +1,7 @@
 require 'factory_girl'
 require 'faker'
 
+require './helpers/redmine_user'
 require './Main_Tasks/Object_Class_Method_Variable/trello_user'
 require './Main_Tasks/Object_Class_Method_Variable/trello_board'
 
