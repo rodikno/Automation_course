@@ -2,8 +2,8 @@ require './spec/spec_helper'
 
 shared_examples 'Successfully registered user' do |user|
   include_context 'Register a new user', user
-  it ': Then user is registered' do
-    expect(on(MyAccountPage).success_message_element).to be_visible
+  it ': Then new user is registered' do
+    expect(on(MyAccountPage)).to have_success_message
   end
 end
 

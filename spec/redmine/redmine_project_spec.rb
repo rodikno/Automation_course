@@ -14,12 +14,10 @@ describe '[Project]', :redmine, :project do
 
     describe '[Open random project]' do
       describe 'When I try to open random project with retries', :retries => 3 do
-
         project = RedmineProject.new
-
+        let (:random_name) { random_name = Faker::Hipster.word.capitalize }
+        let (:random_project_url) { BasicPage::BASIC_URL + '/projects/' + random_name }
         it ': Then desired project is created' do |example|
-          random_name = Faker::Hipster.word.capitalize
-          random_project_url = BasicPage::BASIC_URL + '/projects/' + random_name
           project_exists = open_url_with_retries(random_project_url, example.metadata[:retries])
           if project_exists
             puts "Project with name [#{random_name}] already exists"
@@ -29,7 +27,6 @@ describe '[Project]', :redmine, :project do
             puts "New project [#{project.name}] created"
           end
         end
-
       end
     end
 

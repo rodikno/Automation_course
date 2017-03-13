@@ -6,10 +6,7 @@ describe '[User]', :redmine, :user do
   describe '[Registration]' do
     context 'When I register a user' do
       user = RedmineUser.new
-      before { visit(RegistrationPage).register_user(user) }
-      it ': Then new user is registered' do
-        expect(on(MyAccountPage)).to have_success_message
-      end
+      include_examples 'Successfully registered user', user
     end
   end
 

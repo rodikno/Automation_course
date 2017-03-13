@@ -2,13 +2,9 @@ require './spec/spec_helper'
 
 shared_examples 'Successfully created project' do |project|
   include_context 'Create a new project', project
-  it 'success message is shown' do
+  it ': Then new project is created' do
     on ProjectSettingsPage, :using_params => {:project_name => project.name} do |page|
       expect(page).to have_success_message
-    end
-  end
-  it 'correct project title is shown' do
-    on ProjectSettingsPage, :using_params => {:project_name => project.name} do |page|
       expect(page.project_title).to eql project.name
     end
   end
