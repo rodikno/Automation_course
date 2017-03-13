@@ -1,6 +1,8 @@
+require 'allure-rspec'
 require 'factory_girl'
-require 'rspec'
 require 'page-object'
+require 'rspec'
+require 'rspec_junit_formatter'
 require 'require_all'
 
 require_all './pages/**/*.rb'
@@ -17,6 +19,7 @@ RSpec.configure do |config|
   config.include RedmineHelper
   config.include PageObject::PageFactory
   config.include FactoryGirl::Syntax::Methods
+  #config.include AllureRSpec::Adaptor
 
   config.before(:suite) do
     FactoryGirl.find_definitions
