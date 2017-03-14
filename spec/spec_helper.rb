@@ -1,4 +1,5 @@
 require 'allure-rspec'
+require 'pathname'
 require 'factory_girl'
 require 'page-object'
 require 'rspec'
@@ -19,7 +20,7 @@ RSpec.configure do |config|
   config.include RedmineHelper
   config.include PageObject::PageFactory
   config.include FactoryGirl::Syntax::Methods
-  #config.include AllureRSpec::Adaptor
+  config.include AllureRSpec::Adaptor
 
   config.before(:suite) do
     FactoryGirl.find_definitions
@@ -33,4 +34,9 @@ RSpec.configure do |config|
   config.after :all do
     @browser.quit
   end
+end
+
+AllureRSpec.configure do |c|
+  c.output_dir = "reports/allure/"
+  c.logging_level= Logger::INFO
 end
