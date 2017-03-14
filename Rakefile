@@ -23,5 +23,13 @@ namespace :cucumber do
     sh 'cucumber --tags ~@registration'
   end
 
+  task :run_all do
+    sh 'cucumber -f AllureCucumber::Formatter -o reports/allure/ -f junit -o reports/ -f html -o reports/report.html'
+  end
+
+  task :registration_allure do
+    sh 'cucumber -t @registration -f AllureCucumber::Formatter -o reports/allure/'
+  end
+
 end
 
