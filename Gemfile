@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 gem 'allure-rspec'
+gem 'allure-cucumber'
 gem 'cucumber'
 gem 'debase'
 gem 'factory_girl'
