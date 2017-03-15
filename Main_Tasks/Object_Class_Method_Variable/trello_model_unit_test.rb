@@ -68,15 +68,6 @@ class TestTrelloModel < Test::Unit::TestCase
     expect(list.title).to eql @listname
   end
 
-  def test_delete_list
-    user = create_user(@username)
-    board = user.create_board(@boardname)
-    list = user.create_list(@listname, board)
-    user.delete_list(list)
-
-    expect(board.lists).not_to include list
-  end
-
   def test_move_list
     target_position = 3
     user = create_user(@username)
@@ -85,6 +76,15 @@ class TestTrelloModel < Test::Unit::TestCase
     user.move_list(list, target_position)
 
     expect(list.position).to eql target_position
+  end
+
+  def test_delete_list
+    user = create_user(@username)
+    board = user.create_board(@boardname)
+    list = user.create_list(@listname, board)
+    user.delete_list(list)
+
+    expect(board.lists).not_to include list
   end
 
   def test_create_card

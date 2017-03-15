@@ -1,14 +1,17 @@
 require 'factory_girl'
 require 'faker'
 
+require './helpers/redmine_user'
+require './Main_Tasks/Object_Class_Method_Variable/trello_user'
+require './Main_Tasks/Object_Class_Method_Variable/trello_board'
+
+
 FactoryGirl.define do
-  factory :user do
+  factory :user, class: TrelloUser do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
-    login { Faker::Internet.user_name("#{first_name} #{last_name}", %w(. _ -)) + rand(1000).to_s }
-    password { Faker::Internet.password(4) }
-    email { Faker::Internet.safe_email(login) }
-    full_name { "#{first_name} #{last_name}" }
-    id nil
+    username { Faker::Internet.user_name("#{first_name} #{last_name}", %w(. _ -)) + rand(1000).to_s }
+    email { Faker::Internet.safe_email(username) }
+    biography { Faker::Hipster.sentence(5) }
   end
 end

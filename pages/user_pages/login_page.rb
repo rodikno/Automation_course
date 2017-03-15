@@ -8,7 +8,7 @@ class LoginPage < BasicPage
   text_field(:password, :id => 'password')
   button(:submit, :name => 'login')
 
-  def log_in(user)
+  def log_in_as(user)
     self.login = user.login
     self.password = user.password
     submit
